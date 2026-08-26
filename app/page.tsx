@@ -1,5 +1,5 @@
-import ChurchHome from '@/components/church-home'
+import { LandingPage } from "@/components/landing";
 
 export default function Page() {
-  return <ChurchHome />
+  return <LandingPage />;
 }
