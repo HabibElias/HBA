@@ -10,8 +10,11 @@
     "cssVariables": true,
     "prefix": ""
   },
+<<<<<<< HEAD
   "iconLibrary": "lucide",
   "rtl": false,
+=======
+>>>>>>> bf020cc4e50dd268cac212055e28ebf6575c6d18
   "aliases": {
     "components": "@/components",
     "utils": "@/lib/utils",
@@ -19,7 +22,11 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
+<<<<<<< HEAD
   "menuColor": "default",
   "menuAccent": "subtle",
   "registries": {}
+=======
+  "iconLibrary": "lucide"
+>>>>>>> bf020cc4e50dd268cac212055e28ebf6575c6d18
 }
