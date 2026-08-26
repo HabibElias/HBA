@@ -1,0 +1,274 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-25T11:09:35.000Z",
+  "title": "Design System: Hiwot Birhan Addis Ababa Summit branch",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Royal Indigo",
+        "canonical": "#302b9b",
+        "tonalRamp": [
+          "#0d0b30",
+          "#1b185b",
+          "#282386",
+          "#302b9b",
+          "#524db5",
+          "#7c78cf",
+          "#b2afe8",
+          "#e5e4fa"
+        ]
+      },
+      "foreground": {
+        "role": "neutral-dark",
+        "displayName": "Indigo Foreground",
+        "canonical": "#11143d",
+        "tonalRamp": [
+          "#060717",
+          "#0b0d28",
+          "#11143d",
+          "#212560",
+          "#393f88",
+          "#636bb2",
+          "#9ea4d8",
+          "#e2e5f6"
+        ]
+      },
+      "accent": {
+        "role": "secondary",
+        "displayName": "Lavender Accent",
+        "canonical": "#6569d8",
+        "tonalRamp": [
+          "#1a1c4a",
+          "#2d317e",
+          "#464bb0",
+          "#6569d8",
+          "#8689e1",
+          "#a9abec",
+          "#cdcef5",
+          "#edf0ff"
+        ]
+      },
+      "background": {
+        "role": "neutral-light",
+        "displayName": "Paper Light",
+        "canonical": "#f8f9ff",
+        "tonalRamp": [
+          "#262947",
+          "#4d5178",
+          "#797da9",
+          "#a8abcf",
+          "#cfd3ef",
+          "#dfe4ff",
+          "#edf0ff",
+          "#f8f9ff"
+        ]
+      },
+      "sermon-bg": {
+        "role": "surface",
+        "displayName": "Sermon Atmosphere Indigo",
+        "canonical": "#3530a2",
+        "tonalRamp": [
+          "#131140",
+          "#221e6c",
+          "#3530a2",
+          "#544fc1",
+          "#7d78db",
+          "#aba8ee",
+          "#d5d3f8",
+          "#f0effd"
+        ]
+      },
+      "sermon-light": {
+        "role": "text",
+        "displayName": "Sermon Soft Text",
+        "canonical": "#e0e2fa",
+        "tonalRamp": [
+          "#1b1e45",
+          "#343977",
+          "#575ea8",
+          "#848bcd",
+          "#b4baea",
+          "#d2d6f5",
+          "#e0e2fa",
+          "#f5f6fe"
+        ]
+      },
+      "sermon-muted": {
+        "role": "text-muted",
+        "displayName": "Sermon Muted Text",
+        "canonical": "#b9bce8",
+        "tonalRamp": [
+          "#17183e",
+          "#2d306e",
+          "#4c51a3",
+          "#757acc",
+          "#9ea3df",
+          "#b9bce8",
+          "#dbddf4",
+          "#f2f3fc"
+        ]
+      },
+      "white": {
+        "role": "surface-pure",
+        "displayName": "Pure White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#222222",
+          "#555555",
+          "#888888",
+          "#aaaaaa",
+          "#cccccc",
+          "#e8e8e8",
+          "#f5f5f5",
+          "#ffffff"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display Serif",
+        "purpose": "Hero headlines and key section anchors."
+      },
+      "headline": {
+        "displayName": "Section Headline",
+        "purpose": "Major section title blocks with italic emphasis accents."
+      },
+      "quote": {
+        "displayName": "Quote Serif",
+        "purpose": "Testimonial and scripture quote displays."
+      },
+      "lead": {
+        "displayName": "Lead Sans",
+        "purpose": "Section introduction statement."
+      },
+      "title": {
+        "displayName": "Title Sans",
+        "purpose": "Service titles, event headings, and card names."
+      },
+      "body": {
+        "displayName": "Body Sans",
+        "purpose": "Readable descriptive text and gathering details."
+      },
+      "body-sm": {
+        "displayName": "Body Small Sans",
+        "purpose": "Navigation links, button labels, time labels, and mobile menu items."
+      },
+      "label": {
+        "displayName": "Uppercase Label",
+        "purpose": "Event category tags, time markers, and form field labels."
+      }
+    },
+    "shadows": [
+      {
+        "name": "button-hover",
+        "value": "0 4px 16px rgba(17, 20, 61, 0.15)",
+        "purpose": "Gentle elevation on interactive button hover."
+      },
+      {
+        "name": "primary-lift",
+        "value": "0 4px 16px rgba(48, 43, 155, 0.25)",
+        "purpose": "Vibrant hover glow on dark indigo actions."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Default timing curve for color transitions, icon translations, and button lifts."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "768px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Solid dark indigo action button with hover lift.",
+      "html": "<button class=\"ds-btn ds-btn-primary\"><span>Plan your first visit</span> <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/></svg></button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 700; height: 50px; padding: 0 24px; border: 1px solid transparent; border-radius: 4px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-primary { background: #11143d; color: #f8f9ff; } .ds-btn-primary:hover { background: #302b9b; color: #ffffff; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(48, 43, 155, 0.25); } .ds-btn-primary:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Light Button",
+      "kind": "button",
+      "refersTo": "button-light",
+      "description": "Crisp paper button used over dark hero canvas and featured banners.",
+      "html": "<button class=\"ds-btn ds-btn-light\"><span>Watch latest message</span> <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><polygon points=\"6 3 20 12 6 21 6 3\"/></svg></button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 700; height: 50px; padding: 0 24px; border: 1px solid transparent; border-radius: 4px; cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-light { background: #f8f9ff; color: #11143d; } .ds-btn-light:hover { background: #ffffff; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(17, 20, 61, 0.15); } .ds-btn-light:active { transform: translateY(1px); }"
+    },
+    {
+      "name": "Service List Row",
+      "kind": "custom",
+      "refersTo": "service-row",
+      "description": "Structured gathering schedule row with interactive hover state.",
+      "html": "<div class=\"ds-service-row\"><div class=\"ds-service-time\"><strong>Sunday</strong><span>9:00 AM - 11:00 AM</span></div><div><h3 class=\"ds-service-title\">Morning Worship &amp; Word</h3><p class=\"ds-service-desc\">Biblical teaching, worship, and prayer for the entire family.</p></div><svg class=\"ds-row-arrow\" width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M7 7h10v10\"/><path d=\"M7 17 17 7\"/></svg></div>",
+      "css": ".ds-service-row { display: grid; grid-template-columns: 180px 1fr auto; align-items: center; gap: 2rem; padding: 28px 16px; border-bottom: 1px solid #cfd3ef; font-family: system-ui, sans-serif; transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-service-row:hover { background-color: #edf0ff; } .ds-service-time { display: flex; flex-direction: column; gap: 4px; font-size: 13px; text-transform: uppercase; color: #11143d; } .ds-service-time span { font-size: 11px; color: #5d6384; } .ds-service-title { margin: 0 0 6px; font-size: 20px; font-weight: 600; color: #11143d; letter-spacing: -0.02em; } .ds-service-desc { margin: 0; font-size: 15px; color: #5d6384; line-height: 1.5; } .ds-row-arrow { color: #302b9b; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-service-row:hover .ds-row-arrow { transform: translate(2px, -2px); }"
+    },
+    {
+      "name": "Underline Text Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Minimalist underline input field with smooth indigo focus stroke.",
+      "html": "<div class=\"ds-field-wrap\"><label class=\"ds-field-label\" for=\"ds-demo-input\">Your Name</label><input class=\"ds-field-input\" id=\"ds-demo-input\" placeholder=\"How should we call you?\" /></div>",
+      "css": ".ds-field-wrap { display: flex; flex-direction: column; gap: 8px; font-family: system-ui, sans-serif; } .ds-field-label { color: #5d6384; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; } .ds-field-input { width: 100%; border: 0; border-bottom: 1.5px solid #cfd3ef; background: transparent; padding: 10px 0; color: #11143d; font-size: 15px; outline: none; transition: border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-field-input:focus { border-color: #302b9b; }"
+    },
+    {
+      "name": "Header Navigation Item",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Clean navigation link with smooth hover color change.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" class=\"ds-nav-link\">Visit</a><a href=\"#\" class=\"ds-nav-link\">About</a><a href=\"#\" class=\"ds-nav-link\">Ministries</a><a href=\"#\" class=\"ds-nav-link\">Events</a><a href=\"#\" class=\"ds-nav-link\">Sermons</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 24px; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; } .ds-nav-link { color: #11143d; text-decoration: none; transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-nav-link:hover { color: #302b9b; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Welcoming Sanctuary",
+    "overview": "The Hiwot Birhan visual language combines the dignity and reverence of an established Ethiopian church family with open, contemporary warmth. Rather than relying on generic SaaS cards or heavy drop shadows, the aesthetic is anchored in rich editorial serif typography, deliberate contrast, and deep royal indigo tones balanced against clean, cool paper surfaces.\n\nEvery element communicates hospitality, spiritual grounding, and community life. Dense, rhythmic service schedules and clear event timelines are rendered with structured row layouts rather than cluttered floating cards.",
+    "keyCharacteristics": [
+      "Reverent Editorial Headlines: Grand DM Serif Display headings paired with italic emphasis words in lavender accent.",
+      "Tonal Canvas Depth: Crisp #f8f9ff base with layered #edf0ff and #dfe4ff surfaces rather than decorative shadow halos.",
+      "Structured Row Architecture: Flat, horizontal service and event items separated by delicate borders with interactive directional hover cues.",
+      "Clear Communal Purpose: Direct, compassionate copy free of generic placeholder slop, tailored specifically for the Addis Ababa Summit community."
+    ],
+    "rules": [
+      {
+        "name": "The Sanctuary Accent Rule",
+        "body": "The vibrant lavender accent (#6569d8) is reserved for moments of emphasis (italic headline keywords, tag labels, and quote iconography). It is never applied as a solid container fill.",
+        "section": "colors"
+      },
+      {
+        "name": "The No-Dead-Gray Rule",
+        "body": "Neutral borders and muted text are always tinted with soft indigo undertones (#cfd3ef, #5d6384), never sterile monochrome grays.",
+        "section": "colors"
+      },
+      {
+        "name": "The Natural Emphasis Rule",
+        "body": "Headings use italic serif styling with the accent color on key phrases to create human warmth and melodic cadence.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces and cards remain flat at rest. Subtle depth and translation occur solely in response to user focus and hover interactions.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do preserve the authentic church name (Hiwot Birhan Addis Ababa Summit branch) and local Addis Ababa context across all copies.",
+      "Do use DM Serif Display for major headlines and allow headings to speak with italic accents.",
+      "Do use structured row dividers (1px solid #cfd3ef) for time-based items instead of floating card grids.",
+      "Do tint all secondary neutrals and backgrounds with cool indigo hues."
+    ],
+    "donts": [
+      "Don't add arbitrary numbered labels (01 / Welcome, 02 / Join us) or kicker eyebrows above headings.",
+      "Don't use generic stock church template names (e.g. Harbor Church, Portland, OR).",
+      "Don't introduce heavy multi-color gradient text or gratuitous glassmorphism blur effects.",
+      "Don't use pure monochrome gray borders or black shadows without indigo tinting."
+    ]
+  }
+}
