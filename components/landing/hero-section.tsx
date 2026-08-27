@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowUpRight, Play } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 
@@ -8,9 +9,12 @@ export function HeroSection() {
 
   return (
     <section className="hero" id="top">
-      <img
+      <Image
         src="/church-hero.png"
         alt="The Hiwot Birhan church family gathered"
+        fill
+        priority
+        sizes="100vw"
         className="hero-image"
         data-reveal="hero"
       />

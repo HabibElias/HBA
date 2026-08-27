@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { logoSrc, navItems } from "@/lib/content/landing-content";
 import { useLanguage } from "@/lib/context/language-context";
@@ -20,9 +21,12 @@ export function Header() {
   return (
     <header className={scrolled ? "site-header scrolled" : "site-header"}>
       <a href="#top" className="brand" aria-label="Hiwot Birhan home">
-        <img
+        <Image
           src={logoSrc}
           alt="Hiwot Birhan cross and globe logo"
+          width={48}
+          height={48}
+          priority
           className="brand-logo"
         />
         <span>

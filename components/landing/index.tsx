@@ -6,10 +6,12 @@ import { ServicesSection } from "@/components/landing/services-section";
 import { MinistriesSection } from "@/components/landing/ministries-section";
 import { SermonSection } from "@/components/landing/sermon-section";
 import { EventsSection } from "@/components/landing/events-section";
+import { GallerySection } from "@/components/landing/gallery-section";
 import { QuoteSection } from "@/components/landing/quote-section";
 import { ContactSection } from "@/components/landing/contact-section";
 import { Footer } from "@/components/landing/footer";
 import { RevealObserver } from "@/components/landing/reveal-observer";
+
 
 export function LandingPage() {
   return (
@@ -23,6 +25,7 @@ export function LandingPage() {
         <MinistriesSection />
         <SermonSection />
         <EventsSection />
+        <GallerySection />
         <QuoteSection />
         <ContactSection />
         <Footer />

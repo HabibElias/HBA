@@ -27,6 +27,21 @@ export interface EventItem {
   type: string;
 }
 
+export interface GalleryPhoto {
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+export interface GalleryAlbum {
+  id: string;
+  tag: string;
+  title: string;
+  description: string;
+  coverSrc: string;
+  photos: GalleryPhoto[];
+}
+
 export interface LandingContent {
   visit: string;
   hero: ReactNode;
@@ -75,6 +90,12 @@ export interface LandingContent {
   services: ServiceItem[];
   ministries: MinistryItem[];
   events: EventItem[];
+  galleryTitle: ReactNode;
+  galleryText: string;
+  galleryViewAll: string;
+  galleryBackToAlbums: string;
+  galleryPhotosLabel: string;
+  galleryAlbums: GalleryAlbum[];
 }
 
 export interface ContactFormData {

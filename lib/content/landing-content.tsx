@@ -7,6 +7,7 @@ export const navItems: NavMenuItem[] = [
   { href: "#about", en: "About", am: "ስለ እኛ" },
   { href: "#ministries", en: "Ministries", am: "አገልግሎቶች" },
   { href: "#events", en: "Events", am: "ዝግጅቶች" },
+  { href: "#gallery", en: "Gallery", am: "ፎቶዎች" },
   { href: "#sermons", en: "Sermons", am: "ስብከቶች" },
 ];
 
@@ -163,6 +164,85 @@ export const copy: Record<Language, LandingContent> = {
         type: "Outreach",
       },
     ],
+    galleryTitle: (
+      <>
+        Life together,
+        <br />
+        <i>in pictures.</i>
+      </>
+    ),
+    galleryText:
+      "Explore moments from our gatherings — worship, Bible study circles, altar prayer, and testimonies.",
+    galleryViewAll: "All Photos",
+    galleryBackToAlbums: "Back to all albums",
+    galleryPhotosLabel: "photos",
+    galleryAlbums: [
+      {
+        id: "worship",
+        tag: "Youth Worship",
+        title: "Youth Worship & Praise",
+        description:
+          "Vibrant praise, live youth choir, band, and passionate worship in God's presence.",
+        coverSrc: "/gallery/photo_24_2026-08-27_14-11-14.jpg",
+        photos: [
+          { src: "/gallery/photo_24_2026-08-27_14-11-14.jpg", alt: "Worship team and live band leading praise" },
+          { src: "/gallery/photo_23_2026-08-27_14-11-14.jpg", alt: "Lead vocalist singing with the worship band" },
+          { src: "/gallery/photo_19_2026-08-27_14-11-14.jpg", alt: "Lifting hands in heartfelt praise" },
+          { src: "/gallery/photo_22_2026-08-27_14-11-14.jpg", alt: "Congregation members in deep worship" },
+          { src: "/gallery/photo_25_2026-08-27_14-11-14.jpg", alt: "Worship team gathered before the cross" },
+          { src: "/gallery/photo_20_2026-08-27_14-11-14.jpg", alt: "Youth worshipping under the sanctuary cross" },
+          { src: "/gallery/photo_21_2026-08-27_14-11-14.jpg", alt: "Church family standing in reverence" },
+        ],
+      },
+      {
+        id: "youth",
+        tag: "Youth Ministry",
+        title: "Youth Bible Study & Fellowship",
+        description:
+          "Small group circles, open Bibles, diligent note-taking, and genuine community.",
+        coverSrc: "/gallery/photo_10_2026-08-27_14-11-14.jpg",
+        photos: [
+          { src: "/gallery/photo_10_2026-08-27_14-11-14.jpg", alt: "Youth circle discussion and Bible study" },
+          { src: "/gallery/photo_14_2026-08-27_14-11-14.jpg", alt: "Group studying scriptures together" },
+          { src: "/gallery/photo_16_2026-08-27_14-11-14.jpg", alt: "Small group open Bible discussions" },
+          { src: "/gallery/photo_11_2026-08-27_14-11-14.jpg", alt: "Youth writing sermon and study notes" },
+          { src: "/gallery/photo_12_2026-08-27_14-11-14.jpg", alt: "Personal journaling and Bible study notes" },
+          { src: "/gallery/photo_13_2026-08-27_14-11-14.jpg", alt: "Diligently studying the Word" },
+          { src: "/gallery/photo_15_2026-08-27_14-11-14.jpg", alt: "Fellowship and active listening in small groups" },
+          { src: "/gallery/photo_17_2026-08-27_14-11-14.jpg", alt: "Sanctuary hall with multiple small groups" },
+          { src: "/gallery/photo_18_2026-08-27_14-11-14.jpg", alt: "Fellowship and reflection under the cross" },
+        ],
+      },
+      {
+        id: "prayer",
+        tag: "Prayer & Ministry",
+        title: "Prayer & Altar Ministry",
+        description:
+          "United in earnest prayer, laying on of hands, and heartfelt intercession for one another.",
+        coverSrc: "/gallery/photo_4_2026-08-27_14-11-14.jpg",
+        photos: [
+          { src: "/gallery/photo_4_2026-08-27_14-11-14.jpg", alt: "Youth holding hands in united prayer" },
+          { src: "/gallery/photo_1_2026-08-27_14-11-14.jpg", alt: "Passionate prayer and intercession" },
+          { src: "/gallery/photo_2_2026-08-27_14-11-14.jpg", alt: "Pastoral blessing and laying on of hands" },
+          { src: "/gallery/photo_3_2026-08-27_14-11-14.jpg", alt: "Congregation standing together in altar prayer" },
+        ],
+      },
+      {
+        id: "word",
+        tag: "Word & Sharing",
+        title: "Testimonies & Speaking the Word",
+        description:
+          "Believers and youth leaders stepping up to testify and share God's goodness from the pulpit.",
+        coverSrc: "/gallery/photo_9_2026-08-27_14-11-14.jpg",
+        photos: [
+          { src: "/gallery/photo_9_2026-08-27_14-11-14.jpg", alt: "Speaker sharing under the illuminated cross" },
+          { src: "/gallery/photo_5_2026-08-27_14-11-14.jpg", alt: "Sister sharing scripture and exhortation" },
+          { src: "/gallery/photo_6_2026-08-27_14-11-14.jpg", alt: "Speaker sharing God's Word at the podium" },
+          { src: "/gallery/photo_7_2026-08-27_14-11-14.jpg", alt: "Young brother sharing message notes" },
+          { src: "/gallery/photo_8_2026-08-27_14-11-14.jpg", alt: "Sharing testimony with congregation" },
+        ],
+      },
+    ],
   },
   am: {
     visit: "ጉብኝትዎን ያቅዱ",
@@ -309,5 +389,85 @@ export const copy: Record<Language, LandingContent> = {
         type: "አገልግሎት",
       },
     ],
+    galleryTitle: (
+      <>
+        አብሮ የሚኖር
+        <br />
+        <i>ሕይወት።</i>
+      </>
+    ),
+    galleryText:
+      "ከስብሰባዎቻችን — ከአምልኮ፣ ከየቃል ጥናት ክበባት፣ ከጸሎት እና ከመድረክ ምስክርነት የተወሰዱ ምስሎች።",
+    galleryViewAll: "ሁሉም ፎቶዎች",
+    galleryBackToAlbums: "ወደ ሁሉም አልበሞች ተመለስ",
+    galleryPhotosLabel: "ፎቶዎች",
+    galleryAlbums: [
+      {
+        id: "worship",
+        tag: "የወጣቶች አምልኮ",
+        title: "የወጣቶች አምልኮና ምስጋና",
+        description:
+          "የወጣቶች መዘምራን፣ የሙዚቃ ባንድ እና ሕያው አምልኮ በእግዚአብሔር ፊት።",
+        coverSrc: "/gallery/photo_24_2026-08-27_14-11-14.jpg",
+        photos: [
+          { src: "/gallery/photo_24_2026-08-27_14-11-14.jpg", alt: "የአምልኮ ቡድኑና የሙዚቃ ባንድ አምልኮን ሲመሩ" },
+          { src: "/gallery/photo_23_2026-08-27_14-11-14.jpg", alt: "የአምልኮ መሪዋ በዝማሬ ስታመልክ" },
+          { src: "/gallery/photo_19_2026-08-27_14-11-14.jpg", alt: "እጅን አንስቶ እግዚአብሔርን ማመስገን" },
+          { src: "/gallery/photo_22_2026-08-27_14-11-14.jpg", alt: "ምዕመናን በጥልቅ አምልኮ ውስጥ" },
+          { src: "/gallery/photo_25_2026-08-27_14-11-14.jpg", alt: "የአምልኮ ቡድኑ በመስቀሉ ፊት" },
+          { src: "/gallery/photo_20_2026-08-27_14-11-14.jpg", alt: "ወጣቶች በመስቀሉ ስር ሲያመልኩ" },
+          { src: "/gallery/photo_21_2026-08-27_14-11-14.jpg", alt: "ቤተሰባችን በአክብሮት ቆሞ ሲያመልክ" },
+        ],
+      },
+      {
+        id: "youth",
+        tag: "የወጣቶች አገልግሎት",
+        title: "የወጣቶች የቃል ጥናትና ሕብረት",
+        description:
+          "ወጣቶች በክበብ ተቀምጠው መጽሐፍ ቅዱስን ሲያጠኑ፣ ማስታወሻ ሲይዙ እና በእምነት ሲያድጉ።",
+        coverSrc: "/gallery/photo_10_2026-08-27_14-11-14.jpg",
+        photos: [
+          { src: "/gallery/photo_10_2026-08-27_14-11-14.jpg", alt: "የወጣቶች የክበብ ውይይትና የቃል ጥናት" },
+          { src: "/gallery/photo_14_2026-08-27_14-11-14.jpg", alt: "ቃሉን በአንድነት ማጥናት" },
+          { src: "/gallery/photo_16_2026-08-27_14-11-14.jpg", alt: "የትንንሽ ቡድኖች የመጽሐፍ ቅዱስ ጥናት" },
+          { src: "/gallery/photo_11_2026-08-27_14-11-14.jpg", alt: "የስብከትና የጥናት ማስታወሻ ሲያዝ" },
+          { src: "/gallery/photo_12_2026-08-27_14-11-14.jpg", alt: "የግል ማስታወሻ መያዝ" },
+          { src: "/gallery/photo_13_2026-08-27_14-11-14.jpg", alt: "ቃሉን በትጋት ማጥናት" },
+          { src: "/gallery/photo_15_2026-08-27_14-11-14.jpg", alt: "የወጣቶች ሕብረትና በጥሞና ማዳመጥ" },
+          { src: "/gallery/photo_17_2026-08-27_14-11-14.jpg", alt: "በአዳራሹ ውስጥ የተደረጉ የቡድን ጥናቶች" },
+          { src: "/gallery/photo_18_2026-08-27_14-11-14.jpg", alt: "በመስቀሉ ስር የተደረገ ውይይት" },
+        ],
+      },
+      {
+        id: "prayer",
+        tag: "የጸሎት አገልግሎት",
+        title: "የጸሎትና የምልጃ ጊዜያት",
+        description:
+          "በአንድ ልብ በመሆን የተደረገ ልባዊ ጸሎት፣ እጅ መጫን እና ምልጃ።",
+        coverSrc: "/gallery/photo_4_2026-08-27_14-11-14.jpg",
+        photos: [
+          { src: "/gallery/photo_4_2026-08-27_14-11-14.jpg", alt: "ወጣቶች እጅ ለእጅ ተያይዘው ሲጸልዩ" },
+          { src: "/gallery/photo_1_2026-08-27_14-11-14.jpg", alt: "ልባዊ ጸሎትና ምልጃ" },
+          { src: "/gallery/photo_2_2026-08-27_14-11-14.jpg", alt: "የአገልጋይ ምርቃትና እጅ መጫን" },
+          { src: "/gallery/photo_3_2026-08-27_14-11-14.jpg", alt: "ምዕመናን በመድረኩ ፊት ለጸሎት ቆመው" },
+        ],
+      },
+      {
+        id: "word",
+        tag: "የቃል ምስክርነት",
+        title: "ምስክርነትና የቃል ማካፈል",
+        description:
+          "አማኞች እና የወጣቶች መሪዎች የእግዚአብሔርን ታላቅ ሥራ ከመድረክ ሲመሰክሩ።",
+        coverSrc: "/gallery/photo_9_2026-08-27_14-11-14.jpg",
+        photos: [
+          { src: "/gallery/photo_9_2026-08-27_14-11-14.jpg", alt: "በብርሃን መስቀል ስር ምስክርነት ሲሰጥ" },
+          { src: "/gallery/photo_5_2026-08-27_14-11-14.jpg", alt: "እህት ቃሉንና ምክርን ስታካፍል" },
+          { src: "/gallery/photo_6_2026-08-27_14-11-14.jpg", alt: "ከመድረክ የእግዚአብሔርን ቃል ማካፈል" },
+          { src: "/gallery/photo_7_2026-08-27_14-11-14.jpg", alt: "ወጣት ወንድም ማስታወሻውን ይዞ ሲናገር" },
+          { src: "/gallery/photo_8_2026-08-27_14-11-14.jpg", alt: "ምስክርነትን ለምዕመናን ማካፈል" },
+        ],
+      },
+    ],
   },
 };
+

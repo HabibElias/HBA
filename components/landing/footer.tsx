@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { logoSrc, navItems } from "@/lib/content/landing-content";
 import { useLanguage } from "@/lib/context/language-context";
@@ -12,9 +13,11 @@ export function Footer() {
       <div className="footer-top">
         <div className="footer-brand-block">
           <a href="#top" className="brand footer-brand">
-            <img
+            <Image
               src={logoSrc}
               alt="Hiwot Birhan cross and globe logo"
+              width={48}
+              height={48}
               className="brand-logo"
             />
             <span>
