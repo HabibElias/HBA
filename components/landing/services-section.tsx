@@ -16,7 +16,7 @@ export function ServicesSection() {
         {t.services.map((service) => (
           <article
             className="service-row"
-            key={service.name}
+            key={`${service.day}-${service.name}`}
             data-reveal="row"
           >
             <div className="service-time">
