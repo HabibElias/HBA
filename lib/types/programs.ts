@@ -1,4 +1,9 @@
-export type ProgramCategory = "camp" | "awana" | "conference" | "outreach";
+export type ProgramCategory =
+  | "camp"
+  | "awana"
+  | "conference"
+  | "outreach"
+  | "worship";
 
 export interface UpcomingEvent {
   id: string;
@@ -19,12 +24,20 @@ export interface UpcomingEvent {
   categoryLabelAm: string;
   registerLink: string;
   image: string;
+  notice?: string;
+  noticeAm?: string;
 }
 
 export interface PastProgramPhoto {
   src: string;
   alt: string;
   caption?: string;
+}
+
+export interface ImpactMetric {
+  label: string;
+  labelAm: string;
+  value: string;
 }
 
 export interface PastProgram {
@@ -40,6 +53,12 @@ export interface PastProgram {
   location: string;
   locationAm: string;
   attendeeCount: number;
+  scripture?: string;
+  scriptureAm?: string;
+  metrics?: ImpactMetric[];
+  audioLabel?: string;
+  audioLabelAm?: string;
+  photoCount?: number;
   recap: string;
   recapAm: string;
   photos: PastProgramPhoto[];
