@@ -13,7 +13,7 @@ const buttonVariants = cva(
           "border border-primary text-primary bg-transparent hover:bg-tint",
         outline:
           "border border-primary text-primary bg-transparent hover:bg-tint",
-        "on-dark": "bg-surface text-primary hover:bg-neutral-100 shadow-md",
+        "on-dark": "bg-white text-primary-deep hover:bg-neutral-100 shadow-md",
         "on-dark-outline":
           "border border-white/70 text-white bg-transparent hover:bg-white/10",
         ghost: "text-foreground bg-transparent hover:bg-tint",

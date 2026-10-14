@@ -13,7 +13,7 @@ export function LeadershipGrid() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <div className="w-10 h-0.5 bg-accent mx-auto mb-4" />
-          <span className="text-accent text-xs font-semibold uppercase tracking-wider">
+          <span className="text-accent-contrast dark:text-accent text-xs font-bold uppercase tracking-wider">
             {isAm ? "በክርስቶስ ስር የሚመራ እረኝነት" : "Shepherding Under Christ"}
           </span>
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-primary font-bold mt-2">
@@ -48,7 +48,7 @@ export function LeadershipGrid() {
               <h3 className="font-display text-base sm:text-lg font-bold text-foreground">
                 {isAm ? leader.nameAm : leader.name}
               </h3>
-              <span className="text-accent text-xs font-semibold mt-1">
+              <span className="text-accent-contrast dark:text-accent text-xs font-bold mt-1">
                 {isAm ? leader.roleAm : leader.role}
               </span>
               <p className="text-muted-foreground text-xs sm:text-sm mt-3 leading-relaxed">

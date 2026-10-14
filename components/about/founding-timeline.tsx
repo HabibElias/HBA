@@ -78,7 +78,11 @@ export function FoundingTimeline() {
           <div className="rounded-2xl overflow-hidden border border-border shadow-sm relative group h-72">
             <Image
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiD50-lGE8xabiAqgdt7GKxSk9WN21cbfxhF30Ic--tL-MpQJP1gxL5133lPdh4PktcGhmRcbgX8938p3Yabcvo9kT7wU76QLZbhzryINs-tbiC-ifT7sy_XBlHjVwZSWAJgHILAbexDoe_wp9V_yBNcTbjZn8jYjjxm3Ok4g6p4DXQriE6GAzQLmGQM6yAxgduQlAm-hQ-G2Yv2PxcaiWj1IrLqnCecXbikhlQdmTOqpAPJ5iLgRdzA"
-              alt="Sunday Gathering at Summit Branch, Addis Ababa"
+              alt={
+                isAm
+                  ? "የእሁድ ጠዋት አምልኮ በሰሚት ቅርንጫፍ፣ አዲስ አበባ"
+                  : "Sunday Gathering at Summit Branch, Addis Ababa"
+              }
               fill
               className="object-cover transition-transform duration-500 group-hover:scale-105"
               sizes="(max-width: 1024px) 100vw, 40vw"
@@ -100,11 +104,11 @@ export function FoundingTimeline() {
             <span>{isAm ? "የእምነትና የስምሪት ምዕራፎች" : "Milestones of Faith & Expansion"}</span>
           </h3>
 
-          <div className="relative border-l-2 border-border ml-3 pl-6 space-y-8 sm:space-y-10">
+          <ol className="relative border-l-2 border-border ml-3 pl-6 space-y-8 sm:space-y-10 list-none">
             {milestones.map((item, idx) => (
-              <div key={idx} className="relative group">
+              <li key={idx} className="relative group">
                 <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full border-2 border-accent bg-surface transition-transform group-hover:scale-125" />
-                <span className="text-accent text-xs font-semibold tracking-wider block">
+                <span className="text-accent-contrast dark:text-accent text-xs font-bold tracking-wider block">
                   {isAm ? item.periodAm : item.period}
                 </span>
                 <h4 className="font-display text-base sm:text-lg font-bold text-foreground mt-1">
@@ -113,9 +117,9 @@ export function FoundingTimeline() {
                 <p className="text-muted-foreground text-xs sm:text-sm mt-1.5 leading-relaxed">
                   {isAm ? item.descAm : item.desc}
                 </p>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </div>
     </section>

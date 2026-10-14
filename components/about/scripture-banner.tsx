@@ -11,7 +11,10 @@ export function ScriptureBanner() {
   const isAm = lang === "am";
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
+    <section
+      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10"
+      aria-label={isAm ? "ተልዕኮአችንና ጥሪያችን" : "Our Mission & Calling"}
+    >
       <div className="bg-primary-deep text-white rounded-2xl p-8 sm:p-10 md:p-12 shadow-xl border border-white/10 flex flex-col md:flex-row items-center gap-6 md:gap-8 justify-between">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
           <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-accent/40 text-accent">

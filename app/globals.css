@@ -8,6 +8,7 @@
   --color-primary-deep: var(--primary-deep);
   --color-primary-soft: var(--primary-soft);
   --color-accent: var(--accent);
+  --color-accent-contrast: var(--accent-contrast);
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-tint: var(--tint);
@@ -30,6 +31,7 @@
   --primary-deep: #1B1763;
   --primary-soft: #6B64D6;
   --accent: #C8993A;
+  --accent-contrast: #7C5800;
   --tint: #ECEBF8;
   --surface: #FFFFFF;
   --border: #ECEBF8;
@@ -46,6 +48,7 @@
   --primary-deep: #1B1763;
   --primary-soft: #6B64D6;
   --accent: #C8993A;
+  --accent-contrast: #E0B554;
   --tint: #231F6E;
   --surface: #1B1763;
   --border: #231F6E;

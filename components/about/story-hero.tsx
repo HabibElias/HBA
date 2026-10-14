@@ -12,7 +12,7 @@ export function StoryHero() {
         {/* Gold Accent Divider */}
         <div className="w-10 h-0.5 bg-accent mb-6" />
 
-        <p className="text-xs sm:text-sm font-semibold text-accent uppercase tracking-widest mb-3">
+        <p className="text-xs sm:text-sm font-bold text-accent-contrast dark:text-accent uppercase tracking-widest mb-3">
           {isAm
             ? "የሕይወት ብርሃን አዲስ አበባ • ሰሚት ቅርንጫፍ"
             : "Hiwot Birhan Addis Ababa • Summit Branch"}

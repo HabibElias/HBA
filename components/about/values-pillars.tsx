@@ -22,7 +22,7 @@ export function ValuesPillars() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <div className="w-10 h-0.5 bg-accent mx-auto mb-4" />
-          <span className="text-accent text-xs font-semibold uppercase tracking-wider">
+          <span className="text-accent-contrast dark:text-accent text-xs font-bold uppercase tracking-wider">
             {isAm ? "ኅብረታችንን የሚመሩ እሴቶች" : "What Shapes Our Fellowship"}
           </span>
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-primary font-bold mt-2">
@@ -53,7 +53,7 @@ export function ValuesPillars() {
                     <span className="w-12 h-12 rounded-xl bg-tint flex items-center justify-center text-primary">
                       <Icon className="size-6" />
                     </span>
-                    <span className="text-xs font-semibold px-2.5 py-1 bg-accent/15 text-accent rounded-full">
+                    <span className="text-xs font-bold px-2.5 py-1 bg-accent/15 text-accent-contrast dark:text-accent rounded-full">
                       {pillar.number}
                     </span>
                   </div>
@@ -61,7 +61,7 @@ export function ValuesPillars() {
                   <h3 className="font-display text-lg sm:text-xl font-bold text-foreground mb-1">
                     {isAm ? pillar.titleAm : pillar.title}
                   </h3>
-                  <p className="font-display text-xs sm:text-sm text-accent font-semibold mb-3">
+                  <p className="font-display text-xs sm:text-sm text-accent-contrast dark:text-accent font-semibold mb-3">
                     {isAm ? pillar.title : pillar.titleAm}
                   </p>
                   <p
