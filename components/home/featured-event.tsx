@@ -101,10 +101,10 @@ export function FeaturedEvent() {
                 {isAm ? "4 ቀናት" : "Four Days"}
               </span>
               <span className="font-display text-4xl font-bold text-white leading-none my-1">
-                NOV
+                {isAm ? "ህዳር" : "NOV"}
               </span>
               <span className="font-display text-lg text-accent font-semibold">
-                14–17, 2026
+                {isAm ? "5–8, 2019" : "14–17, 2026"}
               </span>
               <span className="text-xs text-white/70 mt-2">
                 {isAm ? "የወጣቶች ካምፕ" : "Youth Retreat"}

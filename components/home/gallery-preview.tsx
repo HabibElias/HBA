@@ -45,6 +45,17 @@ const galleryMoments = [
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuAOaxETxxdoc1SwlwBo5UzGVMmz1XaeO1M5IM8nYm-wJmdyNKomrH97v-xXKvi2uYBr72jgP9hqwa12Z8NWxTu4I3EgEOVihBbvuJtGfU-ISJoTDuzzW5CEhpBze1i7cKsFjdqnt0TohKi5oraK8Lg8j-m6U7er8MYamwnouGtdcQS0WoUCJJsoBMkabZTHBGrFxVcZyUOQNGG5PAYKbhBup4C2YENauR7P8USmcEF9SPglvQ0tVxvRlA",
   },
+  {
+    id: "outreach",
+    title: "Summit Benevolence Ministry",
+    titleAm: "የሰሚት የበጎ አድራጎት አገልግሎት",
+    caption: "Compassion in our Neighborhood",
+    captionAm: "ፍቅርን በተግባር ለጎረቤቶቻችን ማሳየት",
+    tag: "City Outreach",
+    tagAm: "የማኅበረሰብ አገልግሎት",
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDgb9xn9h7v5sPkcou11na_bnUGejLWJGt1zYsRdKmujowbqXeVHq0uWi-L6u1p6_PDvBLsXBk2cg3TA7IusBCvViyN1Fr6DRIUZCI3yg7tbkdwvTjuI2sSEf6-hQFYrBFDtT3Kj9kbWQWLJzggIRIvr3ExdhyBhjcljUAsVEbnA1QX_JAGkq7tsRKeicN5GoLYy60jlL92FNTveK87hRNuKBvt3XFl7MW2N-itCyl4vg3zp58M2Spotg",
+  },
 ];
 
 export function GalleryPreview() {

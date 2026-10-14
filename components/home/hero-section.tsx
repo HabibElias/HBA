@@ -49,7 +49,7 @@ export function HeroSection() {
 
           <div className="flex flex-wrap items-center gap-4 w-full sm:w-auto">
             <Link
-              href="/visit#service-times"
+              href="#service-times"
               className={cn(buttonVariants({ variant: "on-dark", size: "lg" }), "gap-2")}
             >
               <Calendar className="size-5 text-primary" />

@@ -89,7 +89,9 @@ export function SermonPreview() {
                     {isAm ? "የመጽሐፍ ቅዱስ ንባብ:" : "Scripture Reading:"}
                   </span>
                   <p className="text-white/90 italic mt-0.5">
-                    "እኔ የዓለም ብርሃን ነኝ፤ የሚከተለኝ የሕይወት ብርሃን ይሆንለታል" — ዮሐንስ 8:12 (John 8:12)
+                    {isAm
+                      ? '"እኔ የዓለም ብርሃን ነኝ፤ የሚከተለኝ የሕይወት ብርሃን ይሆንለታል" — ዮሐንስ 8:12'
+                      : '"I am the light of the world. Whoever follows me will not walk in darkness, but will have the light of life." — John 8:12'}
                   </p>
                 </div>
               </div>
