@@ -103,7 +103,7 @@ export function PastProgramsGrid() {
                         </div>
                       )}
                       <div className="flex flex-wrap items-center gap-3">
-                        <Link href="/sermons" className={cn(buttonVariants({ variant: "default" }), "gap-2 text-xs sm:text-sm font-semibold")}>
+                        <Link href="/#sermons" className={cn(buttonVariants({ variant: "default" }), "gap-2 text-xs sm:text-sm font-semibold")}>
                           <Headphones className="size-4" />
                           <span>{isAm ? program.audioLabelAm || "ስብከቱን ያዳምጡ" : program.audioLabel || "Listen to Sermon Audio"}</span>
                         </Link>

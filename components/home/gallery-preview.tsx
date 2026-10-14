@@ -75,7 +75,7 @@ export function GalleryPreview() {
           </h2>
         </div>
         <Link
-          href="/about#gallery"
+          href="/programs#archive"
           className="inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:text-primary-soft transition-colors"
         >
           <span>{isAm ? "ሁሉንም ፎቶዎች ይመልከቱ" : "View Full Church Gallery"}</span>

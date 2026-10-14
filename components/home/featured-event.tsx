@@ -78,7 +78,7 @@ export function FeaturedEvent() {
             {/* Buttons */}
             <div className="flex flex-wrap items-center gap-4">
               <Link
-                href="/programs#events"
+                href="/programs#upcoming"
                 className={cn(buttonVariants({ variant: "on-dark" }), "gap-2 font-bold")}
               >
                 <span>{isAm ? "ይመዝገቡና ይሳተፉ" : "Register & Learn More"}</span>

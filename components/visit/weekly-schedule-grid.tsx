@@ -36,7 +36,8 @@ export function WeeklyScheduleGrid() {
   const isAm = lang === "am";
 
   return (
-    <section className="py-12 md:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="schedule">
+    <section className="py-12 md:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-16" id="service-times">
+      <span id="schedule" className="sr-only" />
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
         <div>
           <div className="flex items-center gap-2 text-accent-contrast dark:text-accent font-bold text-xs uppercase tracking-wider">

@@ -33,7 +33,8 @@ export function TransitDirections() {
   const isAm = lang === "am";
 
   return (
-    <section className="py-12 md:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="directions">
+    <section className="py-12 md:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-16" id="transit">
+      <span id="directions" className="sr-only" />
       <div className="text-left mb-10">
         <div className="flex items-center gap-2 text-accent-contrast dark:text-accent font-bold text-xs uppercase tracking-wider">
           <span className="w-5 h-0.5 bg-accent" />

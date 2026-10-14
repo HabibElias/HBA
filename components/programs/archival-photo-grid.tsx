@@ -65,7 +65,7 @@ export function ArchivalPhotoGrid() {
           </p>
         </div>
         <Link
-          href="/gallery"
+          href="#archive"
           className="inline-flex items-center gap-1.5 text-primary font-bold text-sm hover:underline self-start md:self-auto"
         >
           <span>{isAm ? "ሁሉንም 1,200+ ፎቶዎች ይመልከቱ" : "Explore All 1,200+ Photos"}</span>

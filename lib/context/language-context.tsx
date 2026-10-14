@@ -10,10 +10,8 @@ import {
 } from "react";
 import enMessages from "@/messages/en.json";
 import amMessages from "@/messages/am.json";
-import { copy } from "@/lib/content/landing-content";
-import type { LandingContent, Language } from "@/lib/types/landing";
 
-export type { Language };
+export type Language = "en" | "am";
 export type Dictionary = typeof enMessages;
 
 const dictionaries: Record<Language, Dictionary> = {
@@ -27,7 +25,7 @@ export interface LanguageContextValue {
   lang: Language;
   setLang: (lang: Language) => void;
   toggleLang: () => void;
-  t: Dictionary & LandingContent;
+  t: Dictionary;
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
@@ -69,12 +67,7 @@ export function LanguageProvider({
   };
 
   const activeDictionary = useMemo(() => {
-    const dict = dictionaries[lang];
-    const legacy = copy[lang];
-    return {
-      ...legacy,
-      ...dict,
-    } as Dictionary & LandingContent;
+    return dictionaries[lang];
   }, [lang]);
 
   const value: LanguageContextValue = {

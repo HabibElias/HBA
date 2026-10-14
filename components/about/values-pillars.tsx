@@ -18,7 +18,7 @@ export function ValuesPillars() {
   const isAm = lang === "am";
 
   return (
-    <section className="bg-tint/40 py-16 md:py-24 border-y border-border">
+    <section id="ministries" className="bg-tint/40 py-16 md:py-24 border-y border-border scroll-mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-14">
           <div className="w-10 h-0.5 bg-accent mx-auto mb-4" />
