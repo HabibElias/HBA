@@ -52,9 +52,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${fraunces.variable} ${inter.variable} ${notoSerifEthiopic.variable} ${notoSansEthiopic.variable}`}
     >
-      <body className="antialiased">
+      <body className="min-h-screen antialiased selection:bg-[#3A33A0] selection:text-white">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
