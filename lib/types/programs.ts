@@ -24,6 +24,8 @@ export interface UpcomingEvent {
   categoryLabelAm: string;
   registerLink: string;
   image: string;
+  startDate?: string;
+  endDate?: string;
   notice?: string;
   noticeAm?: string;
 }

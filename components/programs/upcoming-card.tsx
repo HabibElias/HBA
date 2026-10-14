@@ -20,13 +20,22 @@ export function UpcomingCard({ event }: UpcomingCardProps) {
     const summary = isAm ? event.titleAm : event.title;
     const description = isAm ? event.descriptionAm : event.description;
     const location = isAm ? event.locationAm : event.location;
+    const now = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+    const dtstart = event.startDate ? event.startDate.replace(/[-:]/g, "") : now;
+    const dtend = event.endDate ? event.endDate.replace(/[-:]/g, "") : dtstart;
+
     const icsContent = [
       "BEGIN:VCALENDAR",
       "VERSION:2.0",
+      "PRODID:-//Hiwot Birhan Church//Programs//EN",
       "BEGIN:VEVENT",
-      `SUMMARY:${summary}`,
-      `DESCRIPTION:${description}`,
-      `LOCATION:${location}`,
+      `UID:${event.id}-${Date.now()}@hiwotbirhan.org`,
+      `DTSTAMP:${now}`,
+      `DTSTART:${dtstart}`,
+      `DTEND:${dtend}`,
+      `SUMMARY:${summary.replace(/\r?\n/g, " ")}`,
+      `DESCRIPTION:${description.replace(/\r?\n/g, "\\n")}`,
+      `LOCATION:${location.replace(/\r?\n/g, " ")}`,
       "END:VEVENT",
       "END:VCALENDAR",
     ].join("\r\n");
@@ -102,7 +111,11 @@ export function UpcomingCard({ event }: UpcomingCardProps) {
 
       <div className="p-6 pt-0 flex gap-2 mt-auto">
         <Link
-          href="/visit#contact"
+          href={
+            event.registerLink && !event.registerLink.startsWith("#")
+              ? event.registerLink
+              : "/visit#contact"
+          }
           className={cn(buttonVariants({ variant: "default" }), "flex-1 text-center font-semibold text-xs sm:text-sm")}
         >
           {isAm ? "ይመዝገቡ / አሳውቁ" : "Register / RSVP"}

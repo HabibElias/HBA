@@ -21,6 +21,8 @@ export const upcomingEvents: UpcomingEvent[] = [
     categoryLabel: "Youth Camp",
     categoryLabelAm: "የወጣቶች ካምፕ",
     registerLink: "#register",
+    startDate: "20261114T060000Z",
+    endDate: "20261117T150000Z",
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuBUatqwjGB_6ugJ1Fxzpqd28zLBRsKwklSUHggsENNVJOzuUMx7l3PmLbNLtK7C6Zq8qyo0DxqD39w79x2dc4exaoaDa9B-3dvv9VfX7fblQecuZ9UFP86qC3Rb9ELtcVyE4IJ6AKdPpMkr7y_BY3UTXRXFzE-mz3A_OXgpE3MAeID2Z8a_Wnutc0D4sbmCjwZoF6U9RpwwFDbIizHKfiEI7tqYJqox_tXxQbWIPuBv7Xb6ChzPkwJpwA",
     notice: "Shuttle departing Summit Church Main Gate",
@@ -46,6 +48,8 @@ export const upcomingEvents: UpcomingEvent[] = [
     categoryLabel: "Awana",
     categoryLabelAm: "አዋና",
     registerLink: "#register",
+    startDate: "20261205T113000Z",
+    endDate: "20261205T153000Z",
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuCWuwaPzjQAiiVp1VJ-uTZ4opTrfDP7rgn37JTFSw7tI9m2rbzPRoGu9Ve0LioLRhJ1J4DcslTNPjTGIGXV8CT-09bhbGqDhbY084xylT1_ILSaP3z5VmYMJr25LN5aY1CGdQj3AA7qID7B0KvyZr5QMsTv7GuOjBPfiyQ3WcpDnSWubwnHEIZWQcCh9kddVdi9sLK06oIjbvHQqs9-4RKEf-QFY8Ap-AaiBkB5sBSnzW1FJXND4v506g",
     notice: "Complimentary Children's Program Included",
@@ -71,6 +75,8 @@ export const upcomingEvents: UpcomingEvent[] = [
     categoryLabel: "Conference",
     categoryLabelAm: "ኮንፈረንስ",
     registerLink: "#register",
+    startDate: "20261223T050000Z",
+    endDate: "20261225T130000Z",
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuDfO2k-RUHSyPHJuRa5NoxbB2ZSxTRlkNvst0a9vXd1TpF-1xT_ajUJu-3Zlsjp-foSwc06v22We7VfSIwvuNz8oehKIa15iWFRFVGg7Az4EH09mG_1Gcd6zsjfjRf4EiZPJ1HUfgCwesW3i-PbCelRtijKfP-TXQrkuXIkQd8_F4UlEqrn455dAyUNITw9v2qSJvpoY00pKRG52ZThM3eQ0Qkx0S_-6Tlwmt_SMrQhhIbsbIAq5-KxaQ",
     notice: "Volunteers Assembly at 7:30 AM",

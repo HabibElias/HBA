@@ -50,6 +50,7 @@ export function ArchiveFilterBar({
             <button
               key={cat.id}
               type="button"
+              aria-pressed={isSelected}
               onClick={() => onSelectCategory(cat.id)}
               className={cn(
                 "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer",

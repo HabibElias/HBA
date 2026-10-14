@@ -17,9 +17,7 @@ export function PastProgramsGrid() {
   const isAm = lang === "am";
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedYear, setSelectedYear] = useState("all");
-  const [lightbox, setLightbox] = useState<{
-    isOpen: boolean; src: string; alt: string; caption?: string;
-  }>({ isOpen: false, src: "", alt: "" });
+  const [lightbox, setLightbox] = useState<{ isOpen: boolean; src: string; alt: string; caption?: string }>({ isOpen: false, src: "", alt: "" });
 
   const filtered = useMemo(() => {
     return pastPrograms.filter((p) => {
@@ -121,12 +119,18 @@ export function PastProgramsGrid() {
                       {program.photos.slice(0, 3).map((photo, i) => {
                         const isWide = i === 2 || (i === 0 && program.photos.length === 1);
                         return (
-                          <div key={photo.src} onClick={() => openPhoto(photo, programTitle)} className={cn("relative rounded-xl overflow-hidden group cursor-pointer bg-tint", isWide ? "col-span-2 h-36" : "h-36")}>
+                          <button
+                            type="button"
+                            key={photo.src}
+                            onClick={() => openPhoto(photo, programTitle)}
+                            aria-label={isAm ? "ፎቶውን አጉላ" : "Enlarge photo"}
+                            className={cn("relative rounded-xl overflow-hidden group cursor-pointer bg-tint p-0 border-0 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary", isWide ? "col-span-2 h-36" : "h-36")}
+                          >
                             <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 1024px) 50vw, 25vw" className="object-cover group-hover:scale-105 transition-transform duration-300" />
                             <div className="absolute inset-0 bg-primary-deep/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                               <span className="text-white text-xs font-semibold flex items-center gap-1"><ZoomIn className="size-3.5" /> {isAm ? "አጉላ" : "Enlarge"}</span>
                             </div>
-                          </div>
+                          </button>
                         );
                       })}
                     </div>

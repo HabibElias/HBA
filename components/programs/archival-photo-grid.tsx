@@ -75,8 +75,9 @@ export function ArchivalPhotoGrid() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {ARCHIVE_PHOTOS.map((photo) => (
-          <div
+          <button
             key={photo.id}
+            type="button"
             onClick={() =>
               setLightbox({
                 isOpen: true,
@@ -85,7 +86,7 @@ export function ArchivalPhotoGrid() {
                 caption: isAm ? photo.titleAm : photo.title,
               })
             }
-            className="h-64 rounded-2xl overflow-hidden relative group cursor-pointer shadow-sm hover:shadow-md"
+            className="h-64 rounded-2xl overflow-hidden relative group cursor-pointer shadow-sm hover:shadow-md text-left p-0 border-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 w-full"
           >
             <Image
               src={photo.src}
@@ -103,7 +104,7 @@ export function ArchivalPhotoGrid() {
             <span className="absolute bottom-3 left-3 right-3 text-white text-xs sm:text-sm font-semibold truncate">
               {isAm ? photo.titleAm : photo.title}
             </span>
-          </div>
+          </button>
         ))}
       </div>
 
