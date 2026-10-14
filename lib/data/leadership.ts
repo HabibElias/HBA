@@ -70,3 +70,5 @@ export const leadershipTeam: Leader[] = [
     altAm: "ፓስተር ናትናኤል ታደሰ - የወጣቶች ዳይሬክተር",
   },
 ];
+
+export const pastoralTeam = leadershipTeam;

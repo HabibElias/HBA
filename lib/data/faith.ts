@@ -87,3 +87,5 @@ export const statementOfFaith: StatementOfFaith[] = [
     scripturesAm: ["1 ተሰሎንቄ 4:16-17", "ራእይ 21:1-4", "ቲቶ 2:13"],
   },
 ];
+
+export const faithStatements = statementOfFaith;
