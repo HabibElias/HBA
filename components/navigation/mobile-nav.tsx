@@ -22,13 +22,20 @@ export function MobileNav() {
   ];
 
   React.useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
     return () => {
       document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen]);
 
@@ -39,11 +46,11 @@ export function MobileNav() {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="p-2 rounded-full text-[#14122B] hover:bg-[#ECEBF8] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3A33A0]"
+        className="p-2 rounded-full text-foreground hover:bg-tint transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         aria-label="Open navigation menu"
         aria-expanded={isOpen}
       >
-        <Menu className="size-6 text-[#3A33A0]" />
+        <Menu className="size-6 text-primary" />
       </button>
 
       {isOpen && (
@@ -58,15 +65,15 @@ export function MobileNav() {
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation"
-            className="relative ml-auto w-full max-w-xs sm:max-w-sm h-full bg-[#FAF9F6] border-l border-[#ECEBF8] shadow-2xl p-6 flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-200"
+            className="relative ml-auto w-full max-w-xs sm:max-w-sm h-full bg-background border-l border-border shadow-2xl p-6 flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-200"
           >
             <div>
-              <div className="flex items-center justify-between pb-6 border-b border-[#ECEBF8]">
+              <div className="flex items-center justify-between pb-6 border-b border-border">
                 <LanguageToggle />
                 <button
                   type="button"
                   onClick={closeMenu}
-                  className="p-2 rounded-full text-[#5B5878] hover:bg-[#ECEBF8] hover:text-[#14122B] transition-colors"
+                  className="p-2 rounded-full text-muted-foreground hover:bg-tint hover:text-foreground transition-colors"
                   aria-label="Close navigation"
                 >
                   <X className="size-5" />
@@ -78,17 +85,18 @@ export function MobileNav() {
                   const isActive =
                     link.href === "/"
                       ? pathname === "/"
-                      : pathname.startsWith(link.href);
+                      : Boolean(pathname?.startsWith(link.href));
                   return (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={closeMenu}
+                      aria-current={isActive ? "page" : undefined}
                       className={cn(
                         "px-4 py-3 rounded-full text-base font-semibold transition-all",
                         isActive
-                          ? "bg-[#3A33A0] text-white shadow-xs"
-                          : "text-[#14122B] hover:bg-[#ECEBF8] hover:text-[#3A33A0]"
+                          ? "bg-primary text-white shadow-xs"
+                          : "text-foreground hover:bg-tint hover:text-primary"
                       )}
                     >
                       {link.label}
@@ -111,21 +119,21 @@ export function MobileNav() {
               </div>
             </div>
 
-            <div className="pt-6 border-t border-[#ECEBF8] flex flex-col gap-3 text-xs text-[#5B5878]">
+            <div className="pt-6 border-t border-border flex flex-col gap-3 text-xs text-muted-foreground">
               <a
                 href="tel:+251911234567"
-                className="flex items-center gap-2 hover:text-[#3A33A0] transition-colors"
+                className="flex items-center gap-2 hover:text-primary transition-colors"
               >
-                <Phone className="size-4 text-[#3A33A0]" />
+                <Phone className="size-4 text-primary" />
                 <span>+251 911 234 567</span>
               </a>
               <a
                 href="https://t.me/hiwotbirhansummit"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 hover:text-[#3A33A0] transition-colors"
+                className="flex items-center gap-2 hover:text-primary transition-colors"
               >
-                <Send className="size-4 text-[#3A33A0]" />
+                <Send className="size-4 text-primary" />
                 <span>Official Telegram Channel</span>
               </a>
             </div>

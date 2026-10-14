@@ -3,22 +3,22 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center rounded-full text-sm font-semibold whitespace-nowrap transition-all outline-none select-none cursor-pointer focus-visible:ring-2 focus-visible:ring-[#3A33A0] focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95 gap-2",
+  "inline-flex shrink-0 items-center justify-center rounded-full text-sm font-semibold whitespace-nowrap transition-all outline-none select-none cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95 gap-2",
   {
     variants: {
       variant: {
-        default: "bg-[#3A33A0] text-white hover:bg-[#2F2985] shadow-sm",
-        primary: "bg-[#3A33A0] text-white hover:bg-[#2F2985] shadow-sm",
+        default: "bg-primary text-white hover:bg-primary/90 shadow-sm",
+        primary: "bg-primary text-white hover:bg-primary/90 shadow-sm",
         secondary:
-          "border border-[#3A33A0] text-[#3A33A0] bg-transparent hover:bg-[#ECEBF8]",
+          "border border-primary text-primary bg-transparent hover:bg-tint",
         outline:
-          "border border-[#3A33A0] text-[#3A33A0] bg-transparent hover:bg-[#ECEBF8]",
-        "on-dark": "bg-white text-[#3A33A0] hover:bg-neutral-100 shadow-md",
+          "border border-primary text-primary bg-transparent hover:bg-tint",
+        "on-dark": "bg-surface text-primary hover:bg-neutral-100 shadow-md",
         "on-dark-outline":
           "border border-white/70 text-white bg-transparent hover:bg-white/10",
-        ghost: "text-[#14122B] bg-transparent hover:bg-[#ECEBF8]",
+        ghost: "text-foreground bg-transparent hover:bg-tint",
         destructive: "bg-red-600 text-white hover:bg-red-700 shadow-sm",
-        link: "text-[#3A33A0] underline-offset-4 hover:underline p-0 h-auto active:scale-100",
+        link: "text-primary underline-offset-4 hover:underline p-0 h-auto active:scale-100",
       },
       size: {
         default: "h-11 px-6 py-2.5",
@@ -37,9 +37,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean;
-}
+    VariantProps<typeof buttonVariants> {}
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, ...props }, ref) => {

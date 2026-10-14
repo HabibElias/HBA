@@ -33,16 +33,17 @@ export function HeaderNav() {
             const isActive =
               link.href === "/"
                 ? pathname === "/"
-                : pathname.startsWith(link.href);
+                : Boolean(pathname?.startsWith(link.href));
             return (
               <Link
                 key={link.href}
                 href={link.href}
+                aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "px-4 py-2 rounded-full text-sm font-semibold transition-all",
+                  "px-4 py-2 rounded-full text-sm font-semibold transition-all relative",
                   isActive
-                    ? "text-[#3A33A0] bg-[#ECEBF8]"
-                    : "text-[#14122B] hover:text-[#3A33A0] hover:bg-[#ECEBF8]/60"
+                    ? "text-primary bg-tint"
+                    : "text-foreground hover:text-primary hover:bg-tint/60"
                 )}
               >
                 {link.label}
