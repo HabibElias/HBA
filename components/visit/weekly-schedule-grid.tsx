@@ -96,7 +96,7 @@ export function WeeklyScheduleGrid() {
                   </div>
                   <div className="flex items-center justify-between text-xs sm:text-sm pt-2 border-t border-border">
                     <span className="text-foreground/70 font-medium">
-                      {isAm ? "የኢትዮጵያ ሰዓት:" : "የኢትዮጵያ ሰዓት:"}
+                      {isAm ? "የኢትዮጵያ ሰዓት:" : "Ethiopian Time:"}
                     </span>
                     <span className="font-bold text-accent-contrast dark:text-accent bg-accent/15 px-2 py-0.5 rounded">
                       {schedule.localTime}

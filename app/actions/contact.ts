@@ -60,8 +60,12 @@ export async function submitContactForm(
       };
     }
 
-    // Simulated server processing / logging
-    console.log("Contact submission received:", parsed.data);
+    // Simulated server processing / logging (PII redacted)
+    console.log("Contact submission received:", {
+      category: parsed.data.category,
+      isPrayerRequest: parsed.data.isPrayerRequest,
+      timestamp: new Date().toISOString(),
+    });
 
     return {
       success: true,

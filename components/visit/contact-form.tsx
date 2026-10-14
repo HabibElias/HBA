@@ -20,7 +20,7 @@ export function ContactForm() {
 
   useEffect(() => {
     if (state.success) setSubmitted(true);
-  }, [state.success]);
+  }, [state]);
 
   if (state.success && submitted) {
     return (
@@ -56,7 +56,11 @@ export function ContactForm() {
         {state.message && !state.success && (
           <div role="alert" className="rounded-xl border border-red-200 bg-red-50/90 p-3.5 text-xs text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-200">
             <p className="font-semibold">{t?.contact?.errorTitle ?? "Submission Notice"}</p>
-            <p className="mt-0.5">{t?.contact?.error ?? state.message}</p>
+            <p className="mt-0.5">
+              {state.errors && Object.keys(state.errors).length > 0
+                ? (t?.contact?.error ?? state.message)
+                : state.message}
+            </p>
           </div>
         )}
 

@@ -62,6 +62,7 @@ export function TransitDirections() {
               href="https://maps.google.com/?q=9.0234,38.8682"
               target="_blank"
               rel="noopener noreferrer"
+              aria-label={isAm ? "በጉግል ካርታ ይክፈቱ (በአዲስ መስኮት)" : "Open in Google Maps (opens in new tab)"}
               className="text-xs font-bold text-accent-contrast dark:text-accent hover:underline flex items-center gap-1"
             >
               <span>{isAm ? "በጉግል ካርታ ይክፈቱ" : "Open in Google Maps"}</span>
@@ -72,7 +73,7 @@ export function TransitDirections() {
           <div className="relative w-full h-80 sm:h-96 bg-tint overflow-hidden">
             <Image
               src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjBiuu47gWDcL2kkLFRa9W6WCXDkbpoiDttHaf-Zu_sbkJu0VwGDkZbtplZO5KbjOjyE3dGTxfwM30O72DyCuADmoUgQ_Oc_RH0NTpihsPIS5fhGWlVyCgNypZYWXM2VywblLTpGc25SOqneWOkMUnWgTC3_lgNpac77dho5EJ9EvsrKHaD07oAM5YZ-rl0padfi2MwkiSKe4pbC-zgRGszBs3C_m7xDR10X1ekzgrneKwipcDLEGNzA"
-              alt="Hiwot Birhan Church Summit Addis Ababa map location"
+              alt={isAm ? "የሕይወት ብርሃን ቤተክርስቲያን ሰሚት አዲስ አበባ ካርታ" : "Hiwot Birhan Church Summit Addis Ababa map location"}
               fill
               sizes="(max-width: 1024px) 100vw, 55vw"
               className="object-cover"
