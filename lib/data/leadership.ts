@@ -9,6 +9,7 @@ export interface Leader {
   bioAm: string;
   image: string;
   alt: string;
+  altAm?: string;
 }
 
 export const leadershipTeam: Leader[] = [
@@ -24,6 +25,7 @@ export const leadershipTeam: Leader[] = [
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuDqh8_Aq9Jv5W3ld3G9Ut8S7F7kyi8lnhMoUPE4LOz9Zljh6eSoHPDGL8QkBDrFg77U6O27aFEvxQRvvm5GX7RlRIrT24VkGDJRtbV0oeshOLpfJ4dpg9im21vu6C8BgU2ZGkbutMbP5xd-L1UOFhQGDrR5WFCg2bwN660QEQag9GbiSgVnctALpWE7LmPPqVx3qG50zFQbi2p8Isjh_X0bZm8vRaWJwVwvPMcIKJ-z99KwYAKRBSzWvQ",
     alt: "Pastor Dawit Yohannes - Senior Pastor",
+    altAm: "ፓስተር ዳዊት ዮሐንስ - ዋና መጋቢ",
   },
   {
     id: "berhanu-alemayehu",
@@ -37,6 +39,7 @@ export const leadershipTeam: Leader[] = [
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuCEiN3kbLe2R2A5_XeE8jv8nAdl9HjIyaT6R9rARov-IRkks_Y_-sfUgRMlrBWDIbZzAASVuze-Oxfj0i_y-12ujGpPiQdoyAOMJKP2eDeLOVC480SvBNPCeYWIfrTxi4GmxsRn5FC28-utLpXXiNNArT3OWefvwYRasWOWbTqAQDwN8s620QNMtDtJzq4iDlIwf214zeaMyj3Uvb4T74pikSbRBBamjsMlkEivsWfSjc1t6ZxpoACYYQ",
     alt: "Elder Berhanu Alemayehu - Associate Pastor",
+    altAm: "ሽማግሌ ብርሃኑ አለማየሁ - ተባባሪ መጋቢ",
   },
   {
     id: "selamawit-bekele",
@@ -50,6 +53,7 @@ export const leadershipTeam: Leader[] = [
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuC6gabrvc88mCRWztVUf9KBuQAFi_6du577ZGjxifpOX9ezdFKWictdT87tENdgb4fpWmqS8GUI3eGZhqKcQyHYJJpiOdhbfMoKB6yvl_0ycUKIguyD9J5112BibSKmAjZ7IZERyhPqyrrwwRcbFYdciWHON6wsh00QDRaz0qAXNG47zxz9_GRvz54V9Rx1YrZjnkUJA7_XCPBQlt4U-Au_IfFqF2jQktseLSaOUYaquJFqRR56lZjBqw",
     alt: "Sister Selamawit Bekele - Children Ministry Director",
+    altAm: "እህት ሰላማዊት በቀለ - የሕፃናትና የሰንበት ትምህርት ቤት ዳይሬክተር",
   },
   {
     id: "natnael-tadesse",
@@ -63,5 +67,6 @@ export const leadershipTeam: Leader[] = [
     image:
       "https://lh3.googleusercontent.com/aida-public/AB6AXuB8dGcggqv-FylOV14mGGF9m4U-QViq8vAzPkhFoVlW1E6Fr6HSJLvzSbPU2fWBsyeDaX-ogsJNpzsA_ubVkHXArJKa2CHHtwBBFMsu5iTf40q8YjrpG8vUnyR2Vjbq3xQeA0ZXSncigr6J6BlB6D_XQcw5gfG-wkh_QtQBEBoH7bpP0QK2a8zyoZ82eyEN-h1owl0c_FRPaEzBM3NHZCYaLACoR69ibDkYfQMgT9nQSt9iKleQBdaJNg",
     alt: "Pastor Natnael Tadesse - Youth Director",
+    altAm: "ፓስተር ናትናኤል ታደሰ - የወጣቶች ዳይሬክተር",
   },
 ];

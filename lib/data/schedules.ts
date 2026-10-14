@@ -12,7 +12,7 @@ export interface ScheduleItem {
   descriptionAm: string;
   badge?: string;
   badgeAm?: string;
-  icon: string;
+  iconName: string;
   translationNotes: string;
   translationNotesAm: string;
 }
@@ -69,7 +69,7 @@ export const weeklySchedules: ScheduleItem[] = [
       "የሕብረት ምስጋና፣ የጌታ እራት፣ መንፈሳዊ ትምህርት እንዲሁም ለሁሉም ዕድሜ የሰንበት ትምህርት ቤት አገልግሎት።",
     badge: "Main Service",
     badgeAm: "ዋና ፕሮግራም",
-    icon: "Sun",
+    iconName: "Sun",
     translationNotes: "Simultaneous English translation headphones available at the entrance hospitality desk.",
     translationNotesAm: "በእንግሊዝኛ ቋንቋ የትርጉም የጆሮ ማዳመጫዎች በመስተንግዶ ጠረጴዛው ላይ ይገኛሉ።",
   },
@@ -89,7 +89,7 @@ export const weeklySchedules: ScheduleItem[] = [
       "የመጽሐፍ ቅዱስ ጥናት ከጥልቅ የቃል ማብራሪያ ጋር፣ የፈውስና የልመና ጸሎት።",
     badge: "Midweek Gathering",
     badgeAm: "የሳምንቱ አጋማሽ",
-    icon: "BookOpen",
+    iconName: "BookOpen",
     translationNotes: "Conducted in Amharic with bilingual personal ministry available.",
     translationNotesAm: "በአማርኛ የሚካሄድ ሲሆን የሁለትዮሽ የግል ጸሎት አገልግሎት ይሰጣል።",
   },
@@ -109,7 +109,7 @@ export const weeklySchedules: ScheduleItem[] = [
       "የወጣቶች የውይይት መድረክ፣ የዝማሬ ልምምድ፣ መንፈሳዊ ሕብረት እና የሻይ ሰዓት።",
     badge: "Youth Fellowship",
     badgeAm: "የወጣቶች ሕብረት",
-    icon: "Music",
+    iconName: "Music",
     translationNotes: "Bilingual Amharic and English interactions.",
     translationNotesAm: "በአማርኛና በእንግሊዝኛ የሚካሄድ ሕብረት።",
   },

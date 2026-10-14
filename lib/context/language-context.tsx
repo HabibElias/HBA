@@ -11,9 +11,9 @@ import {
 import enMessages from "@/messages/en.json";
 import amMessages from "@/messages/am.json";
 import { copy } from "@/lib/content/landing-content";
-import type { LandingContent } from "@/lib/types/landing";
+import type { LandingContent, Language } from "@/lib/types/landing";
 
-export type Language = "en" | "am";
+export type { Language };
 export type Dictionary = typeof enMessages;
 
 const dictionaries: Record<Language, Dictionary> = {
