@@ -21,8 +21,8 @@ export default function VisitPage() {
       <WeeklyScheduleGrid />
       <WhatToExpect />
       <TransitDirections />
-      <section id="contact" className="py-12 md:py-20 bg-tint/25 border-t border-border scroll-mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <section id="contact" className="py-28 md:py-36 lg:py-40 bg-tint/25 scroll-mt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 md:space-y-20">
           <ContactChannels />
           <ContactForm />
         </div>

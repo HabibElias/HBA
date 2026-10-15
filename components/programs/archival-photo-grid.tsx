@@ -49,10 +49,9 @@ export function ArchivalPhotoGrid() {
   }>({ isOpen: false, src: "", alt: "" });
 
   return (
-    <section id="photos" className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 pb-4 border-b border-border gap-4">
+    <section id="photos" className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 md:py-36 lg:py-40">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
         <div>
-          <div className="w-10 h-0.5 bg-accent mb-3" />
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
             {isAm ? "የሰሚት የፎቶ ማህደር" : "Moments worth remembering"}
           </h2>

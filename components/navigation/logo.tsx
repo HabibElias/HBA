@@ -15,8 +15,8 @@ export function LogoLockup({ reversed = false, iconOnly = false }: { reversed?: 
 
   if (iconOnly) {
     return (
-      <Link href="/" aria-label="Hiwot Birhan Addis Ababa Summit Branch Home" className="shrink-0 rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
-        <Image src="/logo-icon-white.svg" alt="Hiwot Birhan Church Seal" width={76} height={76} priority className="size-16 lg:size-[76px] object-contain" />
+      <Link href="/" aria-label="Hiwot Birhan Addis Ababa Summit Branch Home" className="shrink-0 rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white group flex items-center">
+        <Image src="/logo-icon-white.svg" alt="Hiwot Birhan Church Seal" width={56} height={56} priority className="size-12 sm:size-14 object-contain transition-transform duration-200 group-hover:scale-105" />
       </Link>
     );
   }

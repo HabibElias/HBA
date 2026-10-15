@@ -54,7 +54,7 @@ export function UpcomingCard({ event }: UpcomingCardProps) {
   const noticeText = isAm ? event.noticeAm : event.notice;
 
   return (
-    <article className="bg-surface rounded-2xl border border-border hover:border-primary/40 transition-colors flex flex-col justify-between overflow-hidden group">
+    <article className="bg-tint hover:bg-surface rounded-3xl border border-transparent hover:border-primary/20 transition-all duration-200 flex flex-col justify-between overflow-hidden group">
       <div>
         <div className="relative h-56 w-full overflow-hidden bg-tint/40">
           <Image
@@ -64,7 +64,7 @@ export function UpcomingCard({ event }: UpcomingCardProps) {
             className="object-cover group-hover:scale-[1.02] transition-transform duration-250"
             sizes="(max-width: 1024px) 100vw, 33vw"
           />
-          <div className="absolute bottom-4 left-4 bg-surface px-3 py-1 rounded-full text-xs font-semibold text-primary">
+          <div className="absolute bottom-4 left-4 bg-surface group-hover:bg-tint border border-primary/10 group-hover:border-primary/20 px-3 py-1 rounded-full text-xs font-semibold text-primary transition-all duration-200">
             {isAm ? event.dateAm : event.date}
           </div>
           <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-xs font-semibold">
@@ -78,12 +78,12 @@ export function UpcomingCard({ event }: UpcomingCardProps) {
             <span>{isAm ? event.locationAm : event.location}</span>
           </div>
 
-          <h3 className="font-display text-xl font-semibold text-foreground mb-2 leading-snug">
+          <h3 className="font-display text-xl font-semibold text-foreground group-hover:text-primary transition-colors mb-2 leading-snug">
             {isAm ? event.titleAm : event.title}
           </h3>
 
           {event.theme && (
-            <div className="inline-block px-3 py-1 rounded-full bg-tint text-primary text-xs font-medium mb-3">
+            <div className="inline-block px-3 py-1 rounded-full bg-surface group-hover:bg-tint border border-primary/10 group-hover:border-primary/20 text-primary text-xs font-medium mb-3 transition-all duration-200">
               {isAm
                 ? event.themeAm || event.theme
                 : `Theme: “${event.theme}”`}
@@ -94,7 +94,7 @@ export function UpcomingCard({ event }: UpcomingCardProps) {
             {isAm ? event.descriptionAm : event.description}
           </p>
 
-          <div className="pt-3 border-t border-border/60 text-xs text-muted-foreground space-y-1">
+          <div className="pt-2 text-xs text-muted-foreground space-y-1">
             <div className="font-medium text-foreground">
               {isAm ? event.timeAm : event.time}
             </div>

@@ -46,11 +46,16 @@ export function MobileNav({ reversed = false }: { reversed?: boolean }) {
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="p-2 rounded-full text-foreground hover:bg-tint transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className={cn(
+          "p-2 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2",
+          reversed
+            ? "text-white hover:bg-white/15 focus-visible:ring-white"
+            : "text-foreground hover:bg-tint focus-visible:ring-primary"
+        )}
         aria-label="Open navigation menu"
         aria-expanded={isOpen}
       >
-        <Menu className={cn("size-6", reversed ? "text-white" : "text-primary")} />
+        <Menu className="size-6 text-current" />
       </button>
 
       {isOpen && (
@@ -69,7 +74,7 @@ export function MobileNav({ reversed = false }: { reversed?: boolean }) {
           >
             <div>
               <div className="flex items-center justify-between pb-6 border-b border-border">
-                <LanguageToggle />
+                <LanguageToggle className="border-border bg-tint text-foreground hover:bg-tint/80" />
                 <button
                   type="button"
                   onClick={closeMenu}

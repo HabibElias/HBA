@@ -241,12 +241,12 @@ The project reference document `docs/Inspiration.webp` establishes the desired s
 |---|---|---|
 | **Deep Purple / Royal Hero Banner** | Deep Indigo (`#1B1763`) with authentic Ethiopian sanctuary worship photography | Rooted in brand guidelines color palette (`#1B1763` / `#3A33A0`) rather than arbitrary purple. |
 | **Organic Mask / Torn Edge on Hero** | Crisp soft 16px geometric framing (`rounded-2xl`) with single-line borders | Maintains authentic line-art character from the single-stroke church seal. |
-| **Quick Action Pill / Circular Cards** | Floating 3-column Service Times bar (`-mt-10 z-20`) with circular icon discs and dual-time badges | Delivers immediate, practical schedule guidance for newcomers without superficial decoration. |
+| **Quick Action Pill / Circular Cards** | Service Times bar with generous vertical spacing (`py-16 md:py-24`, replacing cramped negative margins) with circular icon discs and dual-time badges | Delivers immediate, practical schedule guidance for newcomers without superficial decoration. |
 | **Layered Photographic Storytelling** | Warm 16px cards with authentic Ethiopian fellowship photos and Fraunces editorial quotes | Real community presence replacing stock imagery or generic charity appeals. |
 | **Media & Sermon Showcase Card** | Side-by-side card with 16:9 thumbnail, gold play button, series tags, scripture reading box, and audio/video controls | Directly adapts the inspiration's media showcase (`Love the Lord Your God...`) to Pastor Dawit's sermon archive. |
 | **Event Calendar & Gathering List** | High-contrast `FeaturedEvent` card paired with date-aligned schedule rows (`WeeklyScheduleGrid`) | Provides clear chronological visibility for Sunday services, Thursday prayer, and Saturday youth. |
 | **Social & Community Channels** | Soft Mist (`#ECEBF8`) cards for phone, email, and official Telegram (`@HiwotBirhanSummit`) | Pragmatic local communication channels tailored to Addis Ababa habits. |
-| **Reverent Full-Bleed Footer** | Deep Indigo (`#1B1763`) container with 2px gold accent top border, white vector church seal, and complete bilingual schedule summary | Dignified closing surface echoing the architectural line-art motif in the inspiration. |
+| **Reverent Full-Bleed Footer** | Deep Indigo (`#1B1763`) container with white vector church seal and complete bilingual schedule summary | Dignified closing surface echoing the architectural line-art motif in the inspiration. |
 
 ### 2. Deliberate Purging of Inspiration Anti-Patterns
 
@@ -261,26 +261,26 @@ While `docs/Inspiration.webp` offers strong layout inspiration, it contains gene
 ## Component Standards
 
 ### 1. Header Navigation
-- Luminous Paper background (`#FAF9F6`), sticky container, thin Mist border.
-- Authentic Primary Lockup (mark on left, "Hiwot Birhan" / "Addis Ababa Summit branch" on right).
-- Clean pill-shaped navigation links with soft hover states.
-- High-contrast Language Toggle (English / አማርኛ) and primary pill CTA ("Plan your visit").
+- Unified Deep Indigo background (`#1B1763` / `bg-primary-deep text-white`), sticky container with subtle backdrop blur and clean `1px solid rgba(255, 255, 255, 0.1)` bottom border across ALL routes.
+- Authentic reversed White circular church seal icon lockup (`size-12 sm:size-14` / 48px–56px) calibrated to fit all viewports cleanly.
+- Clean navigation links in crisp white with active indicator highlight (`bg-white/20`).
+- High-contrast Language Toggle (English / አማርኛ) and on-dark pill CTA button (`variant: "on-dark"`).
 
 ### 2. Hero Section
 - Deep Indigo (`#1B1763`) background.
 - Watermark: Subtle low-opacity (12–15%) authentic reversed church mark on the canvas—**never** generic Lucide Sparkles or pulsing radial blobs.
-- Gold divider rule (`40px` wide, `2px` tall, `#C8993A`) above the headline.
+- NO decorative lines or artificial accent bars above headlines. Clear, unencumbered space.
 - Display headline: "Come and worship *with us.*" / "በአዲስ አበባ የሕይወትን ብርሃን ማወጅ".
 - Dual pill buttons:
-  - Primary: White pill with Deep Indigo text (`#1B1763`).
-  - Secondary: Transparent pill with 1px White border and White text.
+  - Primary: White pill with Deep Indigo text (`variant: "on-dark"`).
+  - Secondary: Transparent pill with 1px White border and White text (`variant: "on-dark-outline"`).
 - **Hero Imagery (Brush Cut Out):** Hand-crafted painterly brush mask (directly inspired by `docs/Inspiration.webp`) replacing generic rectangular cards. Features layered artisanal underlays (Radiance Gold `#C8993A` and Soft Indigo `#6B64D6`) and organic bristle flicks along the left and bottom perimeter.
-- **Bottom Canvas Transition:** Organic torn-brush SVG divider tearing the Deep Indigo hero into the warm Paper canvas (`#FAF9F6`) below, anchored by the floating service times bar.
+- **Bottom Canvas Transition:** Organic torn-brush SVG divider tearing the Deep Indigo hero into the warm Paper canvas (`#FAF9F6`) below, followed by generous vertical breathing room (`py-16 md:py-24`) leading into service schedules.
 
 ### 3. Service Times & Schedules
 - Clean 3-column layout on Paper or Mist (`Sunday Worship`, `Thursday Bible Study & Prayer`, `Saturday Youth & Choir`).
 - Clear dual time format: International EAT (e.g. `9:00 AM – 12:00 PM`) and Ethiopian Local Time (`3:00 – 6:00 ጠዋት`).
-- Clean typography with no low-contrast gold text.
+- Clean typography with no low-contrast gold text and no cramped negative margins.
 
 ### 4. About & Narrative Sections
 - Warm, human storytelling without bureaucratic jargon.
@@ -298,7 +298,7 @@ While `docs/Inspiration.webp` offers strong layout inspiration, it contains gene
 - Accessible contact form with clean error/success states.
 
 ### 7. Footer
-- Deep Indigo (`#1B1763`) full-bleed container with thin gold accent line on top.
+- Deep Indigo (`#1B1763`) full-bleed container with subtle top border.
 - Reversed White brand lockup, service schedules summary, contact channels, and warm benediction.
 
 ---
@@ -309,7 +309,7 @@ To prevent the design from regressing into generic "AI slop", every component mu
 
 1. **NO kicker eyebrows above headings.**
    - *Banned:* `<span className="text-accent text-xs font-bold uppercase">ABOUT OUR CHURCH FAMILY • ስለ እኛ</span>`
-   - *Fix:* Delete the label. Let the heading carry its own weight with an optional 40px gold accent rule.
+   - *Fix:* Delete the label. Let the heading carry its own weight with natural typography.
 2. **NO arbitrary numbered labels.**
    - *Banned:* `01 / Welcome`, `02 / Join us`, `01`, `02`, `03` badges on cards.
    - *Fix:* Remove arbitrary numbers unless representing an essential sequential guide.
@@ -328,3 +328,12 @@ To prevent the design from regressing into generic "AI slop", every component mu
 7. **NO fake generic icons for the church mark.**
    - *Banned:* Generic SVG circle with cross strokes or lucide icon substitutes.
    - *Fix:* Use the authentic Hiwot Birhan vector logo SVG across all lockups and watermarks.
+8. **NO horizontal or vertical divider lines slicing the layout.**
+   - *Banned:* Decorative accent lines above headings (`<div className="w-10 h-0.5 bg-accent" />`), underline borders under headings (`border-b border-border pb-4`), section divider borders (`border-t border-border`), list dividers (`divide-y divide-border`, `border-y`), vertical timeline stems (`border-l-2 border-border`), and interior card separator lines (`border-t border-border/40`).
+   - *Fix:* Remove all divider lines across all pages. Content boundaries are established purely through generous whitespace, clear typographic hierarchy, and seamless background tonal transitions.
+9. **Expansive Breathing Room & Spacing Floor.**
+   - *Banned:* Cramped sections (`py-12`, `py-16`), tight card paddings, negative margins (such as `-mt-10`) crushing sections into preceding hero areas, compressed list spacing.
+   - *Fix:* Section vertical padding floor is `py-28 md:py-36 lg:py-40`. Large cards use `p-8 sm:p-12 md:p-16` with generous internal rhythm (`space-y-8` to `space-y-14`) and relaxed grid gaps (`gap-8` to `gap-14`) allowing the content to breathe.
+10. **Unified Header and Hero Continuity Across All Routes.**
+   - *Banned:* Header layout shifts, disparate navbar colors per page, or pale grey hero headers clashing with the landing page aesthetic.
+   - *Fix:* Unified sticky Deep Indigo (`#1B1763`) header with white church seal icon and on-dark pill actions across every page, matched seamlessly by Deep Indigo page intros (`PageIntro`, `VisitHero`) on all sub-routes without dividing lines.

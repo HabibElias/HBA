@@ -74,13 +74,33 @@ export const weeklySchedules: ScheduleItem[] = [
     translationNotesAm: "በእንግሊዝኛ ቋንቋ የትርጉም የጆሮ ማዳመጫዎች በመስተንግዶ ጠረጴዛው ላይ ይገኛሉ።",
   },
   {
+    id: "sunday-afternoon",
+    title: "Sunday Afternoon Teaching & Worship",
+    titleAm: "የእሑድ ከሰዓት ትምህርትና አምልኮ",
+    day: "Sunday Afternoon",
+    dayAm: "የእሑድ ከሰዓት",
+    eatTime: "6:00 PM – 8:00 PM EAT",
+    localTime: "12:00 – 2:00 ከሰዓት",
+    location: "Main Sanctuary Auditorium, Summit",
+    locationAm: "ዋናው የመሰብሰቢያ አዳራሽ፣ ሰሚት",
+    description:
+      "Afternoon deep biblical teaching, interactive reflection, and dedicated worship in the presence of God.",
+    descriptionAm:
+      "የእሑድ ከሰዓት ጥልቅ የመጽሐፍ ቅዱስ ትምህርት፣ የሕብረት አምልኮና መንፈሳዊ ውይይት።",
+    badge: "Teaching & Worship",
+    badgeAm: "ትምህርትና አምልኮ",
+    iconName: "BookOpen",
+    translationNotes: "Conducted in Amharic and English.",
+    translationNotesAm: "በአማርኛና በእንግሊዝኛ የሚካሄድ።",
+  },
+  {
     id: "thursday-prayer",
     title: "Thursday Word & Prayer",
     titleAm: "የሐሙስ የጸሎትና የቃል ምሽት",
     day: "Thursday",
     dayAm: "ሐሙስ",
-    eatTime: "6:00 PM – 7:30 PM EAT",
-    localTime: "12:00 – 1:30 ማታ",
+    eatTime: "6:00 PM – 8:00 PM EAT",
+    localTime: "12:00 – 2:00 ማታ",
     location: "Fellowship Hall & Prayer Chapel",
     locationAm: "የሕብረት አዳራሽና የጸሎት ክፍል",
     description:
@@ -112,5 +132,69 @@ export const weeklySchedules: ScheduleItem[] = [
     iconName: "Music",
     translationNotes: "Bilingual Amharic and English interactions.",
     translationNotesAm: "በአማርኛና በእንግሊዝኛ የሚካሄድ ሕብረት።",
+  },
+];
+
+export interface HeroService {
+  id: string;
+  badge: string;
+  badgeAm: string;
+  title: string;
+  titleAm: string;
+  desc: string;
+  descAm: string;
+  timeLocal: string;
+  eatTime: string;
+  link: string;
+}
+
+export const heroServices: HeroService[] = [
+  {
+    id: "sunday-main",
+    badge: "Sunday",
+    badgeAm: "እሑድ",
+    title: "Main Worship Day",
+    titleAm: "ዋና የአምልኮ ቀን",
+    desc: "Our main worship gathering on Sunday.",
+    descAm: "የዋናው አምልኮ ጊዜ",
+    timeLocal: "3:00 – 7:00 LT",
+    eatTime: "9:00 AM – 1:00 PM",
+    link: "/visit#service-times",
+  },
+  {
+    id: "sunday-afternoon",
+    badge: "Sunday Afternoon",
+    badgeAm: "የእሑድ ከሰዓት",
+    title: "Teaching and Worship",
+    titleAm: "ትምህርትና አምልኮ",
+    desc: "Sunday afternoon teaching and worship.",
+    descAm: "የእሑድ ከሰዓት ትምህርትና አምልኮ",
+    timeLocal: "12:00 – 2:00 LT",
+    eatTime: "6:00 PM – 8:00 PM",
+    link: "/visit#service-times",
+  },
+  {
+    id: "thursday",
+    badge: "Thursday",
+    badgeAm: "ሐሙስ",
+    title: "Teaching and Worship",
+    titleAm: "ትምህርትና አምልኮ",
+    desc: "A night of teaching and worship.",
+    descAm: "የሌሊት ትምህርትና አምልኮ",
+    timeLocal: "12:00 – 2:00 LT",
+    eatTime: "6:00 PM – 8:00 PM",
+    link: "/visit#service-times",
+  },
+  {
+    id: "saturday-youth",
+    badge: "Saturday",
+    badgeAm: "ቅዳሜ",
+    title: "Youth Program",
+    titleAm: "የወጣቶች ፕሮግራም",
+    desc: "Saturday afternoon youth program.",
+    descAm: "የቅዳሜ ከሰዓት የወጣቶች ፕሮግራም",
+    timeLocal: "10:00 – 12:00 LT",
+    eatTime: "4:00 PM – 6:00 PM",
+    link: "/programs#upcoming",
   },
 ];

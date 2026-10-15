@@ -37,9 +37,8 @@ export function FaithAccordion() {
   };
 
   return (
-    <section className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24" id="faith">
-      <div className="text-center mb-14">
-        <div className="w-10 h-0.5 bg-accent mx-auto mb-4" />
+    <section className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-28 md:py-36 lg:py-40" id="faith">
+      <div className="text-center mb-16 md:mb-20">
         <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold">
           {isAm ? "ምን እናምናለን?" : "What We Believe"}
         </h2>
@@ -97,7 +96,7 @@ export function FaithAccordion() {
                 role="region"
                 aria-labelledby={`faith-header-${item.id}`}
                 className={cn(
-                  "px-5 sm:px-6 pb-6 pt-2 border-t border-border/60 text-muted-foreground text-xs sm:text-sm leading-relaxed pl-14 sm:pl-20 space-y-3",
+                  "px-5 sm:px-6 pb-6 pt-3 text-muted-foreground text-xs sm:text-sm leading-relaxed pl-14 sm:pl-20 space-y-3",
                   !isOpen && "hidden"
                 )}
               >

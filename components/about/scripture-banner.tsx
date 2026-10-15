@@ -12,12 +12,15 @@ export function ScriptureBanner() {
 
   return (
     <section
-      className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10"
+      className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24 relative z-10"
       aria-label={isAm ? "ተልዕኮአችን" : "Our Calling"}
     >
-      <div className="bg-primary-deep text-white rounded-2xl p-8 sm:p-10 md:p-12 border border-white/15 flex flex-col md:flex-row items-center gap-6 md:gap-8 justify-between">
-        <div className="space-y-3 max-w-3xl">
-          <div className="w-8 h-0.5 bg-accent" />
+      <div className="bg-gradient-to-r from-[#261066] via-[#351887] to-[#4C24B8] text-white rounded-3xl p-10 sm:p-14 md:p-16 border border-white/20 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center gap-8 md:gap-12 justify-between">
+        <div className="hero-ambient-glow" aria-hidden="true" />
+        <div className="space-y-3 max-w-3xl relative z-10">
+          <span className="font-script text-2xl sm:text-3xl text-purple-200 block font-normal">
+            {isAm ? "የሰሚት ቅርንጫፍ ጥሪ" : "Our Calling & Vision"}
+          </span>
           <blockquote className="font-display text-lg sm:text-xl md:text-2xl text-white/95 leading-snug">
             {isAm
               ? "«ክርስቶስን ማወቅና እርሱን ማሳወቅ፤ በብርሃኑ በአዲስ አበባ ማብራትና ታማኝ የሆኑ ደቀ መዛሙርትን ማፍራት።»"
@@ -25,12 +28,12 @@ export function ScriptureBanner() {
           </blockquote>
         </div>
 
-        <div className="shrink-0 w-full sm:w-auto">
+        <div className="shrink-0 w-full sm:w-auto relative z-10">
           <Link
             href="#faith"
             className={cn(
               buttonVariants({ variant: "on-dark" }),
-              "group rounded-full px-6 w-full sm:w-auto gap-2 font-semibold"
+              "group rounded-full px-7 w-full sm:w-auto gap-2 font-semibold shadow-md"
             )}
           >
             <span>{isAm ? "የእምነት መግለጫ" : "Statement of Faith"}</span>

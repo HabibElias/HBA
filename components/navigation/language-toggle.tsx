@@ -12,36 +12,35 @@ export function LanguageToggle({ className }: { className?: string }) {
       type="button"
       onClick={toggleLang}
       className={cn(
-        "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[#ECEBF8] bg-white/90 hover:bg-[#ECEBF8] dark:bg-white/10 dark:border-white/10 dark:hover:bg-white/20 transition-all text-xs font-semibold text-[#14122B] dark:text-white cursor-pointer select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3A33A0]",
+        "group relative overflow-hidden inline-flex items-center justify-center gap-1.5 h-9 px-3 rounded-full border border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white transition-all duration-200 cursor-pointer select-none text-xs font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50",
         className
       )}
       aria-label={
         lang === "en" ? "Switch language to Amharic" : "ቋንቋን ወደ እንግሊዝኛ ቀይር"
       }
-      title={lang === "en" ? "አማርኛ" : "English"}
+      title={lang === "en" ? "Switch to አማርኛ" : "Switch to English"}
     >
-      <Globe className="size-3.5 text-[#3A33A0] dark:text-[#8F89EA] shrink-0" />
-      <span
+      <Globe
         className={cn(
-          "px-1.5 py-0.5 rounded-full text-[11px] transition-colors",
-          lang === "en"
-            ? "bg-[#3A33A0] text-white font-bold"
-            : "text-[#5B5878] dark:text-white/60"
+          "size-3.5 text-white/80 shrink-0 transition-transform duration-300 ease-out",
+          lang === "am" ? "rotate-180 text-white" : "rotate-0"
         )}
-      >
-        EN
-      </span>
-      <span className="text-[#5B5878]/30 dark:text-white/20">/</span>
-      <span
-        className={cn(
-          "px-1.5 py-0.5 rounded-full text-[11px] transition-colors",
-          lang === "am"
-            ? "bg-[#3A33A0] text-white font-bold"
-            : "text-[#5B5878] dark:text-white/60"
-        )}
-      >
-        አማ
-      </span>
+      />
+      <div className="relative h-4 w-6 overflow-hidden">
+        <div
+          className={cn(
+            "transition-transform duration-300 ease-out flex flex-col items-center",
+            lang === "am" ? "-translate-y-4" : "translate-y-0"
+          )}
+        >
+          <span className="h-4 flex items-center justify-center text-[11px] font-bold tracking-wider leading-none">
+            EN
+          </span>
+          <span className="h-4 flex items-center justify-center text-[11px] font-bold tracking-wider leading-none">
+            አማ
+          </span>
+        </div>
+      </div>
     </button>
   );
 }

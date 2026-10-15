@@ -1,79 +1,132 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { weeklySchedules, type ScheduleItem } from "@/lib/data/schedules";
+import { ArrowUpRight, Church, BookOpen, Flame, Heart } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
+
+const FEATURE_CARDS = [
+  {
+    id: "sunday-main",
+    icon: Church,
+    badge: "Sunday",
+    badgeAm: "እሑድ",
+    title: "Main Worship Day",
+    titleAm: "ዋና የአምልኮ ቀን",
+    desc: "Our main worship gathering on Sunday.",
+    descAm: "የዋናው አምልኮ ጊዜ",
+    timeLocal: "3:00 – 7:00 LT",
+    link: "/visit#service-times",
+  },
+  {
+    id: "sunday-afternoon",
+    icon: BookOpen,
+    badge: "Sunday Afternoon",
+    badgeAm: "የእሑድ ከሰዓት",
+    title: "Teaching and Worship",
+    titleAm: "ትምህርትና አምልኮ",
+    desc: "Sunday afternoon teaching and worship.",
+    descAm: "የእሑድ ከሰዓት ትምህርትና አምልኮ",
+    timeLocal: "12:00 – 2:00 LT",
+    link: "/visit#service-times",
+  },
+  {
+    id: "thursday",
+    icon: Flame,
+    badge: "Thursday",
+    badgeAm: "ሐሙስ",
+    title: "Teaching and Worship",
+    titleAm: "ትምህርትና አምልኮ",
+    desc: "A night of teaching and worship.",
+    descAm: "የሌሊት ትምህርትና አምልኮ",
+    timeLocal: "12:00 – 2:00 LT",
+    link: "/visit#service-times",
+  },
+  {
+    id: "saturday-youth",
+    icon: Heart,
+    badge: "Saturday",
+    badgeAm: "ቅዳሜ",
+    title: "Youth Program",
+    titleAm: "የወጣቶች ፕሮግራም",
+    desc: "Saturday afternoon youth program.",
+    descAm: "የቅዳሜ ከሰዓት የወጣቶች ፕሮግራም",
+    timeLocal: "10:00 – 12:00 LT",
+    link: "/programs#upcoming",
+  },
+];
 
 export function ServiceSummary() {
-  const { lang, t } = useLanguage();
+  const { lang } = useLanguage();
   const isAm = lang === "am";
 
   return (
     <section
-      className="-mt-10 relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 sm:-mt-24 lg:-mt-28 relative z-20"
       id="service-times"
-      aria-label="Service Times"
+      aria-label={isAm ? "የአምልኮ ጊዜዎች" : "Service Times"}
     >
-      <div className="bg-surface rounded-2xl border border-border/80 p-6 sm:p-8">
-        {/* Header Row */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between pb-5 mb-6 border-b border-border/60 gap-4">
-          <div>
-            <div className="w-8 h-0.5 bg-accent mb-2" />
-            <h2 className="font-display text-xl sm:text-2xl font-semibold text-foreground">
-              {t?.schedule?.title ?? (isAm ? "ሳምንታዊ የአምልኮ ፕሮግራሞች" : "Weekly Gathering Times")}
-            </h2>
-          </div>
-          <p className="text-xs sm:text-sm text-muted-foreground max-w-md">
-            {isAm
-              ? "ዓለም አቀፍ (EAT) እና የኢትዮጵያ ሰዓት አቆጣጠር (ከጠዋቱ / ከሰዓት)"
-              : "Showing both Standard International Time (EAT) and Ethiopian local time."}
-          </p>
-        </div>
-
-        {/* 3 Columns with desktop divider lines instead of nested cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-0 md:divide-x md:divide-border/60">
-          {weeklySchedules.map((schedule: ScheduleItem, idx: number) => {
-            return (
-              <div
-                key={schedule.id}
-                className={`flex flex-col justify-between ${
-                  idx === 0 ? "md:pr-8" : idx === 1 ? "md:px-8" : "md:pl-8"
-                }`}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {FEATURE_CARDS.map((card, idx) => {
+          const IconComponent = card.icon;
+          return (
+            <ScrollReveal
+              key={card.id}
+              delay={idx * 80}
+              variant="fade-up"
+              distance={28}
+              className="h-full flex flex-col"
+            >
+              <Link
+                href={card.link}
+                className="group relative overflow-hidden bg-tint hover:bg-surface border border-transparent hover:border-primary/20 rounded-3xl p-7 sm:p-8 transition-all duration-200 flex flex-col justify-between flex-1 min-h-[220px]"
               >
-                <div>
-                  <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-3">
-                    {isAm ? schedule.badgeAm ?? schedule.dayAm : schedule.badge ?? schedule.day}
+                {/* Watermark icon — rotated, peeking from bottom-right corner */}
+                <IconComponent
+                  className="absolute -bottom-3 -right-3 translate-y-4 translate-x-4 size-36 sm:size-40 text-primary opacity-[0.08] rotate-[-15deg] pointer-events-none select-none"
+                  aria-hidden="true"
+                  strokeWidth={1}
+                />
+
+                {/* Card body */}
+                <div className="relative z-10 flex flex-col gap-3">
+                  {/* Day / session badge */}
+                  <span className="inline-block self-start px-3 py-1 rounded-full bg-surface group-hover:bg-tint border border-primary/10 group-hover:border-primary/20 text-primary text-[11px] font-semibold tracking-wide transition-all duration-200">
+                    {isAm ? card.badgeAm : card.badge}
                   </span>
 
-                  <h3 className="font-display text-xl font-semibold text-foreground mb-2">
-                    {isAm ? schedule.titleAm : schedule.title}
+                  {/* Title */}
+                  <h3 className="font-display text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-200 leading-snug">
+                    {isAm ? card.titleAm : card.title}
                   </h3>
 
+                  {/* Description */}
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {isAm ? card.descAm : card.desc}
+                  </p>
+
+                  {/* Time — shown only when provided */}
+                  {card.timeLocal && (
+                    <p className="text-xs font-semibold text-primary/80 mt-1">
+                      {card.timeLocal}
+                    </p>
+                  )}
                 </div>
 
-                <div className="pt-4 border-t border-border/40 space-y-1.5">
-                  <div className="text-sm font-semibold text-foreground">
-                    {schedule.eatTime} <span className="text-xs font-normal text-muted-foreground">(EAT)</span>
-                  </div>
-                  <div className="text-xs sm:text-sm font-medium text-primary">
-                    {isAm ? "የኢትዮጵያ ሰዓት: " : "Ethiopian Time: "}
-                    {schedule.localTime}
-                  </div>
-
-
-                  <Link
-                    href="/visit#schedule"
-                    className="group inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary-deep transition-colors pt-3"
-                  >
-                    <span>{isAm ? "የሙሉ ሳምንት ፕሮግራም" : "Full details"}</span>
-                    <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                  </Link>
+                {/* Footer row: "Learn more" + ArrowUpRight */}
+                <div className="relative z-10 pt-6 flex items-center justify-between">
+                  <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors duration-200">
+                    {isAm ? "ተጨማሪ ዝርዝር" : "Learn more"}
+                  </span>
+                  <ArrowUpRight
+                    className="size-6 text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
+                    strokeWidth={1.75}
+                  />
                 </div>
-              </div>
-            );
-          })}
-        </div>
+              </Link>
+            </ScrollReveal>
+          );
+        })}
       </div>
     </section>
   );

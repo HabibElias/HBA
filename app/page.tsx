@@ -6,6 +6,7 @@ import { FeaturedEvent } from "@/components/home/featured-event";
 import { SermonPreview } from "@/components/home/sermon-preview";
 import { GalleryPreview } from "@/components/home/gallery-preview";
 import { VisitCta } from "@/components/home/visit-cta";
+import { CommunityConnect } from "@/components/home/community-connect";
 
 export default function HomePage() {
   return (
@@ -18,6 +19,7 @@ export default function HomePage() {
       <SermonPreview />
       <GalleryPreview />
       <VisitCta />
+      <CommunityConnect />
     </div>
   );
 }

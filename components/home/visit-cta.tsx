@@ -6,19 +6,21 @@ import { MapPin, Clock, Bus, ArrowUpRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { useLanguage } from "@/lib/context/language-context";
 import { cn } from "@/lib/utils";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export function VisitCta() {
   const { lang } = useLanguage();
   const isAm = lang === "am";
 
   return (
-    <section className="py-20 bg-tint/25 border-t border-border" id="visit-cta">
+    <section className="py-28 md:py-36 lg:py-40 bg-tint/25" id="visit-cta">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Details Column (6 cols) */}
-          <div className="lg:col-span-6">
-            <div className="w-10 h-0.5 bg-accent mb-5" />
-
+          <ScrollReveal variant="fade-right" duration={700} distance={32} className="lg:col-span-6">
+            <span className="font-script text-3xl sm:text-4xl text-primary-soft block mb-1 font-normal">
+              {isAm ? "እንኳን ደህና መጡ" : "Welcome Home"}
+            </span>
             <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground leading-tight mb-4">
               {isAm ? "እዚህ ለእርስዎም ስፍራ አለ" : "There is room for you here"}
             </h2>
@@ -29,10 +31,10 @@ export function VisitCta() {
                 : "Whether you are visiting Addis Ababa, moving to the Summit area, or searching for a gospel-centered church family, our doors and hearts are open to you."}
             </p>
 
-            {/* Quick Location & Schedule Details */}
-            <div className="mb-8">
-              <div className="flex items-start gap-3.5 py-4 border-b border-border">
-                <div className="w-9 h-9 rounded-full bg-tint flex items-center justify-center text-primary shrink-0 mt-0.5">
+            {/* Quick Location & Schedule Details (Open layout without divider lines) */}
+            <div className="space-y-4 mb-8">
+              <div className="flex items-start gap-4 py-2">
+                <div className="w-10 h-10 rounded-full bg-tint flex items-center justify-center text-primary shrink-0 mt-0.5">
                   <MapPin className="size-4" />
                 </div>
                 <div>
@@ -45,8 +47,8 @@ export function VisitCta() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5 py-4 border-b border-border">
-                <div className="w-9 h-9 rounded-full bg-tint flex items-center justify-center text-primary shrink-0 mt-0.5">
+              <div className="flex items-start gap-4 py-2">
+                <div className="w-10 h-10 rounded-full bg-tint flex items-center justify-center text-primary shrink-0 mt-0.5">
                   <Clock className="size-4" />
                 </div>
                 <div>
@@ -59,8 +61,8 @@ export function VisitCta() {
                 </div>
               </div>
 
-              <div className="flex items-start gap-3.5 py-4 border-b border-border">
-                <div className="w-9 h-9 rounded-full bg-tint flex items-center justify-center text-primary shrink-0 mt-0.5">
+              <div className="flex items-start gap-4 py-2">
+                <div className="w-10 h-10 rounded-full bg-tint flex items-center justify-center text-primary shrink-0 mt-0.5">
                   <Bus className="size-4" />
                 </div>
                 <div>
@@ -90,10 +92,10 @@ export function VisitCta() {
                 <span>{isAm ? "አድራሻና አቅጣጫ" : "Directions & Map"}</span>
               </Link>
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Visual Map Column (6 cols) */}
-          <div className="lg:col-span-6">
+          <ScrollReveal variant="fade-left" duration={750} delay={120} distance={32} className="lg:col-span-6">
             <div className="rounded-2xl overflow-hidden border border-border bg-surface relative aspect-[16/11]">
               <Image
                 src="/gallery/photo_17_2026-08-27_14-11-14.jpg"
@@ -117,7 +119,7 @@ export function VisitCta() {
                 </a>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

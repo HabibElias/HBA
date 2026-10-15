@@ -29,10 +29,9 @@ export function TransitDirections() {
   const isAm = lang === "am";
 
   return (
-    <section className="py-16 md:py-24 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-16" id="transit">
+    <section className="py-28 md:py-36 lg:py-40 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 scroll-mt-16" id="transit">
       <span id="directions" className="sr-only" />
-      <div className="text-left mb-12">
-        <div className="w-10 h-0.5 bg-accent mb-4" />
+      <div className="text-left mb-14 md:mb-18">
         <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold">
           {isAm ? "የአዳራሹ አድራሻና የመጓጓዣ መመሪያዎች" : "Location & Transit Directions"}
         </h2>
@@ -43,10 +42,10 @@ export function TransitDirections() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
         {/* Map Column (7 cols) */}
-        <div className="lg:col-span-7 bg-surface border border-border rounded-2xl overflow-hidden">
-          <div className="p-4 bg-tint/30 border-b border-border flex items-center justify-between">
+        <div className="lg:col-span-7 bg-surface border border-border/60 rounded-3xl overflow-hidden shadow-xs">
+          <div className="p-5 bg-tint/30 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <MapPin className="size-4 text-primary shrink-0" />
               <span className="text-xs sm:text-sm font-semibold text-foreground">
@@ -67,7 +66,7 @@ export function TransitDirections() {
 
           <div className="relative w-full h-80 sm:h-96 bg-tint overflow-hidden">
             <iframe
-              title={isAm ? "???? ???? ???" : "Map of the Summit area"}
+              title={isAm ? "የካርታ እይታ" : "Map of the Summit area"}
               src="https://maps.google.com/maps?q=9.0234,38.8682&z=15&output=embed"
               className="w-full h-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
             />
@@ -87,17 +86,17 @@ export function TransitDirections() {
             </div>
           </div>
 
-          <div className="p-4 bg-surface flex flex-wrap items-center justify-between text-xs text-muted-foreground gap-2 border-t border-border">
+          <div className="p-5 bg-surface flex flex-wrap items-center justify-between text-xs text-muted-foreground gap-2">
             <span>GPS: 9.0234° N, 38.8682° E</span>
             <span className="font-medium text-foreground">Bole Subcity, Woreda 06</span>
           </div>
         </div>
 
-        {/* Transit Options Column (5 cols, open editorial layout without generic cards) */}
-        <div className="lg:col-span-5 divide-y divide-border/60 border-y border-border/60">
+        {/* Transit Options Column (5 cols, open editorial layout without generic cards or dividers) */}
+        <div className="lg:col-span-5 space-y-8 md:space-y-10 lg:pl-6">
           {ROUTES.map((route, idx) => (
-            <div key={idx} className="py-6 first:pt-2 last:pb-2">
-              <h3 className="font-display text-base sm:text-lg font-semibold text-foreground mb-2">
+            <div key={idx} className="space-y-2">
+              <h3 className="font-display text-base sm:text-lg font-semibold text-foreground">
                 {isAm ? route.titleAm : route.titleEn}
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">

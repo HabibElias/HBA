@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 const galleryMoments = [
   {
@@ -54,48 +55,60 @@ export function GalleryPreview() {
   const isAm = lang === "am";
 
   return (
-    <section className="py-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="gallery">
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-border gap-4">
-        <div>
-          <div className="w-10 h-0.5 bg-accent mb-3" />
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
-            {isAm ? "የአምልኮ፣ የሕብረትና የደስታ ጊዜያት" : "Life in our church family"}
-          </h2>
+    <section className="py-28 md:py-36 lg:py-40 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="gallery">
+      {/* Editorial Header */}
+      <ScrollReveal variant="fade-up" duration={600} className="mb-14 md:mb-18">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <span className="font-script text-3xl sm:text-4xl text-primary-soft block mb-1 font-normal">
+              {isAm ? "ትዝታዎቻችን" : "Moments & Fellowship"}
+            </span>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
+              {isAm ? "የአምልኮ፣ የሕብረትና የደስታ ጊዜያት" : "Life in our church family"}
+            </h2>
+          </div>
+          <Link
+            href="/programs#photos"
+            className="group inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:text-primary-deep transition-colors"
+          >
+            <span>{isAm ? "ሁሉንም ፎቶዎች ይመልከቱ" : "Explore the gallery"}</span>
+            <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </Link>
         </div>
-        <Link
-          href="/programs#photos"
-          className="group inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:text-primary-deep transition-colors"
-        >
-          <span>{isAm ? "ሁሉንም ፎቶዎች ይመልከቱ" : "Explore the gallery"}</span>
-          <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </Link>
-      </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {galleryMoments.map((item) => (
-          <div
+        {galleryMoments.map((item, idx) => (
+          <ScrollReveal
             key={item.id}
-            className={`rounded-2xl overflow-hidden relative group border border-border min-h-[240px] bg-tint/40 ${
-              item.featured ? "md:col-span-2 lg:col-span-2 md:row-span-2 min-h-[340px]" : "h-64"
-            }`}
+            delay={idx * 70}
+            variant="zoom-in"
+            distance={20}
+            className={item.featured ? "md:col-span-2 lg:col-span-2 md:row-span-2" : ""}
           >
-            <Image
-              src={item.image}
-              alt={isAm ? item.titleAm : item.title}
-              fill
-              className="object-cover group-hover:scale-[1.02] transition-transform duration-250"
-              sizes={item.featured ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 100vw, 25vw"}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary-deep/90 via-primary-deep/20 to-transparent opacity-85 group-hover:opacity-95 transition-opacity" />
-            <div className="absolute bottom-0 inset-x-0 p-5 text-white">
-              <h3 className="font-display text-base font-semibold">
-                {isAm ? item.titleAm : item.title}
-              </h3>
-              <p className="text-xs text-white/80 mt-1">
-                {isAm ? item.captionAm : item.caption}
-              </p>
+            <div
+              className={`rounded-3xl overflow-hidden relative group border border-border min-h-[240px] bg-tint shadow-xs h-full ${
+                item.featured ? "min-h-[340px]" : "h-64"
+              }`}
+            >
+              <Image
+                src={item.image}
+                alt={isAm ? item.titleAm : item.title}
+                fill
+                className="object-cover group-hover:scale-[1.02] transition-transform duration-250"
+                sizes={item.featured ? "(max-width: 768px) 100vw, 50vw" : "(max-width: 768px) 100vw, 25vw"}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary-deep/90 via-primary-deep/20 to-transparent opacity-85 group-hover:opacity-95 transition-opacity" />
+              <div className="absolute bottom-0 inset-x-0 p-5 text-white">
+                <h3 className="font-display text-base font-semibold">
+                  {isAm ? item.titleAm : item.title}
+                </h3>
+                <p className="text-xs text-white/80 mt-1">
+                  {isAm ? item.captionAm : item.caption}
+                </p>
+              </div>
             </div>
-          </div>
+          </ScrollReveal>
         ))}
       </div>
     </section>

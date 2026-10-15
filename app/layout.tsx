@@ -4,6 +4,7 @@ import {
   Plus_Jakarta_Sans,
   Noto_Serif_Ethiopic,
   Noto_Sans_Ethiopic,
+  Caveat,
 } from "next/font/google";
 import type { Metadata, Viewport } from "next";
 import { LanguageProvider } from "@/lib/context/language-context";
@@ -35,6 +36,12 @@ const notoSansEthiopic = Noto_Sans_Ethiopic({
   display: "swap",
 });
 
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-caveat",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Hiwot Birhan Addis Ababa Summit branch | There is room for you here",
   description:
@@ -62,7 +69,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${fraunces.variable} ${plusJakartaSans.variable} ${notoSerifEthiopic.variable} ${notoSansEthiopic.variable}`}
+      className={`${fraunces.variable} ${plusJakartaSans.variable} ${notoSerifEthiopic.variable} ${notoSansEthiopic.variable} ${caveat.variable}`}
     >
       <body className="min-h-screen antialiased selection:bg-[#3A33A0] selection:text-white flex flex-col bg-[var(--background)] text-[var(--foreground)]">
         <LanguageProvider>

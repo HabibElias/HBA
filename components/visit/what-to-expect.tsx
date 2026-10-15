@@ -45,10 +45,9 @@ export function WhatToExpect() {
   const isAm = lang === "am";
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-28 md:py-36 lg:py-40">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mb-10 md:mb-12">
-          <div className="w-10 h-0.5 bg-accent mb-4" />
+        <div className="max-w-2xl mb-14 md:mb-18">
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold">
             {isAm ? "ሲመጡ ምን ይጠብቆታል?" : "What to Expect When You Visit"}
           </h2>
@@ -59,8 +58,8 @@ export function WhatToExpect() {
           </p>
         </div>
 
-        {/* Open 4-Column Editorial Layout (Zero generic cards, Zero circle icons) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 pb-16 border-b border-border/60">
+        {/* Open 4-Column Editorial Layout (Zero generic cards, Zero line dividers) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {EXPECT_ITEMS.map((item, idx) => (
             <div key={idx} className="flex flex-col justify-between">
               <div>
@@ -81,7 +80,7 @@ export function WhatToExpect() {
         {/* Elegant Host Invitation Strip */}
         <div
           id="plan-visit"
-          className="mt-16 bg-tint/30 rounded-2xl p-8 sm:p-10 border border-border/60 flex flex-col md:flex-row items-center justify-between gap-8"
+          className="mt-24 bg-tint/30 rounded-3xl p-10 sm:p-14 border border-border/60 flex flex-col md:flex-row items-center justify-between gap-8 shadow-xs"
         >
           <div className="max-w-2xl">
             <h3 className="font-display text-xl sm:text-2xl font-semibold text-foreground">

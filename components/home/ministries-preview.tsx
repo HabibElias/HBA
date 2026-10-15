@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Heart } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
+import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 const MINISTRY_SHOWCASE = [
   {
@@ -43,44 +44,54 @@ export function MinistriesPreview() {
   const isAm = lang === "am";
 
   return (
-    <section className="py-16 md:py-24 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="ministries">
+    <section className="py-28 md:py-36 lg:py-40 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="ministries">
       {/* Editorial Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 pb-6 border-b border-border/60 gap-4">
-        <div>
-          <div className="w-10 h-0.5 bg-accent mb-3" />
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
-            {isAm ? "እያንዳንዱ ልብ የሚያድግበት ስፍራ" : "A place to grow together"}
-          </h2>
-        </div>
-        <Link
-          href="/visit#contact"
-          className="group inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:text-primary-deep transition-colors"
-        >
-          <span>{isAm ? "ሁሉንም አገልግሎቶች ይመልከቱ" : "Find your place"}</span>
-          <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </Link>
-      </div>
-
-      {/* 4 Cards Grid (3 photo cards + 1 solid deep indigo accent card) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {MINISTRY_SHOWCASE.map((item) => (
-          <div
-            key={item.id}
-            className="group bg-surface rounded-2xl overflow-hidden border border-border/80 hover:border-primary/40 transition-all flex flex-col justify-between"
+      <ScrollReveal variant="fade-up" duration={600} className="mb-14 md:mb-18">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <span className="font-script text-3xl sm:text-4xl text-primary-soft block mb-1 font-normal">
+              {isAm ? "አገልግሎቶቻችን" : "Help & Fellowship"}
+            </span>
+            <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
+              {isAm ? "እያንዳንዱ ልብ የሚያድግበት ስፍራ" : "Ministries & Current Appeals"}
+            </h2>
+          </div>
+          <Link
+            href="/visit#contact"
+            className="group inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:text-primary-deep transition-colors"
           >
+            <span>{isAm ? "ሁሉንም አገልግሎቶች ይመልከቱ" : "Find your place"}</span>
+            <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </Link>
+        </div>
+      </ScrollReveal>
+
+      {/* 4 Cards Grid (3 photo cards + 1 vibrant royal purple accent card) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {MINISTRY_SHOWCASE.map((item, idx) => (
+          <ScrollReveal
+            key={item.id}
+            delay={idx * 90}
+            variant="fade-up"
+            distance={28}
+            className="h-full flex flex-col"
+          >
+            <div
+              className="group bg-tint hover:bg-surface rounded-3xl overflow-hidden border border-transparent hover:border-primary/20 transition-all duration-200 flex flex-col justify-between flex-1"
+            >
             <div>
               <div className="relative h-60 w-full overflow-hidden bg-tint/40">
                 <Image
                   src={item.image}
                   alt={isAm ? item.nameAm : item.name}
                   fill
-                  className="object-cover group-hover:scale-[1.02] transition-transform duration-250"
+                  className="object-cover group-hover:scale-[1.03] transition-transform duration-300"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                 />
               </div>
 
               <div className="p-6">
-                <h3 className="font-display text-lg font-semibold text-foreground mb-1 leading-snug">
+                <h3 className="font-display text-lg font-bold text-foreground mb-1 leading-snug group-hover:text-primary transition-colors">
                   {isAm ? item.nameAm : item.name}
                 </h3>
                 <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
@@ -89,46 +100,75 @@ export function MinistriesPreview() {
               </div>
             </div>
 
-            <div className="p-6 pt-0">
+            <div className="p-6 pt-0 flex items-center justify-between">
+              <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors duration-200">
+                {isAm ? "ተጨማሪ ዝርዝር" : "Learn more"}
+              </span>
               <Link
                 href={item.link}
                 aria-label={isAm ? `${item.nameAm} ዝርዝር` : `Learn more about ${item.name}`}
-                className="group/arrow size-9 rounded-full bg-tint text-primary hover:bg-primary hover:text-white flex items-center justify-center transition-colors"
               >
-                <ArrowUpRight className="size-4 transition-transform duration-200 group-hover/arrow:translate-x-0.5 group-hover/arrow:-translate-y-0.5" />
+                <ArrowUpRight
+                  className="size-6 text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
+                  strokeWidth={1.75}
+                />
               </Link>
             </div>
           </div>
-        ))}
+        </ScrollReveal>
+      ))}
 
-        {/* 4th Card: Solid Deep Indigo Accent Card (Inspired by Inspiration.webp's Water Wells Card) */}
-        <div className="bg-primary-deep text-white rounded-2xl p-7 flex flex-col justify-between relative overflow-hidden border border-white/10">
-          <div>
-            <div className="w-8 h-0.5 bg-accent mb-6" />
-            <span className="font-display text-xl font-semibold text-white block mb-4">
-              {isAm ? "የጸሎትና የምክር አገልግሎት" : "Pastoral Care & Prayer"}
+      {/* 4th Card: Prayer & Pastoral Care — clean, unclustered, following card design guidelines */}
+      <ScrollReveal
+        delay={270}
+        variant="fade-up"
+        distance={28}
+        className="h-full flex flex-col"
+      >
+        <div className="group relative overflow-hidden bg-tint hover:bg-surface border border-transparent hover:border-primary/20 rounded-3xl p-7 sm:p-8 transition-all duration-200 flex flex-col justify-between flex-1 min-h-[360px]">
+          {/* Watermark icon — rotated, peeking from bottom-right corner */}
+          <Heart
+            className="absolute -bottom-3 -right-3 translate-y-4 translate-x-4 size-36 sm:size-40 text-primary opacity-[0.08] rotate-[-15deg] pointer-events-none select-none"
+            aria-hidden="true"
+            strokeWidth={1}
+          />
+
+          <div className="relative z-10 flex flex-col gap-3">
+            <span className="inline-block self-start px-3.5 py-1 rounded-full bg-surface group-hover:bg-tint border border-primary/10 group-hover:border-primary/20 text-xs font-semibold text-primary transition-all duration-200">
+              {isAm ? "የምክርና የጸሎት ድጋፍ" : "Prayer & Pastoral Care"}
             </span>
-            <blockquote className="font-display text-lg sm:text-xl font-medium leading-relaxed text-white">
+
+            <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
+              {isAm ? "የጸሎትና የምክር አገልግሎት" : "Prayer & Pastoral Care"}
+            </h3>
+
+            <p className="text-sm text-muted-foreground leading-relaxed">
               {isAm
-                ? "«እኔ የዓለም ብርሃን ነኝ፤ የሚከተለኝ የሕይወት ብርሃን ይሆንለታል»"
-                : "“Whoever follows me will not walk in darkness, but will have the light of life.”"}
-            </blockquote>
-            <p className="text-xs text-white/70 mt-3">— ዮሐንስ / John 8:12</p>
+                ? "በማንኛውም ጊዜ የግል ጸሎት፣ የመጽሐፍ ቅዱስ ምክርና የሕይወት ድጋፍ የሚሹ ከሆነ አገልጋዮቻችን ዝግጁ ናቸው።"
+                : "Personal prayer, biblical pastoral counseling, and spiritual support whenever you walk through difficult seasons."}
+            </p>
+
+            <div className="mt-1 text-xs font-semibold text-primary/85">
+              {isAm ? "ሐሙስ ማታ 12:00 እና በጠየቁት ጊዜ" : "Thursdays 6:00 PM & By Appointment"}
+            </div>
           </div>
 
-          <div className="pt-6 border-t border-white/10 flex items-center justify-between">
-            <span className="text-xs text-white/80">
-              {isAm ? "ሐሙስ ማታ 12:00" : "Thursdays 6:00 PM"}
+          <div className="pt-6 relative z-10 flex items-center justify-between">
+            <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors duration-200">
+              {isAm ? "የጸሎት ጥያቄ ይላኩ" : "Request prayer"}
             </span>
             <Link
               href="/visit#contact"
-              aria-label={isAm ? "የጸሎት ጥያቄ ይላኩ" : "Send prayer request"}
-              className="group size-9 rounded-full bg-white text-primary-deep hover:bg-accent hover:text-primary-deep flex items-center justify-center transition-colors"
+              aria-label={isAm ? "የጸሎት ጥያቄ ይላኩ" : "Request prayer"}
             >
-              <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight
+                className="size-6 text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
+                strokeWidth={1.75}
+              />
             </Link>
           </div>
         </div>
+      </ScrollReveal>
       </div>
     </section>
   );

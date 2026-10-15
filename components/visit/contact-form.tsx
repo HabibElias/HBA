@@ -52,12 +52,12 @@ export function ContactForm() {
   }
 
   return (
-    <div id="contact-form-section" className="max-w-3xl mx-auto bg-surface rounded-2xl border border-border p-6 sm:p-10">
-      <div className="mb-6 border-b border-border pb-4">
+    <div id="contact-form-section" className="max-w-3xl mx-auto bg-surface rounded-3xl border border-border/60 p-8 sm:p-12 md:p-14 shadow-xs">
+      <div className="mb-8">
         <h3 className="font-display text-xl sm:text-2xl font-semibold text-foreground">
           {isAm ? "መልእክት ይላኩ ወይም የጸሎት ጥያቄ ያቅርቡ" : "Send a Message or Prayer Request"}
         </h3>
-        <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+        <p className="text-xs sm:text-sm text-muted-foreground mt-2">
           {isAm
             ? "ስለ ጉብኝት፣ አገልግሎት ወይም ጸሎት ለአገልጋዮቻችን ያካፍሉን።"
             : "Send our pastoral staff or church office a note regarding visiting, prayer, or ministries."}

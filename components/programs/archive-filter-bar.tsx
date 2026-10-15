@@ -66,7 +66,7 @@ export function ArchiveFilterBar({
       </div>
 
       {/* Year Dropdown */}
-      <div className="flex items-center gap-3 w-full lg:w-auto justify-end border-t lg:border-t-0 pt-3 lg:pt-0 border-border">
+      <div className="flex items-center gap-3 w-full lg:w-auto justify-end pt-2 lg:pt-0">
         <label
           htmlFor="year-select"
           className="text-xs font-semibold text-muted-foreground whitespace-nowrap"

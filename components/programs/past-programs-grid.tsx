@@ -36,11 +36,10 @@ export function PastProgramsGrid() {
   };
 
   return (
-    <section className="bg-tint/25 py-16 md:py-20 border-t border-border scroll-mt-20" id="archive">
+    <section className="bg-tint/25 py-28 md:py-36 lg:py-40 scroll-mt-20" id="archive">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header without kicker eyebrow and without fake stat counter */}
-        <div className="mb-8 border-b border-border pb-6">
-          <div className="w-10 h-0.5 bg-accent mb-3" />
+        <div className="mb-12 md:mb-16">
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
             {isAm ? "ያለፉ ፕሮግራሞች ማህደር" : "Past Programs Archive"}
           </h2>
