@@ -5,7 +5,7 @@ import {
   BookOpen,
   ShieldCheck,
   Heart,
-  Sparkles,
+  Cross,
   Users,
   Sun,
   Flame,
@@ -19,7 +19,7 @@ const faithIcons: Record<string, React.ComponentType<{ className?: string }>> = 
   scripture: BookOpen,
   "the-trinity": ShieldCheck,
   "jesus-christ": Heart,
-  salvation: Sparkles,
+  salvation: Cross,
   "the-church": Users,
   "christian-living": Flame,
   "hope-of-return": Sun,
@@ -37,23 +37,20 @@ export function FaithAccordion() {
   };
 
   return (
-    <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24" id="faith">
-      <div className="text-center mb-12">
+    <section className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24" id="faith">
+      <div className="text-center mb-14">
         <div className="w-10 h-0.5 bg-accent mx-auto mb-4" />
-        <span className="text-accent-contrast dark:text-accent text-xs font-bold uppercase tracking-wider">
-          {isAm ? "የዶክትሪን ንጽሕና" : "Doctrinal Integrity"}
-        </span>
-        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-primary font-bold mt-2">
+        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold">
           {isAm ? "ምን እናምናለን?" : "What We Believe"}
         </h2>
-        <p className="text-muted-foreground text-sm sm:text-base mt-2 max-w-xl mx-auto leading-relaxed">
+        <p className="text-muted-foreground text-sm sm:text-base mt-3 max-w-xl mx-auto leading-relaxed">
           {isAm
             ? "በዘመናት ወንጌላዊ እውነትና በታሪካዊ ክርስቲያናዊ ትምህርት ላይ የጸና መሠረታዊ የእምነት መግለጫ።"
-            : "Our core confessional theology resting solidly upon timeless evangelical truth and historic Christian orthodoxy."}
+            : "The biblical beliefs that shape our worship, our life together, and our service to others."}
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3.5">
         {faithStatements.map((item) => {
           const isOpen = !!openItems[item.id];
           const Icon = faithIcons[item.id] || BookOpen;
@@ -62,24 +59,24 @@ export function FaithAccordion() {
           return (
             <div
               key={item.id}
-              className="bg-surface border border-border rounded-2xl transition-all duration-200 shadow-sm overflow-hidden"
+              className="bg-surface border border-border rounded-2xl transition-colors overflow-hidden"
             >
-              <h3 className="m-0 p-0 text-base font-bold">
+              <h3 className="m-0 p-0 text-base font-semibold">
                 <button
                   type="button"
                   id={`faith-header-${item.id}`}
                   onClick={() => toggle(item.id)}
                   aria-expanded={isOpen}
                   aria-controls={`faith-panel-${item.id}`}
-                  className="w-full flex justify-between items-center p-5 sm:p-6 text-left cursor-pointer select-none hover:bg-tint/30 transition-colors"
+                  className="w-full flex justify-between items-center p-5 sm:p-6 text-left cursor-pointer select-none hover:bg-tint/20 transition-colors"
                 >
                   <div className="flex items-center gap-4">
                     <span className="w-10 h-10 rounded-full bg-tint flex items-center justify-center text-primary shrink-0">
-                      <Icon className="size-5" />
+                      <Icon className="size-4" />
                     </span>
                     <span
                       className={cn(
-                        "font-display text-base sm:text-lg font-bold text-foreground transition-colors",
+                        "font-display text-base sm:text-lg font-semibold text-foreground transition-colors",
                         isOpen && "text-primary"
                       )}
                     >
@@ -110,7 +107,7 @@ export function FaithAccordion() {
                     {scriptures.map((citation, i) => (
                       <span
                         key={i}
-                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tint text-primary border border-primary/10"
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-tint text-primary"
                       >
                         {citation}
                       </span>

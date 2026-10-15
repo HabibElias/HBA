@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 export function HeaderNav() {
   const pathname = usePathname();
   const { t } = useLanguage();
+  const isHome = pathname === "/";
 
   const navLinks = [
     { href: "/", label: t?.nav?.home ?? "Home" },
@@ -21,12 +22,12 @@ export function HeaderNav() {
   ];
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur-md transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-        <LogoLockup />
+    <header className={cn("top-0 z-40 w-full", isHome ? "absolute home-header text-white" : "sticky border-b border-border bg-background/95 backdrop-blur-sm")}>
+      <div className={cn("max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4", isHome ? "h-24 lg:h-28" : "h-20")}>
+        <LogoLockup reversed={isHome} iconOnly={isHome} />
 
         <nav
-          className="hidden lg:flex items-center gap-1 xl:gap-2"
+          className="hidden lg:flex items-center gap-1.5"
           aria-label="Main Navigation"
         >
           {navLinks.map((link) => {
@@ -40,10 +41,12 @@ export function HeaderNav() {
                 href={link.href}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "px-4 py-2 rounded-full text-sm font-semibold transition-all relative",
-                  isActive
-                    ? "text-primary bg-tint"
-                    : "text-foreground hover:text-primary hover:bg-tint/60"
+                  "px-4 py-2 rounded-full text-sm font-medium transition-colors",
+                  isHome
+                    ? "text-white hover:bg-white/15"
+                    : isActive
+                    ? "text-primary bg-tint font-semibold"
+                    : "text-foreground/80 hover:text-primary hover:bg-tint/50"
                 )}
               >
                 {link.label}
@@ -57,13 +60,13 @@ export function HeaderNav() {
           <Link
             href="/visit#service-times"
             className={cn(
-              buttonVariants({ variant: "primary", size: "default" }),
-              "hidden sm:inline-flex"
+              buttonVariants({ variant: isHome ? "on-dark" : "primary", size: "default" }),
+              "hidden sm:inline-flex rounded-full text-sm"
             )}
           >
             {t?.nav?.planVisit ?? "Plan your visit"}
           </Link>
-          <MobileNav />
+          <MobileNav reversed={isHome} />
         </div>
       </div>
     </header>

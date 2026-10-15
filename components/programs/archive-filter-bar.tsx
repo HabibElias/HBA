@@ -22,7 +22,7 @@ const CATEGORIES = [
 
 const YEARS = [
   { id: "all", labelEn: "All Years (2022 - 2025)", labelAm: "ሁሉም ዓመታት (2014 - 2017)" },
-  { id: "2025", labelEn: "2025 E.C. / G.C.", labelAm: "2025 / 2017 ዓ.ም" },
+  { id: "2025", labelEn: "2025 G.C.", labelAm: "2025 / 2017 ዓ.ም" },
   { id: "2024", labelEn: "2024 Archive", labelAm: "2024 / 2016 ማህደር" },
   { id: "2023", labelEn: "2023 Archive", labelAm: "2023 / 2015 ማህደር" },
   { id: "2022", labelEn: "2022 Archive", labelAm: "2022 / 2014 ማህደር" },
@@ -38,9 +38,9 @@ export function ArchiveFilterBar({
   const isAm = lang === "am";
 
   return (
-    <div className="bg-surface p-4 rounded-2xl border border-border shadow-xs flex flex-col md:flex-row gap-4 justify-between items-center w-full">
+    <div className="bg-surface p-4 rounded-2xl border border-border flex flex-col lg:flex-row gap-4 justify-between items-center w-full">
       {/* Category Filter Chips */}
-      <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+      <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
         <span className="text-xs font-bold text-muted-foreground mr-1 uppercase tracking-wider">
           {isAm ? "አጣራ:" : "Filter:"}
         </span>
@@ -53,9 +53,9 @@ export function ArchiveFilterBar({
               aria-pressed={isSelected}
               onClick={() => onSelectCategory(cat.id)}
               className={cn(
-                "px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all cursor-pointer",
+                "px-3.5 min-h-10 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer",
                 isSelected
-                  ? "bg-primary text-white shadow-xs"
+                  ? "bg-primary text-white"
                   : "bg-tint text-foreground hover:bg-tint/80"
               )}
             >
@@ -66,7 +66,7 @@ export function ArchiveFilterBar({
       </div>
 
       {/* Year Dropdown */}
-      <div className="flex items-center gap-3 w-full md:w-auto justify-end border-t md:border-t-0 pt-3 md:pt-0 border-border">
+      <div className="flex items-center gap-3 w-full lg:w-auto justify-end border-t lg:border-t-0 pt-3 lg:pt-0 border-border">
         <label
           htmlFor="year-select"
           className="text-xs font-semibold text-muted-foreground whitespace-nowrap"

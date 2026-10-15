@@ -10,24 +10,22 @@ export function UpcomingSection() {
 
   return (
     <section
-      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 scroll-mt-20"
+      className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 scroll-mt-20"
       id="upcoming"
     >
       <span id="events" className="sr-only" />
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4 border-b border-border pb-4">
         <div>
-          <span className="text-accent-contrast dark:text-accent font-bold text-xs uppercase tracking-wider block mb-1">
-            {isAm ? "በብርሃን መሰብሰብ" : "GATHERING IN LIGHT"}
-          </span>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
-            {isAm ? "መጪ ጉባኤያትና ካምፖች" : "Upcoming Assemblies & Camps"}
+          <div className="w-8 h-0.5 bg-accent mb-2" />
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
+            {isAm ? "መጪ ጉባኤያትና ካምፖች" : "Coming together soon"}
           </h2>
         </div>
         <div className="flex items-center gap-2 self-start sm:self-auto">
-          <span className="text-xs sm:text-sm text-muted-foreground font-medium px-3.5 py-1 rounded-full bg-tint border border-border">
+          <span className="text-xs sm:text-sm text-muted-foreground font-medium px-4 py-1.5 rounded-full bg-tint/60 border border-border">
             {isAm
-              ? "የኢትዮጵያ ዘመን አቆጣጠር፡ 2017 ዓ.ም"
-              : "Ethiopian Year: 2017 E.C."}
+              ? "የኢትዮጵያ ዘመን አቆጣጠር፡ 2019 ዓ.ም"
+              : "Ethiopian Year: 2019 E.C."}
           </span>
         </div>
       </div>

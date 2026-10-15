@@ -1,78 +1,133 @@
 "use client";
 
 import Link from "next/link";
-import { Music, Users, Sparkles, HeartHandshake, ArrowRight, Compass } from "lucide-react";
-import { coreMinistries, type Ministry } from "@/lib/data/ministries";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 
-function getMinistryIcon(iconName: string) {
-  switch (iconName) {
-    case "Music":
-      return Music;
-    case "Users":
-      return Users;
-    case "Sparkles":
-      return Sparkles;
-    case "HeartHandshake":
-    default:
-      return HeartHandshake;
-  }
-}
+const MINISTRY_SHOWCASE = [
+  {
+    id: "worship-choir",
+    name: "Worship & Choir",
+    nameAm: "የአምልኮና የመዘምራን አገልግሎት",
+    schedule: "Saturdays 3:30 PM & Sundays 8:00 AM",
+    scheduleAm: "ቅዳሜ ከሰዓት 9:30 እና እሑድ ጠዋት 2:00",
+    image:
+      "/gallery/photo_24_2026-08-27_14-11-14.jpg",
+    link: "/visit#contact",
+  },
+  {
+    id: "youth-ministry",
+    name: "Youth & Young Adults",
+    nameAm: "የወጣቶችና የዩኒቨርሲቲ ተማሪዎች",
+    schedule: "Saturdays 4:00 PM – 6:00 PM EAT",
+    scheduleAm: "ቅዳሜ ከሰዓት 10:00 – 12:00",
+    image:
+      "/gallery/photo_15_2026-08-27_14-11-14.jpg",
+    link: "/visit#contact",
+  },
+  {
+    id: "children-awana",
+    name: "Children & Awana Club",
+    nameAm: "የሕፃናትና የአዋና አገልግሎት",
+    schedule: "Sundays 9:30 AM & Saturdays 9:00 AM",
+    scheduleAm: "እሑድ ጠዋት 3:30 እና ቅዳሜ ጠዋት 3:00",
+    image:
+      "/gallery/photo_11_2026-08-27_14-11-14.jpg",
+    link: "/visit#contact",
+  },
+];
 
 export function MinistriesPreview() {
   const { lang } = useLanguage();
   const isAm = lang === "am";
-  const displayedMinistries = coreMinistries.slice(0, 4);
 
   return (
-    <section className="py-16 bg-tint/25 border-y border-border" id="ministries">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 text-accent text-xs font-bold uppercase tracking-wider mb-2">
-            <Compass className="size-4" />
-            <span>{isAm ? "አገልግሎቶችና ማኅበረሰብ • ሕብረት" : "Ministries & Community • አገልግሎቶች"}</span>
-          </div>
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground">
-            {isAm ? "እያንዳንዱ ልብ የሚያድግበትና የሚያገለግልበት ስፍራ" : "A Place for Every Heart to Grow"}
+    <section className="py-16 md:py-24 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="ministries">
+      {/* Editorial Header */}
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 md:mb-12 pb-6 border-b border-border/60 gap-4">
+        <div>
+          <div className="w-10 h-0.5 bg-accent mb-3" />
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
+            {isAm ? "እያንዳንዱ ልብ የሚያድግበት ስፍራ" : "A place to grow together"}
           </h2>
-          <div className="w-10 h-0.5 bg-accent mx-auto my-4" />
-          <p className="text-sm sm:text-base text-muted-foreground">
-            {isAm
-              ? "በደቀመዝሙርነት ያድጉ፣ እውነተኛ ክርስቲያናዊ ወዳጅነትን ያግኙ፣ እንዲሁም በሰሚት ማኅበረሰብ ውስጥ አብረን እናገልግል።"
-              : "Grow in discipleship, find genuine friendship, and serve our Summit community together with purposeful ministries."}
-          </p>
         </div>
+        <Link
+          href="/visit#contact"
+          className="group inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:text-primary-deep transition-colors"
+        >
+          <span>{isAm ? "ሁሉንም አገልግሎቶች ይመልከቱ" : "Find your place"}</span>
+          <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </Link>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {displayedMinistries.map((ministry: Ministry) => {
-            const Icon = getMinistryIcon(ministry.iconName);
-            return (
-              <div
-                key={ministry.id}
-                className="bg-surface rounded-2xl p-6 border border-border hover:border-primary/40 transition-all group flex flex-col justify-between shadow-xs hover:shadow-md"
-              >
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-tint flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-4">
-                    <Icon className="size-6" />
-                  </div>
-                  <h3 className="font-display text-lg font-bold text-foreground mb-2">
-                    {isAm ? ministry.nameAm : ministry.name}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-                    {isAm ? ministry.descriptionAm : ministry.description}
-                  </p>
-                </div>
-
-                <Link
-                  href="/about#ministries"
-                  className="mt-6 pt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-primary group-hover:text-primary-soft transition-colors"
-                >
-                  <span>{isAm ? "ተጨማሪ መረጃ" : "Learn More"}</span>
-                  <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
+      {/* 4 Cards Grid (3 photo cards + 1 solid deep indigo accent card) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {MINISTRY_SHOWCASE.map((item) => (
+          <div
+            key={item.id}
+            className="group bg-surface rounded-2xl overflow-hidden border border-border/80 hover:border-primary/40 transition-all flex flex-col justify-between"
+          >
+            <div>
+              <div className="relative h-60 w-full overflow-hidden bg-tint/40">
+                <Image
+                  src={item.image}
+                  alt={isAm ? item.nameAm : item.name}
+                  fill
+                  className="object-cover group-hover:scale-[1.02] transition-transform duration-250"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                />
               </div>
-            );
-          })}
+
+              <div className="p-6">
+                <h3 className="font-display text-lg font-semibold text-foreground mb-1 leading-snug">
+                  {isAm ? item.nameAm : item.name}
+                </h3>
+                <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
+                  {isAm ? item.scheduleAm : item.schedule}
+                </p>
+              </div>
+            </div>
+
+            <div className="p-6 pt-0">
+              <Link
+                href={item.link}
+                aria-label={isAm ? `${item.nameAm} ዝርዝር` : `Learn more about ${item.name}`}
+                className="group/arrow size-9 rounded-full bg-tint text-primary hover:bg-primary hover:text-white flex items-center justify-center transition-colors"
+              >
+                <ArrowUpRight className="size-4 transition-transform duration-200 group-hover/arrow:translate-x-0.5 group-hover/arrow:-translate-y-0.5" />
+              </Link>
+            </div>
+          </div>
+        ))}
+
+        {/* 4th Card: Solid Deep Indigo Accent Card (Inspired by Inspiration.webp's Water Wells Card) */}
+        <div className="bg-primary-deep text-white rounded-2xl p-7 flex flex-col justify-between relative overflow-hidden border border-white/10">
+          <div>
+            <div className="w-8 h-0.5 bg-accent mb-6" />
+            <span className="font-display text-xl font-semibold text-white block mb-4">
+              {isAm ? "የጸሎትና የምክር አገልግሎት" : "Pastoral Care & Prayer"}
+            </span>
+            <blockquote className="font-display text-lg sm:text-xl font-medium leading-relaxed text-white">
+              {isAm
+                ? "«እኔ የዓለም ብርሃን ነኝ፤ የሚከተለኝ የሕይወት ብርሃን ይሆንለታል»"
+                : "“Whoever follows me will not walk in darkness, but will have the light of life.”"}
+            </blockquote>
+            <p className="text-xs text-white/70 mt-3">— ዮሐንስ / John 8:12</p>
+          </div>
+
+          <div className="pt-6 border-t border-white/10 flex items-center justify-between">
+            <span className="text-xs text-white/80">
+              {isAm ? "ሐሙስ ማታ 12:00" : "Thursdays 6:00 PM"}
+            </span>
+            <Link
+              href="/visit#contact"
+              aria-label={isAm ? "የጸሎት ጥያቄ ይላኩ" : "Send prayer request"}
+              className="group size-9 rounded-full bg-white text-primary-deep hover:bg-accent hover:text-primary-deep flex items-center justify-center transition-colors"
+            >
+              <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
+          </div>
         </div>
       </div>
     </section>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" preserveAspectRatio="none">
+  <defs>
+    <filter id="brush" x="-15%" y="-15%" width="130%" height="130%">
+      <feTurbulence type="fractalNoise" baseFrequency=".035 .07" numOctaves="3" seed="12" result="rough"/>
+      <feDisplacementMap in="SourceGraphic" in2="rough" scale="36" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+  <path fill="white" filter="url(#brush)" d="M510-50H1050V850H80L125 780 220 712 242 660 185 622 150 563 170 510 143 470 190 399 237 373 231 329 297 303 322 240 385 212 380 158 451 133 459 76Z"/>
+</svg>

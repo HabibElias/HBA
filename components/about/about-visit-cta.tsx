@@ -11,13 +11,13 @@ export function AboutVisitCta() {
   const isAm = lang === "am";
 
   return (
-    <section className="bg-tint/50 py-16 md:py-20" id="visit">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-surface rounded-3xl p-8 sm:p-10 md:p-14 border border-border shadow-sm">
-        <div className="w-14 h-14 rounded-full bg-accent/15 text-accent flex items-center justify-center mx-auto mb-4">
-          <HeartHandshake className="size-7" />
+    <section className="bg-tint/30 py-20 md:py-24" id="visit">
+      <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center bg-surface rounded-2xl p-8 sm:p-12 md:p-16 border border-border">
+        <div className="w-12 h-12 rounded-full bg-tint text-primary flex items-center justify-center mx-auto mb-5">
+          <HeartHandshake className="size-6" />
         </div>
 
-        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-primary font-bold mb-3">
+        <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold mb-3">
           {isAm
             ? "በአካል ተገኝተው ይህንን መንፈሳዊ ማኅበረሰብ ይለማመዱ"
             : "Experience this community in person"}
@@ -34,7 +34,7 @@ export function AboutVisitCta() {
             href="/visit"
             className={cn(
               buttonVariants({ variant: "primary", size: "lg" }),
-              "w-full sm:w-auto gap-2"
+              "rounded-full px-7 w-full sm:w-auto gap-2 font-semibold"
             )}
           >
             <Calendar className="size-4" />
@@ -45,10 +45,10 @@ export function AboutVisitCta() {
             href="/visit#transit"
             className={cn(
               buttonVariants({ variant: "secondary", size: "lg" }),
-              "w-full sm:w-auto gap-2"
+              "rounded-full px-7 w-full sm:w-auto gap-2 font-semibold"
             )}
           >
-            <MapPin className="size-4" />
+            <MapPin className="size-4 text-primary" />
             <span>{isAm ? "የሰሚት አድራሻና ካርታ" : "Summit Location & Map"}</span>
           </Link>
         </div>

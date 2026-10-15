@@ -68,7 +68,7 @@ export const coreMinistries: Ministry[] = [
     contactPhone: "+251 933 456 789",
     leaderName: "Sister Selamawit Bekele",
     leaderNameAm: "እህት ሰላማዊት በቀለ",
-    iconName: "Sparkles",
+    iconName: "Baby",
   },
   {
     id: "prayer-care",

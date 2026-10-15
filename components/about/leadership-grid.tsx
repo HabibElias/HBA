@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+
 import { pastoralTeam } from "@/lib/data/leadership";
 import { useLanguage } from "@/lib/context/language-context";
 
@@ -10,19 +10,16 @@ export function LeadershipGrid() {
 
   return (
     <section className="bg-surface py-16 md:py-24 border-t border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-16">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-2xl mx-auto mb-10 md:mb-12">
           <div className="w-10 h-0.5 bg-accent mx-auto mb-4" />
-          <span className="text-accent-contrast dark:text-accent text-xs font-bold uppercase tracking-wider">
-            {isAm ? "በክርስቶስ ስር የሚመራ እረኝነት" : "Shepherding Under Christ"}
-          </span>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-primary font-bold mt-2">
-            {isAm ? "የመጋቢዎችና የሽማግሌዎች አመራር" : "Pastoral & Shepherding Leadership"}
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold">
+            {isAm ? "የመጋቢዎችና የሽማግሌዎች አመራር" : "Meet our pastoral team"}
           </h2>
-          <p className="text-muted-foreground text-sm sm:text-base mt-2 leading-relaxed">
+          <p className="text-muted-foreground text-sm sm:text-base mt-3 leading-relaxed">
             {isAm
               ? "የሰሚት ማኅበረሰባችንን በጸሎት፣ በእረኝነት ምክርና በቃሉ ለማገልገል የተሰጡ ታማኝ አገልጋዮች።"
-              : "Meet the faithful servants dedicated to prayer, pastoral care, teaching, and walking alongside our Summit community."}
+              : "Dedicated servants called to prayer, pastoral care, teaching, and walking alongside our church family."}
           </p>
         </div>
 
@@ -30,25 +27,21 @@ export function LeadershipGrid() {
           {pastoralTeam.map((leader) => (
             <div
               key={leader.id}
-              className="bg-surface rounded-2xl p-6 border border-border hover:border-primary/40 text-center transition-all duration-300 group flex flex-col items-center shadow-sm hover:shadow-md"
+              className="text-center flex flex-col items-center group p-4"
             >
-              {/* Rounded portrait with gold accent ring */}
-              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-full border-2 border-accent p-1 mb-5 shrink-0">
+              {/* Circular portrait echoing circular church seal */}
+              <div className="w-36 h-36 sm:w-40 sm:h-40 rounded-full border-2 border-primary/20 p-1 mb-5 shrink-0 bg-tint/30">
                 <div className="relative w-full h-full rounded-full overflow-hidden">
-                  <Image
-                    src={leader.image}
-                    alt={isAm && leader.altAm ? leader.altAm : leader.alt}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 640px) 112px, 128px"
-                  />
+                  <span aria-hidden="true" className="flex h-full w-full items-center justify-center bg-tint text-primary font-display text-4xl">
+                    {leader.name.split(" ").slice(-2).map((part) => part[0]).join("")}
+                  </span>
                 </div>
               </div>
 
-              <h3 className="font-display text-base sm:text-lg font-bold text-foreground">
+              <h3 className="font-display text-base sm:text-lg font-semibold text-foreground">
                 {isAm ? leader.nameAm : leader.name}
               </h3>
-              <span className="text-accent-contrast dark:text-accent text-xs font-bold mt-1">
+              <span className="text-primary text-xs font-semibold mt-1">
                 {isAm ? leader.roleAm : leader.role}
               </span>
               <p className="text-muted-foreground text-xs sm:text-sm mt-3 leading-relaxed">

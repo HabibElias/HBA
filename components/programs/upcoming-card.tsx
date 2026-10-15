@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Clock, MapPin, Bus } from "lucide-react";
+import { Calendar, MapPin } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/lib/context/language-context";
@@ -54,55 +54,53 @@ export function UpcomingCard({ event }: UpcomingCardProps) {
   const noticeText = isAm ? event.noticeAm : event.notice;
 
   return (
-    <article className="bg-surface rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 flex flex-col justify-between overflow-hidden group shadow-sm hover:shadow-md">
+    <article className="bg-surface rounded-2xl border border-border hover:border-primary/40 transition-colors flex flex-col justify-between overflow-hidden group">
       <div>
-        <div className="relative h-56 w-full overflow-hidden">
+        <div className="relative h-56 w-full overflow-hidden bg-tint/40">
           <Image
             src={event.image}
-            alt={isAm ? event.titleAm : event.title}
+            alt={isAm ? "ከሰሚት ቤተ ክርስቲያን ሕብረት" : "From our church life in Summit"}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-cover group-hover:scale-[1.02] transition-transform duration-250"
             sizes="(max-width: 1024px) 100vw, 33vw"
           />
-          <div className="absolute top-4 left-4 bg-surface/95 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-primary shadow-xs">
+          <div className="absolute bottom-4 left-4 bg-surface px-3 py-1 rounded-full text-xs font-semibold text-primary">
             {isAm ? event.dateAm : event.date}
           </div>
-          <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-xs font-semibold shadow-xs">
+          <div className="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-xs font-semibold">
             {isAm ? event.categoryLabelAm : event.categoryLabel}
           </div>
         </div>
 
         <div className="p-6">
-          <div className="flex items-center gap-1.5 text-xs text-accent-contrast dark:text-accent font-bold mb-2">
+          <div className="flex items-center gap-1.5 text-xs text-primary font-medium mb-2">
             <MapPin className="size-3.5 shrink-0" />
             <span>{isAm ? event.locationAm : event.location}</span>
           </div>
 
-          <h3 className="font-display text-xl font-bold text-foreground mb-2 leading-snug">
+          <h3 className="font-display text-xl font-semibold text-foreground mb-2 leading-snug">
             {isAm ? event.titleAm : event.title}
           </h3>
 
           {event.theme && (
-            <div className="inline-block px-2.5 py-0.5 rounded-md bg-accent/15 text-accent-contrast dark:text-accent text-xs font-bold mb-3">
+            <div className="inline-block px-3 py-1 rounded-full bg-tint text-primary text-xs font-medium mb-3">
               {isAm
                 ? event.themeAm || event.theme
-                : `Theme: '${event.theme}'`}
+                : `Theme: “${event.theme}”`}
             </div>
           )}
 
-          <p className="text-muted-foreground text-sm mb-4 leading-relaxed line-clamp-3">
+          <p className="text-muted-foreground text-sm mb-4 leading-relaxed ">
             {isAm ? event.descriptionAm : event.description}
           </p>
 
-          <div className="p-3 bg-tint/60 rounded-xl text-xs text-muted-foreground space-y-1.5">
-            <div className="flex items-center gap-2">
-              <Clock className="size-3.5 text-primary shrink-0" />
-              <span>{isAm ? event.timeAm : event.time}</span>
+          <div className="pt-3 border-t border-border/60 text-xs text-muted-foreground space-y-1">
+            <div className="font-medium text-foreground">
+              {isAm ? event.timeAm : event.time}
             </div>
             {noticeText && (
-              <div className="flex items-center gap-2">
-                <Bus className="size-3.5 text-accent-contrast dark:text-accent shrink-0" />
-                <span>{noticeText}</span>
+              <div className="text-primary font-medium">
+                {noticeText}
               </div>
             )}
           </div>
@@ -116,9 +114,9 @@ export function UpcomingCard({ event }: UpcomingCardProps) {
               ? event.registerLink
               : "/visit#contact"
           }
-          className={cn(buttonVariants({ variant: "default" }), "flex-1 text-center font-semibold text-xs sm:text-sm")}
+          className={cn(buttonVariants({ variant: "default" }), "rounded-full flex-1 text-center font-semibold text-xs sm:text-sm")}
         >
-          {isAm ? "ይመዝገቡ / አሳውቁ" : "Register / RSVP"}
+          {isAm ? "ይመዝገቡ / አሳውቁ" : "Ask about attending"}
         </Link>
         <button
           type="button"

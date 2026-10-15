@@ -17,7 +17,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --font-sans: var(--font-inter), sans-serif;
+  --font-sans: var(--font-plus-jakarta-sans), sans-serif;
   --font-display: var(--font-fraunces), serif;
   --radius-pill: 9999px;
   --radius-card: 1rem;
@@ -43,7 +43,7 @@
 .dark {
   --background: #14122B;
   --foreground: #FAF9F6;
-  --muted-foreground: #9B98B8;
+  --muted-foreground: #B9B5E8;
   --primary: #8F89EA;
   --primary-deep: #1B1763;
   --primary-soft: #6B64D6;
@@ -69,16 +69,24 @@ body {
   margin: 0;
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-plus-jakarta-sans), sans-serif;
 }
 
 .font-display {
   font-family: var(--font-fraunces), serif;
 }
 
+.divider-gold {
+  width: 40px;
+  height: 2px;
+  background-color: var(--accent);
+  border-radius: 9999px;
+}
+
+/* Strict Amharic typography rules: generous line-height, explicitly loaded Ethiopic font, NO fake italics */
 html:lang(am) body {
-  font-family: var(--font-noto-sans-ethiopic), var(--font-inter), sans-serif;
-  line-height: 1.65;
+  font-family: var(--font-noto-sans-ethiopic), var(--font-plus-jakarta-sans), sans-serif;
+  line-height: 1.7;
 }
 
 html:lang(am) .font-display,
@@ -91,4 +99,83 @@ html:lang(am) h6 {
   font-family: var(--font-noto-serif-ethiopic), var(--font-fraunces), serif;
   font-style: normal !important;
   line-height: 1.35;
+}
+
+html:lang(am) em,
+html:lang(am) i,
+html:lang(am) .italic {
+  font-style: normal !important;
+  font-weight: 600;
+}
+/* Homepage composition follows the supplied paint-edge reference. */
+.home-hero {
+  background: var(--primary-deep);
+  min-height: 740px;
+  display: flex;
+  align-items: center;
+}
+.hero-photo {
+  width: 65%;
+  mask-image: url('/hero-paint-mask.svg');
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+}
+.hero-photo-shade {
+  background: linear-gradient(180deg, rgb(27 23 99 / 36%), transparent 27%);
+}
+.hero-watermark {
+  width: 500px;
+  height: 500px;
+  left: 24px;
+  top: 80px;
+  opacity: .055;
+
+}
+.hero-copy h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
+@media (max-width: 1023px) {
+  .home-hero { min-height: 820px; align-items: flex-start; }
+  .hero-photo { width: 100%; top: 360px; mask-image: linear-gradient(transparent, black 38%); }
+  .hero-photo img { object-position: center 35%; }
+  .hero-photo-shade { background: linear-gradient(180deg, transparent 35%, rgb(27 23 99 / 20%)); }
+  .hero-copy { max-width: 36rem; }
+  .hero-copy p { max-width: 32rem; }
+}
+@media (max-width: 639px) {
+  .home-hero { min-height: 920px; }
+  .hero-photo { top: 440px; }
+  .hero-copy > div { gap: .75rem; }
+}
+/* Shared reading rhythm and keyboard access across the public site. */
+@layer base {
+  h1, h2, h3 { text-wrap: balance; }
+  p { text-wrap: pretty; }
+  section[id], div[id] { scroll-margin-top: 7rem; }
+  a, button { -webkit-tap-highlight-color: transparent; }
+  a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 4px;
+  }
+  input, textarea { caret-color: var(--primary); }
+  ::selection { background: var(--primary); color: white; }
+}
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 12px 20px;
+  border-radius: 9999px;
+  background: var(--surface);
+  color: var(--primary);
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: translateY(0); }
+.home-header :focus-visible { outline-color: white; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
 }

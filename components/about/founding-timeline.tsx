@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { History } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 
 interface Milestone {
@@ -19,7 +18,7 @@ const milestones: Milestone[] = [
     periodAm: "1990 ዓ.ም — አዲስ አበባ",
     title: "Early Home Bible Fellowship",
     titleAm: "የመጀመሪያው የቤት ለቤት ጸሎትና ኅብረት",
-    desc: "A tight-knit circle of families in Addis Ababa gathered weekly to pray, share meals, and study the epistles in Amharic, sowing the seeds of fervent intercession and discipleship.",
+    desc: "A tight-knit circle of families in Addis Ababa gathered weekly to pray, share meals, and study the scriptures in Amharic, sowing the seeds of fervent intercession and discipleship.",
     descAm: "በአዲስ አበባ የተሰባሰቡ ጥቂት ቤተሰቦች በሳምንት አንድ ጊዜ ተገናኝተው ለመጸለይ፣ ማዕድ ለመካፈልና የእግዚአብሔርን ቃል በአማርኛ ለማጥናት ጀመሩ።",
   },
   {
@@ -43,7 +42,7 @@ const milestones: Milestone[] = [
     periodAm: "የአሁኑ ዘመን — ፍሬያማ ዕድገት",
     title: "Launch of Youth Awana & Community Care",
     titleAm: "የአዋና አገልግሎትና የማኅበረሰብ ድጋፍ",
-    desc: "Today, the Summit Branch houses dynamic Awana children clubs, weekly campus fellowships, local food distribution, and robust multilinguistic Sunday liturgies.",
+    desc: "Today, our church family gathers for worship, children’s ministry, youth fellowship, and care for our neighbors.",
     descAm: "ዛሬ የሰሚት ቅርንጫፍ ደማቅ የአዋና ሕፃናት ክበብ፣ የወጣቶች ኅብረት፣ የአካባቢ ረድኤትና እውነተኛ አምልኮ የሚካሄድባት ንቁ ማኅበረሰብ ሆናለች።",
   },
 ];
@@ -53,21 +52,17 @@ export function FoundingTimeline() {
   const isAm = lang === "am";
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         {/* Left: Narrative & Visual */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="inline-block px-3 py-1 rounded-full bg-tint text-primary font-semibold text-xs tracking-wide">
-            {isAm ? "በጸጋ የተመሠረተ" : "Rooted In Grace"}
-          </div>
+          <div className="w-10 h-0.5 bg-accent" />
 
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-primary font-bold leading-tight">
+          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold leading-tight">
             {isAm
               ? "ከትሑት የሳሎን ጸሎት እስከ ደማቁ የሰሚት መቅደስ"
-              : "From humble living room prayers to a vibrant beacon at Summit"}
+              : "From home fellowship to a church family"}
           </h2>
-
-          <div className="w-12 h-0.5 bg-accent" />
 
           <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
             {isAm
@@ -75,19 +70,19 @@ export function FoundingTimeline() {
               : "Hiwot Birhan (Light of Life) began with a fervent longing to preach the uncompromised Word of God with warmth, fellowship, and active communal outreach. Guided by elders honoring Ethiopian church legacy while discipling modern families, our Summit branch has become a welcoming spiritual haven."}
           </p>
 
-          <div className="rounded-2xl overflow-hidden border border-border shadow-sm relative group h-72">
+          <div className="rounded-2xl overflow-hidden border border-border relative group h-72 bg-tint/40">
             <Image
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiD50-lGE8xabiAqgdt7GKxSk9WN21cbfxhF30Ic--tL-MpQJP1gxL5133lPdh4PktcGhmRcbgX8938p3Yabcvo9kT7wU76QLZbhzryINs-tbiC-ifT7sy_XBlHjVwZSWAJgHILAbexDoe_wp9V_yBNcTbjZn8jYjjxm3Ok4g6p4DXQriE6GAzQLmGQM6yAxgduQlAm-hQ-G2Yv2PxcaiWj1IrLqnCecXbikhlQdmTOqpAPJ5iLgRdzA"
+              src="/gallery/photo_18_2026-08-27_14-11-14.jpg"
               alt={
                 isAm
                   ? "የእሁድ ጠዋት አምልኮ በሰሚት ቅርንጫፍ፣ አዲስ አበባ"
                   : "Sunday Gathering at Summit Branch, Addis Ababa"
               }
               fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
+              className="object-cover transition-transform duration-250 group-hover:scale-[1.02]"
               sizes="(max-width: 1024px) 100vw, 40vw"
             />
-            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 text-white">
+            <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-primary-deep/90 via-primary-deep/40 to-transparent p-4 text-white">
               <p className="text-xs sm:text-sm font-medium">
                 {isAm
                   ? "የእሁድ ጠዋት አምልኮ በሰሚት ቅርንጫፍ፣ አዲስ አበባ"
@@ -97,21 +92,20 @@ export function FoundingTimeline() {
           </div>
         </div>
 
-        {/* Right: Vertical Timeline */}
-        <div className="lg:col-span-7 bg-surface rounded-2xl p-6 sm:p-8 md:p-10 border border-border shadow-sm">
-          <h3 className="font-display text-xl sm:text-2xl text-primary font-bold mb-8 flex items-center gap-3">
-            <History className="size-6 text-accent shrink-0" />
-            <span>{isAm ? "የእምነትና የስምሪት ምዕራፎች" : "Milestones of Faith & Expansion"}</span>
+        {/* Right: Vertical Timeline (open space without generic card wrap) */}
+        <div className="lg:col-span-7 lg:pl-8">
+          <h3 className="font-display text-xl sm:text-2xl text-foreground font-semibold mb-8">
+            {isAm ? "የእምነትና የስምሪት ምዕራፎች" : "Our journey of faith"}
           </h3>
 
-          <ol className="relative border-l-2 border-border ml-3 pl-6 space-y-8 sm:space-y-10 list-none">
+          <ol className="relative border-l-2 border-border ml-3 pl-6 space-y-8 list-none">
             {milestones.map((item, idx) => (
               <li key={idx} className="relative group">
-                <div className="absolute -left-[31px] top-1.5 w-4 h-4 rounded-full border-2 border-accent bg-surface transition-transform group-hover:scale-125" />
-                <span className="text-accent-contrast dark:text-accent text-xs font-bold tracking-wider block">
+                <div className="absolute -left-[31px] top-1.5 w-3.5 h-3.5 rounded-full border-2 border-primary bg-surface transition-transform group-hover:scale-125" />
+                <span className="text-primary text-xs font-semibold tracking-wider block">
                   {isAm ? item.periodAm : item.period}
                 </span>
-                <h4 className="font-display text-base sm:text-lg font-bold text-foreground mt-1">
+                <h4 className="font-display text-base sm:text-lg font-semibold text-foreground mt-1">
                   {isAm ? item.titleAm : item.title}
                 </h4>
                 <p className="text-muted-foreground text-xs sm:text-sm mt-1.5 leading-relaxed">

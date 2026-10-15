@@ -24,7 +24,11 @@ export function ContactForm() {
 
   if (state.success && submitted) {
     return (
-      <div id="contact-form-section" role="status" className="max-w-3xl mx-auto flex flex-col items-center text-center p-8 rounded-2xl border border-emerald-200 bg-emerald-50/90 text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-100 space-y-4">
+      <div
+        id="contact-form-section"
+        role="status"
+        className="max-w-3xl mx-auto flex flex-col items-center text-center p-8 rounded-2xl border border-emerald-200 bg-emerald-50/90 text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-100 space-y-4"
+      >
         <CheckCircle2 className="size-12 text-emerald-600 dark:text-emerald-400" />
         <div className="space-y-1">
           <h3 className="font-semibold text-lg">{t?.contact?.successTitle ?? "Message Sent"}</h3>
@@ -32,7 +36,15 @@ export function ContactForm() {
             {t?.contact?.success ?? "Thank you. We received your message and will be in touch."}
           </p>
         </div>
-        <Button type="button" variant="outline" onClick={() => { setSubmitted(false); setResetKey((k) => k + 1); }}>
+        <Button
+          type="button"
+          variant="outline"
+          className="rounded-full px-6"
+          onClick={() => {
+            setSubmitted(false);
+            setResetKey((k) => k + 1);
+          }}
+        >
           {isAm ? "ሌላ መልእክት ይላኩ" : "Send another message"}
         </Button>
       </div>
@@ -40,21 +52,24 @@ export function ContactForm() {
   }
 
   return (
-    <div id="contact-form-section" className="max-w-3xl mx-auto bg-surface rounded-2xl border border-border p-6 sm:p-10 shadow-md">
+    <div id="contact-form-section" className="max-w-3xl mx-auto bg-surface rounded-2xl border border-border p-6 sm:p-10">
       <div className="mb-6 border-b border-border pb-4">
-        <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground">
+        <h3 className="font-display text-xl sm:text-2xl font-semibold text-foreground">
           {isAm ? "መልእክት ይላኩ ወይም የጸሎት ጥያቄ ያቅርቡ" : "Send a Message or Prayer Request"}
         </h3>
         <p className="text-xs sm:text-sm text-muted-foreground mt-1">
           {isAm
             ? "ስለ ጉብኝት፣ አገልግሎት ወይም ጸሎት ለአገልጋዮቻችን ያካፍሉን።"
-            : "Send our administrative team or pastoral staff a note regarding visiting, ministry, or services."}
+            : "Send our pastoral staff or church office a note regarding visiting, prayer, or ministries."}
         </p>
       </div>
 
       <form key={resetKey} action={formAction} className="space-y-5">
         {state.message && !state.success && (
-          <div role="alert" className="rounded-xl border border-red-200 bg-red-50/90 p-3.5 text-xs text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-200">
+          <div
+            role="alert"
+            className="rounded-xl border border-red-200 bg-red-50/90 p-3.5 text-xs text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-200"
+          >
             <p className="font-semibold">{t?.contact?.errorTitle ?? "Submission Notice"}</p>
             <p className="mt-0.5">
               {state.errors && Object.keys(state.errors).length > 0
@@ -67,42 +82,100 @@ export function ContactForm() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1.5">
             <Label htmlFor="fullName">{t?.contact?.fullName ?? "Full Name"}</Label>
-            <Input id="fullName" name="fullName" required placeholder={t?.contact?.fullNamePlaceholder ?? "e.g. Dawit Tadesse"} disabled={isPending} aria-invalid={Boolean(state.errors?.fullName)} aria-describedby={state.errors?.fullName ? "fullName-error" : undefined} />
-            {state.errors?.fullName && <p id="fullName-error" className="text-xs text-red-600 dark:text-red-400">{state.errors.fullName[0]}</p>}
+            <Input
+              id="fullName"
+              name="fullName"
+              required
+              placeholder={t?.contact?.fullNamePlaceholder ?? "e.g. Dawit Tadesse"}
+              disabled={isPending}
+              aria-invalid={Boolean(state.errors?.fullName)}
+              aria-describedby={state.errors?.fullName ? "fullName-error" : undefined}
+            />
+            {state.errors?.fullName && (
+              <p id="fullName-error" className="text-xs text-red-600 dark:text-red-400">
+                {state.errors.fullName[0]}
+              </p>
+            )}
           </div>
 
           <div className="space-y-1.5">
             <Label htmlFor="contactInfo">{t?.contact?.contactInfo ?? "Contact Info"}</Label>
-            <Input id="contactInfo" name="contactInfo" required placeholder={t?.contact?.contactInfoPlaceholder ?? "+251 9... or email"} disabled={isPending} aria-invalid={Boolean(state.errors?.contactInfo)} aria-describedby={state.errors?.contactInfo ? "contactInfo-error" : undefined} />
-            {state.errors?.contactInfo && <p id="contactInfo-error" className="text-xs text-red-600 dark:text-red-400">{state.errors.contactInfo[0]}</p>}
+            <Input
+              id="contactInfo"
+              name="contactInfo"
+              required
+              placeholder={t?.contact?.contactInfoPlaceholder ?? "+251 9... or email"}
+              disabled={isPending}
+              aria-invalid={Boolean(state.errors?.contactInfo)}
+              aria-describedby={state.errors?.contactInfo ? "contactInfo-error" : undefined}
+            />
+            {state.errors?.contactInfo && (
+              <p id="contactInfo-error" className="text-xs text-red-600 dark:text-red-400">
+                {state.errors.contactInfo[0]}
+              </p>
+            )}
           </div>
         </div>
 
         <div className="space-y-1.5">
           <Label htmlFor="category">{t?.contact?.category ?? "Category"}</Label>
-          <select id="category" name="category" defaultValue="visit" disabled={isPending} aria-invalid={Boolean(state.errors?.category)} aria-describedby={state.errors?.category ? "category-error" : undefined} className="border-border bg-surface rounded-xl px-4 py-2.5 text-foreground h-11 w-full text-sm border outline-none transition-all focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primary-deep/50 dark:border-white/10 dark:text-white">
+          <select
+            id="category"
+            name="category"
+            defaultValue="visit"
+            disabled={isPending}
+            aria-invalid={Boolean(state.errors?.category)}
+            aria-describedby={state.errors?.category ? "category-error" : undefined}
+            className="border-border bg-surface rounded-xl px-4 py-2.5 text-foreground h-11 w-full text-sm border outline-none transition-all focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primary-deep/50 dark:border-white/10 dark:text-white"
+          >
             {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>{t?.contact?.categories?.[cat] ?? cat}</option>
+              <option key={cat} value={cat}>
+                {t?.contact?.categories?.[cat] ?? cat}
+              </option>
             ))}
           </select>
-          {state.errors?.category && <p id="category-error" className="text-xs text-red-600 dark:text-red-400">{state.errors.category[0]}</p>}
+          {state.errors?.category && (
+            <p id="category-error" className="text-xs text-red-600 dark:text-red-400">
+              {state.errors.category[0]}
+            </p>
+          )}
         </div>
 
         <div className="space-y-1.5">
           <Label htmlFor="message">{t?.contact?.message ?? "Message"}</Label>
-          <Textarea id="message" name="message" rows={4} required placeholder={t?.contact?.messagePlaceholder ?? "Let us know how we can serve you..."} disabled={isPending} aria-invalid={Boolean(state.errors?.message)} aria-describedby={state.errors?.message ? "message-error" : undefined} />
-          {state.errors?.message && <p id="message-error" className="text-xs text-red-600 dark:text-red-400">{state.errors.message[0]}</p>}
+          <Textarea
+            id="message"
+            name="message"
+            rows={4}
+            required
+            placeholder={t?.contact?.messagePlaceholder ?? "Let us know how we can serve you..."}
+            disabled={isPending}
+            aria-invalid={Boolean(state.errors?.message)}
+            aria-describedby={state.errors?.message ? "message-error" : undefined}
+          />
+          {state.errors?.message && (
+            <p id="message-error" className="text-xs text-red-600 dark:text-red-400">
+              {state.errors.message[0]}
+            </p>
+          )}
         </div>
 
         <div className="flex items-center gap-2.5 pt-1">
-          <input type="checkbox" id="isPrayerRequest" name="isPrayerRequest" value="true" disabled={isPending} className="size-4 rounded border-border text-primary accent-primary focus:ring-primary" />
+          <input
+            type="checkbox"
+            id="isPrayerRequest"
+            name="isPrayerRequest"
+            value="true"
+            disabled={isPending}
+            className="size-4 rounded border-border text-primary accent-primary focus:ring-primary"
+          />
           <Label htmlFor="isPrayerRequest" className="text-xs font-normal text-muted-foreground cursor-pointer">
             {t?.contact?.prayerRequest ?? "Confidential prayer request"}
           </Label>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
-          <Button type="submit" disabled={isPending} className="w-full sm:w-auto min-w-36">
+          <Button type="submit" disabled={isPending} className="rounded-full w-full sm:w-auto min-w-36 font-semibold">
             {isPending ? (
               <>
                 <Loader2 className="size-4 animate-spin" />

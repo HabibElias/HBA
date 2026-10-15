@@ -1,53 +1,63 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useLanguage } from "@/lib/context/language-context";
 
-export function LogoLockup({ reversed = false }: { reversed?: boolean }) {
-  const { t } = useLanguage();
+export function LogoLockup({ reversed = false, iconOnly = false }: { reversed?: boolean; iconOnly?: boolean }) {
+  const { lang, t } = useLanguage();
+  const isAm = lang === "am";
 
-  const title = t?.nav?.churchName ?? "Hiwot Birhan";
-  const subtitle = t?.nav?.branchName ?? "Summit Branch";
+  const title = isAm ? "ሕይወት ብርሃን" : (t?.nav?.churchName ?? "Hiwot Birhan");
+  const subtitle = isAm
+    ? "የአዲስ አበባ ሰሚት ቅርንጫፍ"
+    : (t?.nav?.branchName ?? "Addis Ababa Summit Branch");
 
+  if (iconOnly) {
+    return (
+      <Link href="/" aria-label="Hiwot Birhan Addis Ababa Summit Branch Home" className="shrink-0 rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+        <Image src="/logo-icon-white.svg" alt="Hiwot Birhan Church Seal" width={76} height={76} priority className="size-16 lg:size-[76px] object-contain" />
+      </Link>
+    );
+  }
   return (
     <Link
       href="/"
-      className="flex items-center gap-3 group focus:outline-none select-none"
+      className="flex items-center gap-3.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full select-none"
+      aria-label="Hiwot Birhan Addis Ababa Summit Branch Home"
     >
       <div
-        className={`w-10 h-10 rounded-full flex items-center justify-center border transition-all ${
+        className={`w-16 h-16 shrink-0 flex items-center justify-center transition-colors ${
           reversed
-            ? "border-white/30 bg-white/10 text-white"
-            : "border-primary/20 bg-tint text-primary group-hover:bg-primary group-hover:text-white"
+            ? ""
+            : ""
         }`}
       >
-        <svg
-          viewBox="0 0 100 100"
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          aria-hidden="true"
-        >
-          <circle cx="50" cy="50" r="44" strokeWidth="5" />
-          <path
-            d="M50 18 V82 M30 42 H70"
-            strokeWidth="6"
-            strokeLinecap="round"
-          />
-        </svg>
+        <Image
+          src={
+            reversed
+              ? "/logo-white-no-background.svg"
+              : "/logo-only-indigo-no-background.svg"
+          }
+          alt="Hiwot Birhan Church Seal"
+          width={64}
+          height={64}
+          className="w-16 h-16 object-contain"
+          priority
+        />
       </div>
       <div className="flex flex-col">
         <span
-          className={`font-display font-bold text-lg leading-tight tracking-tight transition-colors ${
+          className={`font-display font-semibold text-base sm:text-lg leading-tight tracking-tight transition-colors ${
             reversed
-              ? "text-white"
+              ? "text-white group-hover:text-white/90"
               : "text-foreground group-hover:text-primary"
           }`}
         >
           {title}
         </span>
         <span
-          className={`text-xs font-medium transition-colors ${
+          className={`text-[11px] sm:text-xs font-normal transition-colors ${
             reversed ? "text-white/70" : "text-muted-foreground"
           }`}
         >

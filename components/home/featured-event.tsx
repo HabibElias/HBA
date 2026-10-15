@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, Clock, MapPin, Sparkles, ArrowRight, Star } from "lucide-react";
+import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { upcomingEvents } from "@/lib/data/programs";
 import { useLanguage } from "@/lib/context/language-context";
@@ -15,102 +16,69 @@ export function FeaturedEvent() {
   if (!featured) return null;
 
   return (
-    <section className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="events">
-      <div className="bg-primary-deep text-white rounded-3xl overflow-hidden shadow-2xl relative border border-accent/30">
-        {/* Subtle Watermark Graphic */}
-        <div className="absolute -right-10 -bottom-10 opacity-10 pointer-events-none hidden lg:block">
-          <Sparkles className="size-96 text-accent" />
+    <section className="py-20 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" id="events">
+      <div className="bg-primary-deep text-white rounded-2xl overflow-hidden relative border border-white/15">
+        <div className="relative h-56 sm:h-72"><Image src="/gallery/photo_16_2026-08-27_14-11-14.jpg" alt={isAm ? "???? ????" : "Fellowship at Summit"} fill sizes="(max-width: 1280px) 100vw, 1216px" className="object-cover object-center" /></div>
+        {/* Subtle Authentic Seal Watermark */}
+        <div
+          className="absolute -right-16 -bottom-16 w-80 h-80 opacity-10 pointer-events-none select-none hidden lg:block"
+          aria-hidden="true"
+        >
+          <Image
+            src="/logo-white-no-background.svg"
+            alt=""
+            fill
+            className="object-contain"
+          />
         </div>
 
-        <div className="relative p-8 sm:p-12 lg:p-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        <div className="relative p-8 sm:p-12 lg:p-14 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Column: Details (8 cols) */}
-          <div className="lg:col-span-8">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-accent/20 border border-accent/40 text-accent text-xs font-semibold mb-6">
-              <Star className="size-4" />
-              <span>{isAm ? "ልዩ የሰሚት መርሐ ግብር 2026" : "Featured Summit Event 2026"}</span>
-            </div>
+          <div className="lg:col-span-12">
+            <div className="w-10 h-0.5 bg-accent mb-5" />
 
-            <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight mb-3">
+            <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold text-white leading-tight mb-3">
               {isAm ? featured.titleAm : featured.title}
             </h2>
 
-            <p className="text-sm sm:text-base text-accent font-medium mb-3">
+            <p className="text-sm sm:text-base text-accent font-medium mb-4">
               {isAm ? featured.themeAm : `"${featured.theme}"`}
             </p>
 
-            <p className="text-sm sm:text-base text-white/80 max-w-2xl leading-relaxed mb-8">
+            <p className="text-sm sm:text-base text-white/85 max-w-2xl leading-relaxed mb-8">
               {isAm ? featured.descriptionAm : featured.description}
             </p>
 
-            {/* Event Metadata Chips */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-              <div className="flex items-center gap-3 bg-white/10 rounded-xl p-3 border border-white/10">
-                <Calendar className="size-5 text-accent shrink-0" />
-                <div>
-                  <div className="text-[11px] text-white/70">{isAm ? "ቀን" : "Date"}</div>
-                  <div className="text-xs sm:text-sm font-semibold text-white">
-                    {isAm ? featured.dateAm : featured.date}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 bg-white/10 rounded-xl p-3 border border-white/10">
-                <Clock className="size-5 text-accent shrink-0" />
-                <div>
-                  <div className="text-[11px] text-white/70">{isAm ? "ሰዓት" : "Time"}</div>
-                  <div className="text-xs sm:text-sm font-semibold text-white">
-                    {isAm ? featured.timeAm : featured.time}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 bg-white/10 rounded-xl p-3 border border-white/10">
-                <MapPin className="size-5 text-accent shrink-0" />
-                <div>
-                  <div className="text-[11px] text-white/70">{isAm ? "ቦታ" : "Venue"}</div>
-                  <div className="text-xs sm:text-sm font-semibold text-white truncate">
-                    {isAm ? featured.locationAm : featured.location}
-                  </div>
-                </div>
-              </div>
+            {/* Event Metadata (Clean typographic bar matching Inspiration.webp) */}
+            <div className="py-4 border-y border-white/15 mb-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/90">
+              <span className="font-semibold text-accent">
+                {isAm ? featured.dateAm : featured.date}
+              </span>
+              <span className="text-white/30 hidden sm:inline" aria-hidden="true">•</span>
+              <span>{isAm ? featured.timeAm : featured.time}</span>
+              <span className="text-white/30 hidden sm:inline" aria-hidden="true">•</span>
+              <span className="text-white/80">{isAm ? featured.locationAm : featured.location}</span>
             </div>
 
             {/* Buttons */}
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/programs#upcoming"
-                className={cn(buttonVariants({ variant: "on-dark" }), "gap-2 font-bold")}
+                className={cn(buttonVariants({ variant: "on-dark" }), "rounded-full px-6 font-semibold")}
               >
                 <span>{isAm ? "ይመዝገቡና ይሳተፉ" : "Register & Learn More"}</span>
               </Link>
               <Link
                 href="/programs"
-                className={cn(buttonVariants({ variant: "on-dark-outline" }), "gap-2")}
+                className={cn(buttonVariants({ variant: "on-dark-outline" }), "group rounded-full px-6 gap-2")}
               >
-                <span>{isAm ? "የመርሐ ግብር ቀን መቁጠሪያ" : "View Full Church Calendar"}</span>
-                <ArrowRight className="size-4" />
+                <span>{isAm ? "የመርሐ ግብር ቀን መቁጠሪያ" : "View Full Calendar"}</span>
+                <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
             </div>
           </div>
 
-          {/* Right Column: Date Showcase (4 cols) */}
-          <div className="lg:col-span-4 flex justify-center">
-            <div className="w-56 h-56 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 flex flex-col items-center justify-center p-6 text-center shadow-xl">
-              <Calendar className="size-10 text-accent mb-2" />
-              <span className="text-xs uppercase tracking-wider text-white/80 font-semibold">
-                {isAm ? "4 ቀናት" : "Four Days"}
-              </span>
-              <span className="font-display text-4xl font-bold text-white leading-none my-1">
-                {isAm ? "ህዳር" : "NOV"}
-              </span>
-              <span className="font-display text-lg text-accent font-semibold">
-                {isAm ? "5–8, 2019" : "14–17, 2026"}
-              </span>
-              <span className="text-xs text-white/70 mt-2">
-                {isAm ? "የወጣቶች ካምፕ" : "Youth Retreat"}
-              </span>
-            </div>
-          </div>
+
         </div>
       </div>
     </section>

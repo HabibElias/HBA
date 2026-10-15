@@ -9,7 +9,7 @@ import { LanguageToggle } from "./language-toggle";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export function MobileNav() {
+export function MobileNav({ reversed = false }: { reversed?: boolean }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
   const { t } = useLanguage();
@@ -50,7 +50,7 @@ export function MobileNav() {
         aria-label="Open navigation menu"
         aria-expanded={isOpen}
       >
-        <Menu className="size-6 text-primary" />
+        <Menu className={cn("size-6", reversed ? "text-white" : "text-primary")} />
       </button>
 
       {isOpen && (
@@ -65,7 +65,7 @@ export function MobileNav() {
             role="dialog"
             aria-modal="true"
             aria-label="Mobile navigation"
-            className="relative ml-auto w-full max-w-xs sm:max-w-sm h-full bg-background border-l border-border shadow-2xl p-6 flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-200"
+            className="relative ml-auto w-full max-w-xs sm:max-w-sm h-full bg-background border-l border-border p-6 flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-200"
           >
             <div>
               <div className="flex items-center justify-between pb-6 border-b border-border">

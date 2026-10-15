@@ -1,7 +1,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import {
   Fraunces,
-  Inter,
+  Plus_Jakarta_Sans,
   Noto_Serif_Ethiopic,
   Noto_Sans_Ethiopic,
 } from "next/font/google";
@@ -17,9 +17,9 @@ const fraunces = Fraunces({
   display: "swap",
 });
 
-const inter = Inter({
+const plusJakartaSans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-plus-jakarta-sans",
   display: "swap",
 });
 
@@ -62,12 +62,13 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${fraunces.variable} ${inter.variable} ${notoSerifEthiopic.variable} ${notoSansEthiopic.variable}`}
+      className={`${fraunces.variable} ${plusJakartaSans.variable} ${notoSerifEthiopic.variable} ${notoSansEthiopic.variable}`}
     >
       <body className="min-h-screen antialiased selection:bg-[#3A33A0] selection:text-white flex flex-col bg-[var(--background)] text-[var(--foreground)]">
         <LanguageProvider>
+          <a href="#main-content" className="skip-link">Skip to content</a>
           <HeaderNav />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" className="flex-1" tabIndex={-1}>{children}</main>
           <Footer />
         </LanguageProvider>
         {process.env.NODE_ENV === "production" && <Analytics />}

@@ -8,53 +8,54 @@ import { weeklySchedules } from "@/lib/data/schedules";
 
 export function Footer() {
   const { lang, t } = useLanguage();
+  const isAm = lang === "am";
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-primary-deep text-dark-fg border-t-2 border-accent">
+    <footer className="bg-primary-deep text-white border-t-2 border-accent">
       <div className="w-full py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 mb-12">
-          {/* Brand & About */}
-          <div className="lg:col-span-4">
+          {/* Brand & About (4 cols) */}
+          <div className="lg:col-span-4 space-y-4">
             <LogoLockup reversed />
-            <div className="w-10 h-0.5 bg-accent my-4" />
-            <p className="text-sm text-white/80 leading-relaxed mb-6 max-w-sm">
+            <div className="w-10 h-0.5 bg-accent" />
+            <p className="text-sm text-white/80 leading-relaxed max-w-sm">
               {t?.footerSection?.about ??
-                "A welcoming evangelical fellowship dedicated to biblical teaching, warm discipleship, and shining the radiant light of Jesus Christ to Summit and beyond."}
+                "A welcoming Christian family in Addis Ababa gathered to worship God, hear His Word, and grow together in faith. There is room for you here."}
             </p>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 pt-2">
               <a
-                href="https://t.me/hiwotbirhansummit"
+                href="https://t.me/HiwotBirhanSummit"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Telegram"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white"
+                aria-label="Telegram Channel"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white"
               >
                 <Send className="size-4" />
               </a>
               <a
                 href="tel:+251911234567"
                 aria-label="Phone"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white"
               >
                 <Phone className="size-4" />
               </a>
               <a
                 href="mailto:info@hiwotbirhan-summit.org"
                 aria-label="Email"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white"
+                className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors text-white"
               >
                 <Mail className="size-4" />
               </a>
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-3">
-            <h4 className="font-display text-base font-bold text-accent mb-4">
-              {t?.footerSection?.quickLinks ?? "Quick Links"}
-            </h4>
-            <ul className="space-y-2 text-sm text-white/80">
+          {/* Quick Links (3 cols) */}
+          <div className="lg:col-span-2">
+            <h3 className="font-display text-base font-semibold text-accent mb-4">
+              {t?.footerSection?.quickLinks ?? "Explore"}
+            </h3>
+            <ul className="space-y-2.5 text-sm text-white/80">
               <li>
                 <Link href="/" className="hover:text-white transition-colors">
                   {t?.nav?.home ?? "Home"}
@@ -62,7 +63,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/about" className="hover:text-white transition-colors">
-                  {t?.nav?.about ?? "About Our Church"}
+                  {t?.nav?.about ?? "About Us"}
                 </Link>
               </li>
               <li>
@@ -77,25 +78,25 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/visit#service-times" className="hover:text-white transition-colors">
-                  {t?.footerSection?.serviceTimes ?? "Service Times"}
+                  {t?.footerSection?.serviceTimes ?? "Gathering Times"}
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Service Times */}
+          {/* Gathering Times (3 cols) */}
           <div className="lg:col-span-3">
-            <h4 className="font-display text-base font-bold text-accent mb-4 flex items-center gap-1.5">
-              <Clock className="size-4" />
-              {t?.footerSection?.serviceTimes ?? "Gathering Times"}
-            </h4>
+            <h3 className="font-display text-base font-semibold text-accent mb-4 flex items-center gap-2">
+              <Clock className="size-4 text-accent" />
+              <span>{t?.footerSection?.serviceTimes ?? "Gathering Times"}</span>
+            </h3>
             <div className="space-y-3 text-xs leading-relaxed text-white/80">
               {weeklySchedules.map((schedule) => (
                 <div key={schedule.id}>
                   <span className="font-semibold text-white block">
-                    {lang === "am" ? schedule.titleAm : schedule.title}:
+                    {isAm ? schedule.titleAm : schedule.title}
                   </span>
-                  <span>
+                  <span className="text-white/70">
                     {schedule.eatTime} ({schedule.localTime})
                   </span>
                 </div>
@@ -103,33 +104,41 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Contact Details */}
-          <div className="lg:col-span-2">
-            <h4 className="font-display text-base font-bold text-accent mb-4 flex items-center gap-1.5">
-              <MapPin className="size-4" />
-              {t?.footerSection?.contact ?? "Summit Sanctuary"}
-            </h4>
-            <p className="text-xs text-white/80 leading-relaxed space-y-1">
-              <span className="block">Near Summit Condominium Gate 2</span>
-              <span className="block">Bole Sub-City, Addis Ababa</span>
-              <span className="block pt-2 text-white font-medium">+251 911 234 567</span>
-              <span className="block text-white font-medium">info@hiwotbirhan-summit.org</span>
-            </p>
+          {/* Location & Contact */}
+          <div className="lg:col-span-3">
+            <h3 className="font-display text-base font-semibold text-accent mb-4 flex items-center gap-2">
+              <MapPin className="size-4 text-accent" />
+              <span>{isAm ? "አድራሻ" : "Summit Location"}</span>
+            </h3>
+            <div className="space-y-2 text-xs text-white/80 leading-relaxed">
+              <p className="font-medium text-white">
+                {isAm ? "ሰሚት ኮንዶሚኒየም 2ኛ በር" : "Summit Condominium Gate 2"}
+              </p>
+              <p className="text-white/70">
+                {isAm ? "ከኢትዮጵያ ንግድ ባንክ አጠገብ" : "Near CBE Summit Branch"}
+              </p>
+              <p className="text-white/70">Bole Subcity, Addis Ababa</p>
+              <div className="pt-2">
+                <a
+                  href="tel:+251911234567"
+                  className="font-medium text-white hover:text-accent transition-colors"
+                >
+                  +251 911 234 567
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between text-xs text-white/70 gap-4">
+        {/* Bottom Bar */}
+        <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-white/60 gap-4">
           <p>
-            © {year} {t?.nav?.churchName ?? "Hiwot Birhan"}{" "}
-            {t?.nav?.branchName ?? "Summit Branch"}.{" "}
-            {t?.footerSection?.rights ?? "All rights reserved."}
+            © {year} Hiwot Birhan Addis Ababa Summit Branch.{" "}
+            {isAm ? "መብቱ በሕግ የተጠበቀ ነው።" : "All rights reserved."}
           </p>
-          <div className="flex items-center gap-4">
-            <Link href="/visit#service-times" className="text-accent hover:underline">
-              {t?.nav?.planVisit ?? "Plan your visit"}
-            </Link>
-          </div>
+          <p className="font-display italic text-accent/90">
+            {isAm ? "«ሰላም ለእናንተ ይሁን»" : "“Peace be with you.”"}
+          </p>
         </div>
       </div>
     </footer>
