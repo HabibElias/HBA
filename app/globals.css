@@ -6,7 +6,7 @@
 @theme inline {
   --color-primary: var(--primary);
   --color-primary-deep: var(--primary-deep);
-  --color-primary-soft: var(--color-primary-soft, var(--primary-soft));
+  --color-primary-soft: var(--primary-soft);
   --color-accent: var(--accent);
   --color-accent-contrast: var(--accent-contrast);
   --color-background: var(--background);
@@ -62,7 +62,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; */
   background-color: var(--background);
 }
 
@@ -131,6 +131,8 @@ html:lang(am) .italic {
   background: radial-gradient(ellipse 75% 65% at 15% 20%, rgba(120, 84, 230, 0.32) 0%, transparent 70%),
               radial-gradient(ellipse 60% 50% at 85% 75%, rgba(76, 36, 184, 0.38) 0%, transparent 65%);
   pointer-events: none;
+  animation: heroAmbientBreathe 12s ease-in-out infinite alternate;
+  will-change: opacity, transform;
 }
 
 .hero-photo {
@@ -197,3 +199,232 @@ html:lang(am) .italic {
     transition-duration: .01ms !important;
   }
 }
+/* Painted edges belong to the header and full-width section transitions. */
+.site-header::before,
+.site-header::after,
+.subpage-hero::after,
+.paint-band::before,
+.paint-band::after,
+.paint-footer::before {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+}
+.site-header::before {
+  inset: 0;
+  background: var(--primary-deep);
+  opacity: 0;
+  transition: opacity 250ms ease-out;
+}
+
+.site-header::after {
+  inset: auto 0 -20px;
+  height: 22px;
+  background: var(--primary-deep);
+  mask: url('/paint/section-edge.svg') center / 100% 100% no-repeat;
+  transform: rotate(180deg);
+  opacity: 0;
+  transition: opacity 250ms ease-out;
+}
+.site-header-pinned::before,
+.site-header-pinned::after,
+.site-header-hidden::before,
+.site-header-hidden::after { opacity: 1; }
+.site-header-top::before, .site-header-top::after { opacity: 0; }
+.site-header:focus-within { transform: translateY(0); }
+.subpage-hero::after {
+  inset: auto -1px -1px;
+  height: clamp(36px, 5vw, 76px);
+  background: var(--background);
+  mask: url('/paint/section-edge.svg') center / 100% 100% no-repeat;
+  z-index: 11;
+}
+.paint-band {
+  position: relative;
+  isolation: isolate;
+  background: var(--tint);
+  margin-block: 28px;
+}
+.paint-band::before,
+.paint-band::after {
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: var(--tint);
+  mask: url('/paint/section-edge.svg') center / 100% 100% no-repeat;
+}
+.paint-band::before { top: -46px; }
+.paint-band::after { bottom: -46px; transform: rotate(180deg); }
+.paint-band > * { position: relative; z-index: 1; }
+.paint-footer {
+  margin-top: 56px;
+  background: linear-gradient(115deg, var(--primary-deep) 20%, var(--primary) 140%);
+}
+.paint-footer::before {
+  left: 0;
+  right: 0;
+  top: -54px;
+  height: 56px;
+  background: linear-gradient(115deg, var(--primary-deep) 20%, var(--primary) 140%);
+  mask: url('/paint/section-edge.svg') center / 100% 100% no-repeat;
+}
+.footer-art {
+  position: absolute;
+  width: min(820px, 90vw);
+  height: auto;
+  right: 0;
+  bottom: 7%;
+  opacity: .12;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: -1;
+}
+html:lang(am) .font-script {
+  font-family: var(--font-noto-serif-ethiopic), serif;
+  font-style: normal;
+  line-height: 1.5;
+}
+@media (max-width: 639px) {
+  .paint-band { margin-block: 18px; }
+  .paint-band::before, .paint-band::after { height: 30px; }
+  .paint-band::before { top: -28px; }
+  .paint-band::after { bottom: -28px; }
+  .paint-footer { margin-top: 36px; }
+  .paint-footer::before { top: -34px; height: 36px; }
+}
+
+/* Keep the photograph corners rounded as well as their clipping containers. */
+.rounded-3xl > img,
+.rounded-2xl > img {
+  border-radius: inherit;
+}
+
+/* =========================================================================
+   About Hero Architectural Floating, Entrance & Ambient Animations
+   ========================================================================= */
+
+/* Ambient breathing pulse for hero backdrop glow */
+@keyframes heroAmbientBreathe {
+  0%, 100% {
+    opacity: 0.78;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Smooth, dignified entrance for Left Asset (Church Building) */
+@keyframes heroAssetEntranceLeft {
+  0% {
+    opacity: 0;
+    transform: translate3d(-32px, 32px, 0) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+/* Smooth, dignified entrance for Right Asset (Summit Sanctuary) */
+@keyframes heroAssetEntranceRight {
+  0% {
+    opacity: 0;
+    transform: translate3d(32px, 32px, 0) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+/* Organic, full-body floating choreography for Left Asset (Church Building)
+   Moves the entire asset in a natural harmonic 5-phase loop (X + Y displacement + subtle tilt) */
+@keyframes heroFloatLeft {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(-1.5deg);
+  }
+  25% {
+    transform: translate3d(6px, -12px, 0) rotate(-0.5deg);
+  }
+  50% {
+    transform: translate3d(12px, -22px, 0) rotate(-2deg);
+  }
+  75% {
+    transform: translate3d(5px, -10px, 0) rotate(-3deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(-1.5deg);
+  }
+}
+
+/* Counter-rhythmic, full-body floating choreography for Right Asset (Summit Sanctuary) */
+@keyframes heroFloatRight {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(1.5deg);
+  }
+  25% {
+    transform: translate3d(-6px, -14px, 0) rotate(2.8deg);
+  }
+  50% {
+    transform: translate3d(-12px, -24px, 0) rotate(1.2deg);
+  }
+  75% {
+    transform: translate3d(-5px, -10px, 0) rotate(0.4deg);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(1.5deg);
+  }
+}
+
+/* Left Hero Asset Classes */
+.hero-asset-entrance-left {
+  animation: heroAssetEntranceLeft 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-asset-floating-left {
+  animation: heroFloatLeft 10s ease-in-out infinite;
+  transform-origin: 45% 60%;
+  will-change: transform;
+}
+
+/* Right Hero Asset Classes */
+.hero-asset-entrance-right {
+  animation: heroAssetEntranceRight 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+.hero-asset-floating-right {
+  animation: heroFloatRight 12s ease-in-out 0.6s infinite;
+  transform-origin: 55% 60%;
+  will-change: transform;
+}
+
+/* Backwards-compatible single-class references */
+.hero-asset-left {
+  animation: heroFloatLeft 10s ease-in-out infinite;
+  transform-origin: 45% 60%;
+  will-change: transform;
+}
+
+.hero-asset-right {
+  animation: heroFloatRight 12s ease-in-out 0.6s infinite;
+  transform-origin: 55% 60%;
+  will-change: transform;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .hero-ambient-glow,
+  .hero-asset-entrance-left,
+  .hero-asset-entrance-right,
+  .hero-asset-floating-left,
+  .hero-asset-floating-right,
+  .hero-asset-left,
+  .hero-asset-right {
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+

@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "ai-color-palette",
+        "value": "*",
+        "files": [
+          "components/ui/page-intro.tsx"
+        ],
+        "createdAt": "2026-10-15T14:10:31.827Z",
+        "reason": "Agent review: this component preserves the existing indigo-purple church palette and supplied Inspiration.webp, as requested by the user; the cutout task did not introduce this color treatment."
+      }
+    ]
+  }
+}
