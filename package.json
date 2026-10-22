@@ -15,6 +15,7 @@
     "test:cms": "tsx --test tests/cms.test.ts",
     "db:import-local": "tsx scripts/import-local.ts",
     "media:migrate": "tsx scripts/migrate-media.ts",
+    "media:upload-gallery": "tsx scripts/upload-gallery.ts",
     "test:media": "tsx --test tests/cloudinary.test.ts"
   },
   "dependencies": {
