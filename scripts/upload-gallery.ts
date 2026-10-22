@@ -9,28 +9,28 @@ async function main() {
   const { media } = await import("../lib/db/schema");
   const { uploadImage } = await import("../lib/cloudinary");
 
-  const galleryDir = path.join(process.cwd(), "public/gallery");
-  const files = (await readdir(galleryDir)).filter((n) =>
-    /\.(jpg|jpeg|webp|png)$/i.test(n),
-  );
-
-  // Load already-uploaded gallery entries by name to allow safe re-runs
-  const existing = await db
-    .select({ name: media.name })
-    .from(media);
-  const existingNames = new Set(existing.map((e) => e.name));
-
-  const toUpload = files.filter((f) => {
-    const baseName = path.basename(f, path.extname(f));
-    const name = baseName.replace(/[^a-zA-Z0-9 ._-]/g, " ").trim() || "Church photograph";
-    return !existingNames.has(f) && !existingNames.has(name);
-  });
-  console.log(
-    `Found ${files.length} gallery files. ${toUpload.length} need uploading.`,
-  );
-
-  let uploaded = 0;
   try {
+    const galleryDir = path.join(process.cwd(), "public/gallery");
+    const files = (await readdir(galleryDir)).filter((n) =>
+      /\.(jpg|jpeg|webp|png)$/i.test(n),
+    );
+
+    // Load already-uploaded gallery entries by name to allow safe re-runs
+    const existing = await db
+      .select({ name: media.name })
+      .from(media);
+    const existingNames = new Set(existing.map((e) => e.name));
+
+    const toUpload = files.filter((f) => {
+      const baseName = path.basename(f, path.extname(f));
+      const name = baseName.replace(/[^\p{L}\p{N} ._-]/gu, " ").trim() || "Church photograph";
+      return !existingNames.has(f) && !existingNames.has(name);
+    });
+    console.log(
+      `Found ${files.length} gallery files. ${toUpload.length} need uploading.`,
+    );
+
+    let uploaded = 0;
     for (const filename of toUpload) {
       const raw = await readFile(path.join(galleryDir, filename));
       const { data } = await sharp(raw, { limitInputPixels: 40_000_000 })
@@ -41,7 +41,7 @@ async function main() {
 
       const id = crypto.randomUUID();
       const baseName = path.basename(filename, path.extname(filename));
-      const name = baseName.replace(/[^a-zA-Z0-9 ._-]/g, " ").trim() || "Church photograph";
+      const name = baseName.replace(/[^\p{L}\p{N} ._-]/gu, " ").trim() || "Church photograph";
       const alt = "Church gathering at Summit";
 
       const result = await uploadImage(data, `${id}.webp`);
