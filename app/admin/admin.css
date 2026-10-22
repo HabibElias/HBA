@@ -1392,7 +1392,7 @@
   position: relative;
   width: 100%;
 }
-.admin-password-wrap input {
+.admin-root .admin-password-wrap input:not([type="checkbox"]):not([type="file"]) {
   padding-right: 44px;
 }
 .admin-password-eye {

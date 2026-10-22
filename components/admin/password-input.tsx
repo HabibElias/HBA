@@ -14,8 +14,11 @@ export function PasswordInput(props: Props) {
         type="button"
         className="admin-password-eye"
         aria-label={visible ? "Hide password" : "Show password"}
-        onClick={() => setVisible((v) => !v)}
-        tabIndex={-1}
+        onClick={(e) => {
+          e.stopPropagation();
+          setVisible((v) => !v);
+        }}
+        disabled={props.disabled}
       >
         {visible ? <EyeOff size={16} /> : <Eye size={16} />}
       </button>
