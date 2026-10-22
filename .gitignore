@@ -9,7 +9,7 @@ __v0_jsx-dev-runtime.ts
 # Environment variables
 .env*.local
 .env
-data/
+/data/
 *.db
 *.db-shm
 *.db-wal
