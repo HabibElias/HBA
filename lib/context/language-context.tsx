@@ -4,22 +4,31 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from "react";
-import { copy } from "@/lib/content/landing-content";
-import type { LandingContent, Language } from "@/lib/types/landing";
+import enMessages from "@/messages/en.json";
+import amMessages from "@/messages/am.json";
 
-interface LanguageContextValue {
+export type Language = "en" | "am";
+export type Dictionary = typeof enMessages;
+
+const dictionaries: Record<Language, Dictionary> = {
+  en: enMessages,
+  am: amMessages,
+};
+
+const STORAGE_KEY = "hiwot-language";
+
+export interface LanguageContextValue {
   lang: Language;
   setLang: (lang: Language) => void;
   toggleLang: () => void;
-  t: LandingContent;
+  t: Dictionary;
 }
 
 const LanguageContext = createContext<LanguageContextValue | null>(null);
-
-const STORAGE_KEY = "hiwot-language";
 
 export function LanguageProvider({
   children,
@@ -38,7 +47,7 @@ export function LanguageProvider({
         document.documentElement.lang = saved;
       }
     } catch {
-      // Ignore local storage error in sandboxed or restricted environments
+      // Ignore in sandboxed or restricted storage environments
     }
   }, []);
 
@@ -53,14 +62,19 @@ export function LanguageProvider({
   };
 
   const toggleLang = () => {
-    setLang(lang === "en" ? "am" : "en");
+    const next = lang === "en" ? "am" : "en";
+    setLang(next);
   };
+
+  const activeDictionary = useMemo(() => {
+    return dictionaries[lang];
+  }, [lang]);
 
   const value: LanguageContextValue = {
     lang,
     setLang,
     toggleLang,
-    t: copy[lang],
+    t: activeDictionary,
   };
 
   return (

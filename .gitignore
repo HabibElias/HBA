@@ -8,8 +8,18 @@ __v0_jsx-dev-runtime.ts
 
 # Environment variables
 .env*.local
+.env
+/data/
+*.db
+*.db-shm
+*.db-wal
+test-results/
 
 # Common ignores
 node_modules
 .next/
 .DS_Store
+docs/**
+!docs/superpowers/**
+*.tsbuildinfo
+.superpowers/

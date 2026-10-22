@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 40 1000 580" role="img" aria-label="Church building"><defs>
+  <linearGradient id="redg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF4D6A"/><stop offset="1" stop-color="#C8102E"/></linearGradient>
+  <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4B5563"/><stop offset="1" stop-color="#1F2937"/></linearGradient>
+  <linearGradient id="wall" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#E5E7EB"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient>
+  <filter id="glow" x="-100%" y="-30%" width="300%" height="160%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="lat" width="24" height="24" patternUnits="userSpaceOnUse">
+    <g fill="none" stroke="#F3F4F6" stroke-opacity=".75" stroke-width="1">
+      <polygon points="12,1 23,12 12,23 1,12"/><rect x="5" y="5" width="14" height="14"/><circle cx="12" cy="12" r="1.6"/>
+    </g>
+  </pattern>
+</defs>
+  <!-- undercroft -->
+  <rect x="40" y="520" width="920" height="80" fill="#374151"/>
+  <rect x="20" y="500" width="940" height="22" fill="#9CA3AF"/>
+  <rect x="20" y="500" width="940" height="4" fill="#D1D5DB"/>
+  <g fill="url(#wall)">
+    <rect x="60" y="522" width="26" height="78"/><rect x="250" y="522" width="26" height="78"/>
+    <rect x="440" y="522" width="26" height="78"/><rect x="620" y="522" width="26" height="78"/>
+    <rect x="800" y="522" width="26" height="78"/><rect x="930" y="522" width="26" height="78"/>
+  </g>
+  <g fill="#F59E0B"><rect x="64" y="580" width="18" height="20"/><rect x="254" y="580" width="18" height="20"/><rect x="444" y="580" width="18" height="20"/><rect x="624" y="580" width="18" height="20"/></g>
+  <!-- left block -->
+  <rect x="40" y="340" width="540" height="162" fill="url(#wall)"/>
+  <rect x="30" y="320" width="560" height="24" fill="#6B7280"/>
+  <rect x="30" y="320" width="560" height="5" fill="#9CA3AF"/>
+  <rect x="40" y="488" width="540" height="5" fill="#E0B24B"/>
+  <g transform="translate(62 352)"><rect x="12" y="0" width="12" height="74" fill="#2F6F73"/><rect x="0" y="18" width="36" height="12" fill="#3B7F5E"/><rect x="12" y="18" width="12" height="12" fill="#8A5A44"/></g><g transform="translate(242 352)"><rect x="12" y="0" width="12" height="74" fill="#2F6F73"/><rect x="0" y="18" width="36" height="12" fill="#3B7F5E"/><rect x="12" y="18" width="12" height="12" fill="#8A5A44"/></g><g transform="translate(422 352)"><rect x="12" y="0" width="12" height="74" fill="#2F6F73"/><rect x="0" y="18" width="36" height="12" fill="#3B7F5E"/><rect x="12" y="18" width="12" height="12" fill="#8A5A44"/></g>
+  <rect x="140" y="432" width="200" height="54" fill="url(#glass)"/>
+  <g stroke="#9CA3AF" stroke-width="2"><path d="M165 432v54M190 432v54M215 432v54M240 432v54M265 432v54M290 432v54M315 432v54"/></g>
+  <rect x="420" y="432" width="110" height="54" fill="url(#glass)"/>
+  <g stroke="#9CA3AF" stroke-width="2"><path d="M447 432v54M474 432v54M501 432v54"/></g>
+  <!-- tower -->
+  <rect x="570" y="210" width="380" height="292" fill="url(#wall)"/>
+  <rect x="560" y="196" width="400" height="18" fill="#F3F4F6"/>
+  <rect x="560" y="212" width="400" height="3" fill="#D1D5DB"/>
+  <rect x="590" y="224" width="110" height="10" rx="2" fill="#C8102E" fill-opacity=".85"/>
+  <rect x="590" y="240" width="70" height="6" rx="2" fill="#C8102E" fill-opacity=".45"/>
+  <!-- balconies -->
+  <rect x="580" y="268" width="180" height="10" fill="#B07A4F"/>
+  <rect x="580" y="278" width="180" height="48" fill="#E5E7EB"/>
+  <rect x="595" y="296" width="150" height="30" fill="url(#glass)" fill-opacity=".85"/>
+  <g stroke="#6B7280" stroke-width="1.5" fill="none"><path d="M580 326h180M580 336h180"/><path d="M592 326v10M612 326v10M632 326v10M652 326v10M672 326v10M692 326v10M712 326v10M732 326v10M752 326v10"/></g>
+  <rect x="580" y="340" width="180" height="10" fill="#B07A4F"/>
+  <rect x="580" y="350" width="180" height="60" fill="#F3F4F6"/>
+  <rect x="640" y="368" width="14" height="36" fill="url(#glass)"/>
+  <rect x="580" y="410" width="180" height="48" fill="#E5E7EB"/>
+  <g stroke="#6B7280" stroke-width="1.5" fill="none"><path d="M580 424h180M580 436h180"/><path d="M592 424v12M612 424v12M632 424v12M652 424v12M672 424v12M692 424v12M712 424v12M732 424v12M752 424v12"/></g>
+  <rect x="580" y="458" width="180" height="34" rx="2" fill="#F9FAFB" stroke="#E0B24B" stroke-width="2"/>
+  <rect x="600" y="470" width="140" height="5" rx="2" fill="#E0B24B" fill-opacity=".8"/><rect x="620" y="480" width="100" height="4" rx="2" fill="#E0B24B" fill-opacity=".5"/>
+  <!-- lattice panel -->
+  <rect x="775" y="226" width="160" height="270" rx="3" fill="#1F2937"/>
+  <rect x="775" y="226" width="160" height="270" rx="3" fill="url(#lat)"/>
+  <g transform="translate(855 360)" fill="none" stroke="#fff" stroke-width="2.5">
+    <circle r="52" fill="#1F2937" fill-opacity=".85"/><circle r="46" stroke-width="1.2"/>
+    <path d="M0 -26v44M-14 -10h28" stroke-width="3"/>
+    <path d="M-30 20c14 14 46 14 60 0" stroke-width="2"/>
+    <circle cx="-9" cy="-38" r="2.2" fill="#fff"/><circle cx="0" cy="-40" r="2.2" fill="#fff"/><circle cx="9" cy="-38" r="2.2" fill="#fff"/>
+  </g>
+  <!-- red tower cross -->
+  <g filter="url(#glow)"><rect x="716" y="64" width="14" height="240" fill="url(#redg)"/><rect x="684" y="104" width="78" height="14" fill="url(#redg)"/></g>
+</svg>

@@ -1,0 +1,71 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "ai-color-palette",
+        "value": "*",
+        "files": [
+          "components/ui/page-intro.tsx"
+        ],
+        "createdAt": "2026-10-15T14:10:31.827Z",
+        "reason": "Agent review: this component preserves the existing indigo-purple church palette and supplied Inspiration.webp, as requested by the user; the cutout task did not introduce this color treatment."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "caveat",
+        "files": [
+          "app/fonts.css"
+        ],
+        "createdAt": "2026-10-22T10:20:00.617Z",
+        "reason": "Agent review: existing branded script accent and metric-adjusted fallback faces support the established public site typography; this task preserves that type system."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "fraunces fallback",
+        "files": [
+          "app/fonts.css"
+        ],
+        "createdAt": "2026-10-22T10:20:00.687Z",
+        "reason": "Agent review: existing branded script accent and metric-adjusted fallback faces support the established public site typography; this task preserves that type system."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "plus jakarta sans fallback",
+        "files": [
+          "app/fonts.css"
+        ],
+        "createdAt": "2026-10-22T10:20:00.755Z",
+        "reason": "Agent review: existing branded script accent and metric-adjusted fallback faces support the established public site typography; this task preserves that type system."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "noto serif ethiopic fallback",
+        "files": [
+          "app/fonts.css"
+        ],
+        "createdAt": "2026-10-22T10:20:00.814Z",
+        "reason": "Agent review: existing branded script accent and metric-adjusted fallback faces support the established public site typography; this task preserves that type system."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "noto sans ethiopic fallback",
+        "files": [
+          "app/fonts.css"
+        ],
+        "createdAt": "2026-10-22T10:20:00.884Z",
+        "reason": "Agent review: existing branded script accent and metric-adjusted fallback faces support the established public site typography; this task preserves that type system."
+      },
+      {
+        "rule": "design-system-font",
+        "value": "caveat fallback",
+        "files": [
+          "app/fonts.css"
+        ],
+        "createdAt": "2026-10-22T10:20:00.952Z",
+        "reason": "Agent review: existing branded script accent and metric-adjusted fallback faces support the established public site typography; this task preserves that type system."
+      }
+    ]
+  }
+}

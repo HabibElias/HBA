@@ -1,0 +1,85 @@
+import type { UpcomingEvent } from "@/lib/types/programs";
+
+export const upcomingEvents: UpcomingEvent[] = [
+  {
+    id: "youth-retreat-2026",
+    title: "2026 Summit Youth Spiritual Retreat & Camp",
+    titleAm: "የ2026 የሰሚት ወጣቶች መንፈሳዊ የካምፕ ቆይታ",
+    theme: "Rooted & Grounded (Col 2:7)",
+    themeAm: "የተመሠረቱና የታነጹ (ቈላ 2:7)",
+    date: "Nov 14 - 17, 2026",
+    dateAm: "ህዳር 5 - 8 ቀን 2019 ዓ.ም",
+    time: "9:00 AM EAT / 3:00 የቀን ሰዓት",
+    timeAm: "ከጠዋቱ 3:00 ሰዓት",
+    location: "Lake Bishoftu Retreat Grounds",
+    locationAm: "ቢሾፍቱ ሐይቅ ማረፊያ ማዕከል",
+    description:
+      "Four immersive days of intercessory prayer, biblical teaching, discipleship tracks, and lakefront campfires designed to anchor Summit youth in the faith.",
+    descriptionAm:
+      "ለአራት ቀናት የሚቆይ ጥልቅ የጸሎት፣ የመጽሐፍ ቅዱስ ጥናት፣ የደቀመዝሙርነት ሥልጠና እና የወጣቶች የሕብረት ካምፕ።",
+    category: "camp",
+    categoryLabel: "Youth Camp",
+    categoryLabelAm: "የወጣቶች ካምፕ",
+    registerLink: "#register",
+    startDate: "20261114T060000Z",
+    endDate: "20261117T150000Z",
+    image:
+      "/gallery/photo_15_2026-08-27_14-11-14.jpg",
+    notice: "Shuttle departing Summit Church Main Gate",
+    noticeAm: "ከሰሚት ቤተክርስቲያን ዋና በር የሚነሳ አውቶቡስ",
+  },
+  {
+    id: "awana-conference-2026",
+    title: "Awana Leaders & Children Conference",
+    titleAm: "የአዋና አገልጋዮችና የሕፃናት ኮንፈረንስ",
+    theme: "Approved Workers (2 Tim 2:15)",
+    themeAm: "የተፈተነ ሠራተኛ (2 ጢሞ 2:15)",
+    date: "Dec 05, 2026",
+    dateAm: "ህዳር 26 ቀን 2019 ዓ.ም",
+    time: "2:30 PM – 6:30 PM EAT / 8:30 ከሰዓት",
+    timeAm: "ከሰዓት 8:30 – 12:30",
+    location: "Summit Main Sanctuary Hall",
+    locationAm: "ሰሚት ዋናው አዳራሽ",
+    description:
+      "Annual training and inspirational gathering for Sunday School educators, Awana leaders, and parents dedicated to holistic child spiritual formation.",
+    descriptionAm:
+      "ለሰንበት ትምህርት ቤት አስተማሪዎች፣ ለአዋና መሪዎችና ለወላጆች የሚሰጥ ዓመታዊ የተግባር ሥልጠናና አነቃቂ ጉባኤ።",
+    category: "awana",
+    categoryLabel: "Awana",
+    categoryLabelAm: "አዋና",
+    registerLink: "#register",
+    startDate: "20261205T113000Z",
+    endDate: "20261205T153000Z",
+    image:
+      "/gallery/photo_10_2026-08-27_14-11-14.jpg",
+    notice: "Complimentary Children's Program Included",
+    noticeAm: "የልጆች ማቆያና ልዩ መርሐ ግብር ተዘጋጅቷል",
+  },
+  {
+    id: "prayer-assembly-2026",
+    title: "Citywide Annual Prayer Assembly",
+    titleAm: "የከተማ አቀፍ ዓመታዊ የጸሎት ጉባኤ",
+    theme: "Light in the City (Jer 29:7)",
+    themeAm: "ለከተማችን ሰላም መጸለይ (ኤር 29:7)",
+    date: "Dec 23 - 25, 2026",
+    dateAm: "ታኅሣሥ 14 - 16 ቀን 2019 ዓ.ም",
+    time: "8:00 AM – 4:00 PM EAT / 2:00 ጠዋት",
+    timeAm: "ከጠዋቱ 2:00 – 10:00 ከሰዓት",
+    location: "Summit Church Main Auditorium",
+    locationAm: "ሰሚት ቤተክርስቲያን ዋና አዳራሽ",
+    description:
+      "Consecrated weekend of united intercession, fasting, thanksgiving, and seeking God's divine guidance for our families, church, and city.",
+    descriptionAm:
+      "ስለ ቤተሰቦቻችን፣ ስለ ቤተክርስቲያናችንና ስለ ከተማችን ሰላም በጾምና በጸሎት ወደ እግዚአብሔር የምንጮኽበት ልዩ ጉባኤ።",
+    category: "conference",
+    categoryLabel: "Conference",
+    categoryLabelAm: "ኮንፈረንስ",
+    registerLink: "#register",
+    startDate: "20261223T050000Z",
+    endDate: "20261225T130000Z",
+    image:
+      "/gallery/photo_4_2026-08-27_14-11-14.jpg",
+    notice: "Volunteers Assembly at 7:30 AM",
+    noticeAm: "የበጎ ፈቃደኞች መሰብሰቢያ ከጠዋቱ 1:30",
+  },
+];
