@@ -23,6 +23,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { UploadDialog } from "./upload-dialog";
 
 export interface MediaItem {
   id: string;
@@ -175,9 +176,7 @@ export function MediaPicker({
     new Map()
   );
   const [mainId, setMainId] = useState<string | null>(null);
-  const [showUpload, setShowUpload] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState("");
+  const [uploadOpen, setUploadOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -289,35 +288,6 @@ export function MediaPicker({
     });
   };
 
-  const handleInlineUpload = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setUploading(true);
-    setUploadError("");
-    const form = e.currentTarget;
-    try {
-      const res = await fetch("/api/admin/media", {
-        method: "POST",
-        body: new FormData(form),
-      });
-      let data: any = null;
-      try {
-        data = await res.json();
-      } catch {
-        // Response is not JSON
-      }
-      if (!res.ok) {
-        throw new Error(data?.message || res.statusText || "Upload failed");
-      }
-      setItems((prev) => [data, ...prev]);
-      setShowUpload(false);
-      form.reset();
-    } catch (err) {
-      setUploadError(err instanceof Error ? err.message : "Upload failed.");
-    } finally {
-      setUploading(false);
-    }
-  };
-
   const selectedImages = Array.from(selectedMap.values());
   const hasMain =
     Boolean(allowMain && mainId && selectedMap.has(mainId));
@@ -356,7 +326,7 @@ export function MediaPicker({
               <Button
                 type="button"
                 className="admin-button"
-                onClick={() => setShowUpload((prev) => !prev)}
+                onClick={() => setUploadOpen(true)}
               >
                 <Upload size={16} />
                 Upload new photo
@@ -381,59 +351,6 @@ export function MediaPicker({
               </Button>
             </div>
           </div>
-
-          {showUpload && (
-            <form className="admin-picker-upload" onSubmit={handleInlineUpload}>
-              <h3>Upload new photograph</h3>
-              <Label>
-                Photograph
-                <Input
-                  type="file"
-                  name="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  required
-                  disabled={uploading}
-                />
-              </Label>
-              <Label>
-                Describe the image
-                <Input
-                  name="alt"
-                  minLength={3}
-                  maxLength={300}
-                  required
-                  disabled={uploading}
-                  placeholder="For example: Choir singing during Sunday worship"
-                />
-              </Label>
-              {uploadError && (
-                <p role="alert" className="admin-notice error">
-                  {uploadError}
-                </p>
-              )}
-              <div className="admin-actions">
-                <Button
-                  type="submit"
-                  className="admin-button primary"
-                  disabled={uploading}
-                >
-                  <Upload size={16} />
-                  {uploading ? "Uploading…" : "Upload photograph"}
-                </Button>
-                <Button
-                  type="button"
-                  className="admin-button"
-                  disabled={uploading}
-                  onClick={() => {
-                    setShowUpload(false);
-                    setUploadError("");
-                  }}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </form>
-          )}
 
           {error && <p role="alert" className="admin-notice error">{error}</p>}
 
@@ -581,6 +498,14 @@ export function MediaPicker({
           onNavigate={setLightboxIndex}
         />
       )}
+
+      <UploadDialog
+        open={uploadOpen}
+        onClose={() => setUploadOpen(false)}
+        onSuccess={(newItems) => {
+          setItems((prev) => [...newItems, ...prev]);
+        }}
+      />
     </>
   );
 }
@@ -595,16 +520,7 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
   const [error, setError] = useState("");
   const [copied, setCopied] = useState("");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-
-  // Bulk upload dialog state
   const [uploadOpen, setUploadOpen] = useState(false);
-  const [bulkUploading, setBulkUploading] = useState(false);
-  const [uploadFiles, setUploadFiles] = useState<File[]>([]);
-  const [uploadAlt, setUploadAlt] = useState("");
-  const [uploadError, setUploadError] = useState("");
-  const [progressList, setProgressList] = useState<
-    { name: string; status: "pending" | "uploading" | "ok" | "err"; error?: string }[]
-  >([]);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
@@ -690,60 +606,6 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
     return () => observer.disconnect();
   }, [nextCursor, loadingMore, loading, loadMore]);
 
-  const handleBulkUpload = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (uploadFiles.length === 0) return;
-    setBulkUploading(true);
-    setUploadError("");
-
-    const newItems: MediaItem[] = [];
-
-    for (let i = 0; i < uploadFiles.length; i++) {
-      const file = uploadFiles[i];
-      setProgressList((prev) =>
-        prev.map((p, idx) => (idx === i ? { ...p, status: "uploading" } : p))
-      );
-
-      const formData = new FormData();
-      formData.append("file", file);
-      const fileAlt =
-        uploadFiles.length > 1 ? `${uploadAlt} (${i + 1})` : uploadAlt;
-      formData.append("alt", fileAlt);
-
-      try {
-        const res = await fetch("/api/admin/media", {
-          method: "POST",
-          body: formData,
-        });
-        let data: any = null;
-        try {
-          data = await res.json();
-        } catch {
-          // Response is not JSON
-        }
-        if (!res.ok) {
-          throw new Error(data?.message || res.statusText || "Upload failed");
-        }
-        newItems.push(data);
-        setProgressList((prev) =>
-          prev.map((p, idx) => (idx === i ? { ...p, status: "ok" } : p))
-        );
-      } catch (err) {
-        const msg = err instanceof Error ? err.message : "Upload failed";
-        setProgressList((prev) =>
-          prev.map((p, idx) =>
-            idx === i ? { ...p, status: "err", error: msg } : p
-          )
-        );
-      }
-    }
-
-    if (newItems.length > 0) {
-      setItems((prev) => [...newItems, ...prev]);
-    }
-    setBulkUploading(false);
-  };
-
   return (
     <>
       <div className="admin-media-toolbar">
@@ -757,18 +619,11 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
           />
         </Label>
         <div className="admin-media-toolbar-right">
-          <span className="admin-muted">{items.length} photographs</span>
           {canUpload && (
             <Button
               type="button"
               className="admin-button primary"
-              onClick={() => {
-                setUploadOpen(true);
-                setUploadFiles([]);
-                setUploadAlt("");
-                setProgressList([]);
-                setUploadError("");
-              }}
+              onClick={() => setUploadOpen(true)}
             >
               <Upload size={16} />
               Upload photograph
@@ -839,106 +694,6 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
 
       <div ref={sentinelRef} style={{ height: 1 }} aria-hidden="true" />
 
-      {/* Bulk Upload Dialog */}
-      <Dialog
-        open={uploadOpen}
-        onOpenChange={(open) => {
-          if (!bulkUploading) setUploadOpen(open);
-        }}
-      >
-        <DialogContent className="admin-root admin-upload-dialog">
-          <DialogHeader>
-            <DialogTitle>Upload photographs</DialogTitle>
-            <DialogDescription>
-              JPEG, PNG, or WebP, up to 4 MB. Images are public; upload only
-              photos intended for the church website.
-            </DialogDescription>
-          </DialogHeader>
-
-          <form onSubmit={handleBulkUpload}>
-            <Label>
-              Photograph(s)
-              <Input
-                type="file"
-                name="file"
-                multiple
-                accept="image/jpeg,image/png,image/webp"
-                required
-                disabled={bulkUploading}
-                onChange={(e) => {
-                  const fileList = Array.from(e.target.files || []);
-                  setUploadFiles(fileList);
-                  setProgressList(
-                    fileList.map((f) => ({ name: f.name, status: "pending" }))
-                  );
-                }}
-              />
-            </Label>
-            <Label style={{ marginTop: 14 }}>
-              Describe the photograph(s)
-              <Input
-                name="alt"
-                value={uploadAlt}
-                onChange={(e) => setUploadAlt(e.target.value)}
-                minLength={3}
-                maxLength={300}
-                required
-                disabled={bulkUploading}
-                placeholder="For example: Choir singing during Sunday worship"
-              />
-            </Label>
-
-            {uploadError && (
-              <p
-                role="alert"
-                className="admin-notice error"
-                style={{ marginTop: 14 }}
-              >
-                {uploadError}
-              </p>
-            )}
-
-            {progressList.length > 0 && (
-              <div className="admin-upload-progress">
-                {progressList.map((p, idx) => (
-                  <div key={idx} className="admin-upload-progress-item">
-                    <span>{p.name}</span>
-                    {p.status === "uploading" && (
-                      <span className="admin-muted">Uploading…</span>
-                    )}
-                    {p.status === "ok" && <span className="ok">✓ Uploaded</span>}
-                    {p.status === "err" && (
-                      <span className="err">✕ {p.error || "Failed"}</span>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="admin-actions" style={{ marginTop: 20 }}>
-              <Button
-                type="submit"
-                className="admin-button primary"
-                disabled={bulkUploading || uploadFiles.length === 0}
-              >
-                <Upload size={16} />
-                {bulkUploading
-                  ? "Uploading…"
-                  : `Upload ${uploadFiles.length > 1 ? `${uploadFiles.length} photographs` : "photograph"}`}
-              </Button>
-              <Button
-                type="button"
-                className="admin-button"
-                disabled={bulkUploading}
-                onClick={() => setUploadOpen(false)}
-              >
-                Close
-              </Button>
-            </div>
-          </form>
-        </DialogContent>
-      </Dialog>
-
       {/* Standalone Lightbox */}
       {lightboxIndex !== null && (
         <Lightbox
@@ -948,6 +703,14 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
           onNavigate={setLightboxIndex}
         />
       )}
+
+      <UploadDialog
+        open={uploadOpen}
+        onClose={() => setUploadOpen(false)}
+        onSuccess={(newItems) => {
+          setItems((prev) => [...newItems, ...prev]);
+        }}
+      />
     </>
   );
 }

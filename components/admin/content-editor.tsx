@@ -136,9 +136,9 @@ export function ContentEditor({
           <span className="admin-label">{f.label}</span>
           <div className="admin-photo-list">
             {photos.map((photo, i) => (
-              <div key={i}>
-                <div style={{ position: "relative", display: "inline-block" }}>
-                  <img src={photo.src} alt={photo.alt} />
+              <div key={i} className="admin-photo-row">
+                <div className="admin-photo-thumb-wrap">
+                  <img src={photo.src} alt={photo.alt || "Photograph"} />
                   <button
                     type="button"
                     className={`admin-media-main-toggle ${photo.isMain ? "active" : ""}`}
@@ -158,11 +158,12 @@ export function ContentEditor({
                     ★
                   </button>
                 </div>
-                <Label>
-                  Image description
+                <div className="admin-photo-desc-wrap">
                   <Input
                     value={photo.alt}
                     disabled={!canEdit || pending}
+                    placeholder="Describe this photograph (alt text)"
+                    aria-label={`Description for photograph ${i + 1}`}
                     onChange={(e) =>
                       update(
                         f.key,
@@ -172,12 +173,13 @@ export function ContentEditor({
                       )
                     }
                   />
-                </Label>
+                </div>
                 {canEdit && (
                   <Button
                     type="button"
                     className="admin-icon-button"
                     aria-label={`Remove photo ${i + 1}`}
+                    disabled={pending}
                     onClick={() =>
                       update(
                         f.key,
