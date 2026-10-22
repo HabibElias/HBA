@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { currentStaff } from "@/lib/cms/access";
 import { PasswordForm } from "@/components/admin/password-form";
+
 export default async function PasswordPage() {
   const staff = await currentStaff();
   if (!staff) redirect("/admin/login");
   return (
     <main className="admin-standalone">
       <Link href="/admin" className="admin-back">
-        ← Workspace
+        <ArrowLeft size={14} />
+        Workspace
       </Link>
       <h1>
         {staff.mustChangePassword

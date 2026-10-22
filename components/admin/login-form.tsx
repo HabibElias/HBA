@@ -2,10 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/admin/password-input";
 
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
+
 export function LoginForm() {
   const router = useRouter();
   const [pending, setPending] = useState(false),
@@ -55,8 +57,7 @@ export function LoginForm() {
       </Label>
       <Label>
         Password
-        <Input
-          type="password"
+        <PasswordInput
           name="password"
           autoComplete="current-password"
           required

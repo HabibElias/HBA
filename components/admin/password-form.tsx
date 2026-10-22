@@ -1,11 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { PasswordInput } from "@/components/admin/password-input";
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { changePasswordAction } from "@/app/admin/actions";
+
 export function PasswordForm() {
   const router = useRouter();
   const [pending, start] = useTransition(),
@@ -40,8 +41,7 @@ export function PasswordForm() {
       )}
       <Label>
         Current password
-        <Input
-          type="password"
+        <PasswordInput
           name="currentPassword"
           required
           autoComplete="current-password"
@@ -49,8 +49,7 @@ export function PasswordForm() {
       </Label>
       <Label>
         New password
-        <Input
-          type="password"
+        <PasswordInput
           name="newPassword"
           required
           minLength={12}
@@ -61,8 +60,7 @@ export function PasswordForm() {
       </Label>
       <Label>
         Confirm new password
-        <Input
-          type="password"
+        <PasswordInput
           name="confirm"
           required
           minLength={12}
