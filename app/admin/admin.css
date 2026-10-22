@@ -1758,3 +1758,40 @@
   line-height: 1;
   font-weight: 700;
 }
+
+.admin-media-item-img-wrap:focus-within .admin-media-item-view,
+.admin-media-item-view:focus-visible {
+  opacity: 1;
+}
+
+/* ── Main photo toggle in editor ──────────────────────────────── */
+.admin-media-main-toggle {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: rgba(0, 0, 0, 0.45);
+  color: rgba(255, 255, 255, 0.7);
+  border: 0;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s;
+  backdrop-filter: blur(2px);
+}
+.admin-media-main-toggle:hover {
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+}
+.admin-media-main-toggle.active {
+  background: #d97706;
+  color: white;
+}
+.admin-media-main-toggle:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 1px;
+}

@@ -231,6 +231,7 @@ export function parseContent(
               .refine(safeImage, "Choose an image from the library."),
             alt: z.string().trim().min(1).max(300),
             caption: z.string().max(500).optional(),
+            isMain: z.boolean().optional(),
           }),
         )
         .max(24)

@@ -63,6 +63,8 @@ function Lightbox({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        e.stopPropagation();
+        e.preventDefault();
         onClose();
       } else if (e.key === "ArrowLeft") {
         if (images.length > 1) {
@@ -213,7 +215,11 @@ export function MediaPicker({
           setError("Could not load the library. Close and try again.");
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      });
 
     return () => controller.abort();
   }, [debouncedQuery]);
@@ -266,13 +272,14 @@ export function MediaPicker({
       return;
     }
 
+    if (selectedMap.has(image.id) && mainId === image.id) {
+      setMainId(null);
+    }
+
     setSelectedMap((prev) => {
       const next = new Map(prev);
       if (next.has(image.id)) {
         next.delete(image.id);
-        if (mainId === image.id) {
-          setMainId(null);
-        }
       } else {
         if (next.size < maxSelect) {
           next.set(image.id, image);
@@ -292,8 +299,15 @@ export function MediaPicker({
         method: "POST",
         body: new FormData(form),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Upload failed");
+      let data: any = null;
+      try {
+        data = await res.json();
+      } catch {
+        // Response is not JSON
+      }
+      if (!res.ok) {
+        throw new Error(data?.message || res.statusText || "Upload failed");
+      }
       setItems((prev) => [data, ...prev]);
       setShowUpload(false);
       form.reset();
@@ -440,6 +454,7 @@ export function MediaPicker({
                   className={`admin-media-pick-item ${viewMode === "list" ? "list" : ""} ${isSelected ? "selected" : ""}`}
                   onClick={() => handleSelect(image)}
                   onKeyDown={(e) => {
+                    if (e.target !== e.currentTarget) return;
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       handleSelect(image);
@@ -465,6 +480,9 @@ export function MediaPicker({
                         e.stopPropagation();
                         setLightboxIndex(index);
                       }}
+                      onKeyDown={(e) => {
+                        e.stopPropagation();
+                      }}
                       title="View larger"
                       aria-label={`View ${image.alt} larger`}
                     >
@@ -479,6 +497,9 @@ export function MediaPicker({
                           setMainId((curr) =>
                             curr === image.id ? null : image.id
                           );
+                        }}
+                        onKeyDown={(e) => {
+                          e.stopPropagation();
                         }}
                         title={
                           isItemMain
@@ -620,7 +641,11 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
           setError("Could not load the image library. Please refresh.");
         }
       })
-      .finally(() => setLoading(false));
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      });
 
     return () => controller.abort();
   }, [debouncedQuery]);
@@ -690,8 +715,15 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
           method: "POST",
           body: formData,
         });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.message || "Upload failed");
+        let data: any = null;
+        try {
+          data = await res.json();
+        } catch {
+          // Response is not JSON
+        }
+        if (!res.ok) {
+          throw new Error(data?.message || res.statusText || "Upload failed");
+        }
         newItems.push(data);
         setProgressList((prev) =>
           prev.map((p, idx) => (idx === i ? { ...p, status: "ok" } : p))

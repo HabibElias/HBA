@@ -139,9 +139,24 @@ export function ContentEditor({
               <div key={i}>
                 <div style={{ position: "relative", display: "inline-block" }}>
                   <img src={photo.src} alt={photo.alt} />
-                  {photo.isMain && (
-                    <span className="admin-media-main-badge" title="Main photograph">★</span>
-                  )}
+                  <button
+                    type="button"
+                    className={`admin-media-main-toggle ${photo.isMain ? "active" : ""}`}
+                    title={photo.isMain ? "Main photograph" : "Set as main photograph"}
+                    aria-label={photo.isMain ? "Main photograph" : "Set as main photograph"}
+                    disabled={!canEdit || pending}
+                    onClick={() => {
+                      update(
+                        f.key,
+                        photos.map((p, n) => ({
+                          ...p,
+                          isMain: n === i ? !p.isMain : false,
+                        }))
+                      );
+                    }}
+                  >
+                    ★
+                  </button>
                 </div>
                 <Label>
                   Image description
@@ -561,34 +576,41 @@ export function ContentEditor({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      {picker && (
-        <MediaPicker
-          onClose={() => setPicker(null)}
-          maxSelect={picker.type === "photos" ? 24 : 1}
-          allowMain={picker.type === "photos"}
-          onChoose={(image) => {
-            update(picker.key, image.src);
-            setPicker(null);
-          }}
-          onChooseMultiple={(images, mainId) => {
-            const existing = ((data[picker.key] || []) as {
-              src: string;
-              alt: string;
-              isMain?: boolean;
-            }[]);
-            const merged = [
-              ...existing,
-              ...images.map((img) => ({
-                src: img.src,
-                alt: img.alt,
-                isMain: mainId === img.id,
-              })),
-            ];
-            update(picker.key, merged);
-            setPicker(null);
-          }}
-        />
-      )}
+      {picker && (() => {
+        const existingPhotos = ((data[picker.key] as any[]) || []);
+        const remainingCapacity = Math.max(1, 24 - existingPhotos.length);
+        return (
+          <MediaPicker
+            onClose={() => setPicker(null)}
+            maxSelect={picker.type === "photos" ? remainingCapacity : 1}
+            allowMain={picker.type === "photos"}
+            onChoose={(image) => {
+              update(picker.key, image.src);
+              setPicker(null);
+            }}
+            onChooseMultiple={(images, mainId) => {
+              const existing = ((data[picker.key] || []) as {
+                src: string;
+                alt: string;
+                isMain?: boolean;
+              }[]);
+              const updatedExisting = mainId
+                ? existing.map((p) => ({ ...p, isMain: false }))
+                : existing;
+              const merged = [
+                ...updatedExisting,
+                ...images.map((img) => ({
+                  src: img.src,
+                  alt: img.alt,
+                  isMain: mainId === img.id,
+                })),
+              ];
+              update(picker.key, merged);
+              setPicker(null);
+            }}
+          />
+        );
+      })()}
     </>
   );
 }
