@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { Mail, ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight, Check } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/public-button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { FieldSelect } from "@/components/ui/field-select";
@@ -73,10 +73,6 @@ export function ContactForm() {
     >
       {/* Left Column: Narrative & Editorial Intro */}
       <div className="lg:col-span-4">
-        <div className="size-12 rounded-2xl bg-surface border border-primary/15 text-primary flex items-center justify-center mb-6 shadow-2xs">
-          <Mail className="size-6" />
-        </div>
-
         <span className="font-script text-2xl sm:text-3xl text-primary-soft block mb-1 font-normal">
           {isAm ? "መልእክት ይላኩ" : "Send a Note"}
         </span>
@@ -90,18 +86,6 @@ export function ContactForm() {
             ? "ስለ ጉብኝት፣ ሕብረት፣ የመጋቢ ምክር ወይም ጸሎት ይጻፉልን።"
             : "Ask about a visit, share a prayer request, or get in touch with our pastoral team."}
         </p>
-
-        <div className="mt-8 p-5 rounded-2xl bg-surface border border-border/80 shadow-2xs space-y-2">
-          <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider">
-            <Check className="size-3.5" />
-            <span>{isAm ? "ቀጥታና ግላዊ" : "Direct & Confidential"}</span>
-          </div>
-          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-            {isAm
-              ? "መልእክትዎን እዚህ ያዘጋጁ፤ ከዚያ በራስዎ የኢሜይል መተግበሪያ ገምግመው ይላኩት።"
-              : "Prepare your message here, then review and send directly through your preferred email app."}
-          </p>
-        </div>
       </div>
 
       {/* Right Column: Form Card */}
@@ -112,11 +96,6 @@ export function ContactForm() {
         }}
         className="lg:col-span-8 rounded-3xl bg-surface border border-border/80 p-6 sm:p-9 md:p-10 space-y-6 shadow-xs relative overflow-hidden"
       >
-        <Mail
-          className="absolute -bottom-8 -right-8 size-48 text-primary opacity-[0.03] rotate-[-12deg] pointer-events-none select-none"
-          aria-hidden="true"
-        />
-
         {error && (
           <p
             role="alert"
