@@ -3,7 +3,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -313,7 +312,7 @@ export function MediaPicker({
           </DialogHeader>
 
           <div className="admin-media-toolbar">
-            <Label className="admin-search">
+            <div className="admin-search">
               <Search size={18} />
               <Input
                 value={query}
@@ -321,7 +320,7 @@ export function MediaPicker({
                 placeholder="Search images"
                 aria-label="Search images"
               />
-            </Label>
+            </div>
             <div className="admin-media-toolbar-right">
               <Button
                 type="button"
@@ -609,7 +608,7 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
   return (
     <>
       <div className="admin-media-toolbar">
-        <Label className="admin-search">
+        <div className="admin-search">
           <Search size={18} />
           <Input
             value={query}
@@ -617,7 +616,7 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
             placeholder="Search the library"
             aria-label="Search the library"
           />
-        </Label>
+        </div>
         <div className="admin-media-toolbar-right">
           {canUpload && (
             <Button
