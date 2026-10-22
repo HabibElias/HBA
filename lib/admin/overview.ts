@@ -8,6 +8,12 @@ import {
   Upload,
 } from "lucide-react";
 
+/**
+ * Definition for an admin dashboard quick action.
+ * Note: `icon` is a React component (LucideIcon). When passing actions across
+ * a Server-to-Client Component boundary, serialize using `iconName` instead
+ * of passing `icon` directly.
+ */
 export interface QuickAction {
   id: string;
   title: string;
@@ -75,8 +81,10 @@ export const QUICK_ACTIONS: readonly QuickAction[] = [
   },
 ] as const;
 
-export function getQuickActions(permissions: readonly string[]): QuickAction[] {
-  const permSet = new Set(permissions);
+export function getQuickActions(
+  permissions: readonly string[] = [],
+): QuickAction[] {
+  const permSet = new Set(permissions ?? []);
   return QUICK_ACTIONS.filter((action) => permSet.has(action.permission));
 }
 
@@ -87,10 +95,10 @@ export interface ContentCount {
 }
 
 export interface PulseMetricsInput {
-  counts?: ContentCount[];
-  mediaCount?: number;
-  upcomingEventsCount?: number;
-  reviewCount?: number;
+  counts?: ContentCount[] | null;
+  mediaCount?: number | string | null;
+  upcomingEventsCount?: number | string | null;
+  reviewCount?: number | string | null;
 }
 
 export interface PulseMetrics {
@@ -105,16 +113,17 @@ export function calculatePulseMetrics({
   mediaCount = 0,
   upcomingEventsCount = 0,
   reviewCount = 0,
-}: PulseMetricsInput): PulseMetrics {
-  const publishedTotal = counts.reduce(
-    (acc, curr) => acc + (Number(curr.published) || 0),
+}: PulseMetricsInput = {}): PulseMetrics {
+  const safeCounts = Array.isArray(counts) ? counts : [];
+  const publishedTotal = safeCounts.reduce(
+    (acc, curr) => acc + (Number(curr?.published) || 0),
     0,
   );
 
   return {
     publishedTotal,
-    needsAttention: reviewCount,
-    mediaTotal: mediaCount,
-    upcomingEvents: upcomingEventsCount,
+    needsAttention: Number(reviewCount) || 0,
+    mediaTotal: Number(mediaCount) || 0,
+    upcomingEvents: Number(upcomingEventsCount) || 0,
   };
 }

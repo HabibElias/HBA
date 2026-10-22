@@ -16,7 +16,8 @@
     "db:import-local": "tsx scripts/import-local.ts",
     "media:migrate": "tsx scripts/migrate-media.ts",
     "media:upload-gallery": "tsx scripts/upload-gallery.ts",
-    "test:media": "tsx --test tests/cloudinary.test.ts"
+    "test:media": "tsx --test tests/cloudinary.test.ts",
+    "test:overview": "tsx --test tests/admin-overview.test.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",

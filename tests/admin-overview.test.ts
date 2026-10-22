@@ -181,3 +181,47 @@ test("calculatePulseMetrics handles empty or zero counts", () => {
     upcomingEvents: 0,
   });
 });
+
+test("calculatePulseMetrics handles undefined / zero arguments safely", () => {
+  const metricsNoArgs = calculatePulseMetrics();
+  assert.deepEqual(metricsNoArgs, {
+    publishedTotal: 0,
+    needsAttention: 0,
+    mediaTotal: 0,
+    upcomingEvents: 0,
+  });
+
+  const metricsEmptyObj = calculatePulseMetrics({});
+  assert.deepEqual(metricsEmptyObj, {
+    publishedTotal: 0,
+    needsAttention: 0,
+    mediaTotal: 0,
+    upcomingEvents: 0,
+  });
+});
+
+test("calculatePulseMetrics handles nullish, string and sparse values safely", () => {
+  const metrics = calculatePulseMetrics({
+    counts: [
+      { kind: "events", published: "14" as any },
+      { kind: "sermons", published: null },
+      undefined as any,
+    ],
+    mediaCount: "50" as any,
+    upcomingEventsCount: null,
+    reviewCount: "8" as any,
+  });
+
+  assert.deepEqual(metrics, {
+    publishedTotal: 14,
+    needsAttention: 8,
+    mediaTotal: 50,
+    upcomingEvents: 0,
+  });
+});
+
+test("getQuickActions handles null or undefined gracefully", () => {
+  assert.deepEqual(getQuickActions(), []);
+  assert.deepEqual(getQuickActions(undefined), []);
+  assert.deepEqual(getQuickActions(null as unknown as readonly string[]), []);
+});
