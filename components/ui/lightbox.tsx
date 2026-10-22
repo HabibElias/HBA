@@ -1,7 +1,12 @@
 "use client";
 
 import * as React from "react";
-import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogClose,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -23,44 +28,43 @@ export function Lightbox({
   className,
 }: LightboxProps) {
   return (
-    <DialogPrimitive.Root
+    <Dialog
       open={isOpen}
       onOpenChange={(open) => {
         if (!open) onClose();
       }}
     >
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Backdrop className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md transition-opacity duration-200 data-[ending-style]:opacity-0 data-[starting-style]:opacity-0" />
-        <DialogPrimitive.Popup
-          aria-label={alt || "Image lightbox"}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 md:p-8 outline-none transition-all duration-200 data-[ending-style]:opacity-0 data-[ending-style]:scale-95 data-[starting-style]:opacity-0 data-[starting-style]:scale-95 pointer-events-none"
-        >
-          <div className="relative max-h-[85vh] max-w-5xl w-full flex flex-col items-center justify-center pointer-events-auto">
-            <DialogPrimitive.Close
-              className="absolute -top-12 right-0 md:top-2 md:right-2 z-10 flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white cursor-pointer"
-              aria-label="Close lightbox"
-            >
-              <X className="size-5" />
-            </DialogPrimitive.Close>
-            <div className="relative max-h-[75vh] w-full flex items-center justify-center overflow-hidden rounded-xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={src}
-                alt={alt}
-                className={cn(
-                  "max-h-[75vh] max-w-full rounded-xl object-contain shadow-2xl transition-transform",
-                  className
-                )}
-              />
-            </div>
-            {caption && (
-              <p className="mt-4 text-center text-sm md:text-base font-medium text-white/90 bg-black/40 backdrop-blur-xs px-4 py-1.5 rounded-full max-w-2xl">
-                {caption}
-              </p>
-            )}
+      <DialogContent
+        showCloseButton={false}
+        overlayClassName="bg-black/90 backdrop-blur-none"
+        className="w-[calc(100%-2rem)] max-w-5xl sm:max-w-5xl flex flex-col items-center justify-center bg-transparent text-white p-0 ring-0"
+      >
+        <DialogTitle className="sr-only">{alt || "Image lightbox"}</DialogTitle>
+        <div className="relative max-h-[85vh] max-w-5xl w-full flex flex-col items-center justify-center pointer-events-auto">
+          <DialogClose
+            className="absolute -top-12 right-0 md:top-2 md:right-2 z-10 flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white cursor-pointer"
+            aria-label="Close lightbox"
+          >
+            <X className="size-5" />
+          </DialogClose>
+          <div className="relative max-h-[75vh] w-full flex items-center justify-center overflow-hidden rounded-xl">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={src}
+              alt={alt}
+              className={cn(
+                "max-h-[75vh] max-w-full rounded-xl object-contain shadow-2xl transition-transform",
+                className,
+              )}
+            />
           </div>
-        </DialogPrimitive.Popup>
-      </DialogPrimitive.Portal>
-    </DialogPrimitive.Root>
+          {caption && (
+            <p className="mt-4 text-center text-sm md:text-base font-medium text-white/90 bg-black/40 backdrop-blur-xs px-4 py-1.5 rounded-full max-w-2xl">
+              {caption}
+            </p>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

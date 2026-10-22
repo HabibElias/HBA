@@ -7,7 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 import { LogoLockup } from "./logo";
 import { LanguageToggle } from "./language-toggle";
 import { MobileNav } from "./mobile-nav";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/public-button";
 import { useLanguage } from "@/lib/context/language-context";
 import { cn } from "@/lib/utils";
 
@@ -54,13 +54,13 @@ export function HeaderNav() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 w-full text-white transition-all duration-300 ease-out",
-        headerState === "top" && "translate-y-0 bg-transparent border-b border-transparent shadow-none",
-        headerState === "hidden" && "-translate-y-full bg-[#2A136E]/95 backdrop-blur-xl border-b border-white/15 shadow-lg shadow-purple-950/20",
-        headerState === "pinned" && "translate-y-0 bg-[#2A136E]/95 backdrop-blur-xl border-b border-white/15 shadow-lg shadow-purple-950/20"
+        "site-header fixed top-0 left-0 right-0 z-50 w-full text-white transition-transform duration-300 ease-out",
+        headerState === "top" && "site-header-top translate-y-0",
+        headerState === "hidden" && "site-header-hidden -translate-y-[calc(100%+24px)]",
+        headerState === "pinned" && "site-header-pinned translate-y-0"
       )}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3 sm:gap-4">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3 sm:gap-4">
         <LogoLockup reversed iconOnly />
 
         {/* Desktop Navigation Links — no pill background, active is underlined, hover has animated arrow */}

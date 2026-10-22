@@ -10,7 +10,7 @@ export function TimeExplainerCallout() {
   const isAm = lang === "am";
 
   return (
-    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 md:pb-20">
       <div className="bg-tint/50 border border-border/60 rounded-3xl p-8 sm:p-10 relative overflow-hidden flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="flex items-start gap-4">
           <div className="size-11 rounded-full bg-tint flex items-center justify-center text-primary shrink-0 border border-border">

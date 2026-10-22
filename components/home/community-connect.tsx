@@ -1,4 +1,5 @@
 "use client";
+import { useContent } from "@/lib/context/content-context";
 
 import Link from "next/link";
 import { Send, Video, Users, ArrowUpRight, Heart } from "lucide-react";
@@ -40,6 +41,7 @@ const SOCIAL_CHANNELS = [
 
 export function CommunityConnect() {
   const { lang } = useLanguage();
+  const {settings}=useContent();
   const isAm = lang === "am";
 
   return (
@@ -68,7 +70,7 @@ export function CommunityConnect() {
             >
             <a
               key={item.id}
-              href={item.link}
+              href={item.link.startsWith("https://t.me/")?settings.telegram:item.link}
               target={item.link.startsWith("http") ? "_blank" : undefined}
               rel={item.link.startsWith("http") ? "noopener noreferrer" : undefined}
               className="group relative overflow-hidden bg-tint hover:bg-surface border border-transparent hover:border-primary/20 rounded-3xl p-8 sm:p-10 text-left flex flex-col items-start justify-between transition-all duration-200 cursor-pointer min-h-[300px]"
@@ -82,7 +84,7 @@ export function CommunityConnect() {
 
               <div className="w-full flex flex-col items-start text-left relative z-10">
                 <span className="inline-block self-start px-3.5 py-1 rounded-full bg-surface group-hover:bg-tint border border-primary/10 group-hover:border-primary/20 text-xs font-semibold text-primary mb-4 transition-all duration-200">
-                  {item.handle}
+                  {item.link.startsWith("https://t.me/")?"@"+settings.telegram.split("/").pop():item.handle}
                 </span>
                 <h3 className="font-display text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors mb-2 text-left">
                   {isAm ? item.nameAm : item.name}

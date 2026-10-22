@@ -1,196 +1,162 @@
-"use client";
-
-import { useActionState, useEffect, useState } from "react";
-import { CheckCircle2, Loader2, Lock } from "lucide-react";
-import { Button } from "@/components/ui/button";
+﻿"use client";
+import { useState, type FormEvent } from "react";
+import { Mail, ArrowUpRight, Check } from "lucide-react";
+import { Button, buttonVariants } from "@/components/ui/public-button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { FieldSelect } from "@/components/ui/field-select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/lib/context/language-context";
-import { submitContactForm } from "@/app/actions/contact";
-
-const CATEGORIES = ["visit", "prayer", "pastoral", "general"] as const;
+import { useContent } from "@/lib/context/content-context";
 
 export function ContactForm() {
-  const { t, lang } = useLanguage();
+  const { settings } = useContent();
+  const EMAIL = settings.email;
+  const { lang } = useLanguage();
   const isAm = lang === "am";
-  const [state, formAction, isPending] = useActionState(submitContactForm, {});
-  const [submitted, setSubmitted] = useState(false);
-  const [resetKey, setResetKey] = useState(0);
-
-  useEffect(() => {
-    if (state.success) setSubmitted(true);
-  }, [state]);
-
-  if (state.success && submitted) {
-    return (
-      <div
-        id="contact-form-section"
-        role="status"
-        className="max-w-3xl mx-auto flex flex-col items-center text-center p-8 rounded-2xl border border-emerald-200 bg-emerald-50/90 text-emerald-950 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-100 space-y-4"
-      >
-        <CheckCircle2 className="size-12 text-emerald-600 dark:text-emerald-400" />
-        <div className="space-y-1">
-          <h3 className="font-semibold text-lg">{t?.contact?.successTitle ?? "Message Sent"}</h3>
-          <p className="text-sm text-emerald-800 dark:text-emerald-200/90 max-w-md">
-            {t?.contact?.success ?? "Thank you. We received your message and will be in touch."}
-          </p>
-        </div>
-        <Button
-          type="button"
-          variant="outline"
-          className="rounded-full px-6"
-          onClick={() => {
-            setSubmitted(false);
-            setResetKey((k) => k + 1);
-          }}
-        >
-          {isAm ? "ሌላ መልእክት ይላኩ" : "Send another message"}
-        </Button>
-      </div>
+  const [draft, setDraft] = useState("");
+  const [error, setError] = useState("");
+  const categories = isAm
+    ? {
+        visit: "ስለ ጉብኝት",
+        prayer: "የጸሎት ጥያቄ",
+        pastoral: "የመጋቢ ምክር",
+        general: "አጠቃላይ ጥያቄ",
+      }
+    : {
+        visit: "Planning a visit",
+        prayer: "Prayer request",
+        pastoral: "Pastoral care",
+        general: "General question",
+      };
+  const prepare = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const name = String(form.get("fullName") || "").trim();
+    const contact = String(form.get("contactInfo") || "").trim();
+    const message = String(form.get("message") || "").trim();
+    if (
+      name.length < 2 ||
+      message.length < 10 ||
+      (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact) &&
+        contact.replace(/\D/g, "").length < 7)
+    ) {
+      setError(
+        isAm
+          ? "ስምዎን፣ ትክክለኛ ስልክ ወይም ኢሜይልና ቢያንስ 10 ፊደላት ያሉት መልእክት ያስገቡ።"
+          : "Please enter your name, a valid phone number or email, and a message of at least 10 characters.",
+      );
+      setDraft("");
+      return;
+    }
+    const category = String(form.get("category")) as keyof typeof categories;
+    const subject = `${categories[category]} — ${name}`;
+    const body = `${name}\n${contact}\n\n${message}${form.get("prayer") ? "\n\nPrayer request / የጸሎት ጥያቄ" : ""}`;
+    setDraft(
+      `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
     );
-  }
-
+    setError("");
+  };
   return (
-    <div id="contact-form-section" className="max-w-3xl mx-auto bg-surface rounded-3xl border border-border/60 p-8 sm:p-12 md:p-14 shadow-xs">
-      <div className="mb-8">
-        <h3 className="font-display text-xl sm:text-2xl font-semibold text-foreground">
-          {isAm ? "መልእክት ይላኩ ወይም የጸሎት ጥያቄ ያቅርቡ" : "Send a Message or Prayer Request"}
+    <div
+      className="contact-composer grid lg:grid-cols-12 gap-10 lg:gap-16 items-start"
+      id="contact-form-section"
+    >
+      <div className="lg:col-span-4">
+        <Mail className="size-7 text-primary mb-5" />
+        <h3 className="section-title">
+          {isAm ? "ጥያቄዎን\nያካፍሉን።" : "Start a\nconversation."}
         </h3>
-        <p className="text-xs sm:text-sm text-muted-foreground mt-2">
+        <p className="body-copy mt-5">
           {isAm
-            ? "ስለ ጉብኝት፣ አገልግሎት ወይም ጸሎት ለአገልጋዮቻችን ያካፍሉን።"
-            : "Send our pastoral staff or church office a note regarding visiting, prayer, or ministries."}
+            ? "ስለ ጉብኝት፣ ሕብረት፣ የመጋቢ ምክር ወይም ጸሎት ይጻፉልን።"
+            : "Ask about a visit, share a prayer request, or get in touch with our pastoral team."}
+        </p>
+        <p className="text-sm text-muted-foreground mt-5 leading-relaxed">
+          {isAm
+            ? "መልእክትዎን ያዘጋጁ። ከዚያ በእርስዎ የኢሜይል መተግበሪያ ገምግመው ይላኩት።"
+            : "Prepare your message here, then review and send it from your own email app."}
         </p>
       </div>
-
-      <form key={resetKey} action={formAction} className="space-y-5">
-        {state.message && !state.success && (
-          <div
+      <form
+        onSubmit={prepare}
+        onChange={() => {
+          if (draft) setDraft("");
+        }}
+        className="lg:col-span-8 rounded-3xl bg-surface border border-border p-6 sm:p-9 space-y-6"
+      >
+        {error && (
+          <p
             role="alert"
-            className="rounded-xl border border-red-200 bg-red-50/90 p-3.5 text-xs text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-200"
+            className="text-sm text-red-700 bg-red-50 p-4 rounded-xl"
           >
-            <p className="font-semibold">{t?.contact?.errorTitle ?? "Submission Notice"}</p>
-            <p className="mt-0.5">
-              {state.errors && Object.keys(state.errors).length > 0
-                ? (t?.contact?.error ?? state.message)
-                : state.message}
-            </p>
-          </div>
+            {error}
+          </p>
         )}
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="fullName">{t?.contact?.fullName ?? "Full Name"}</Label>
+        <div className="grid sm:grid-cols-2 gap-5">
+          <div className="space-y-2">
+            <Label htmlFor="fullName">{isAm ? "ሙሉ ስም" : "Your name"}</Label>
             <Input
               id="fullName"
               name="fullName"
+              autoComplete="name"
               required
-              placeholder={t?.contact?.fullNamePlaceholder ?? "e.g. Dawit Tadesse"}
-              disabled={isPending}
-              aria-invalid={Boolean(state.errors?.fullName)}
-              aria-describedby={state.errors?.fullName ? "fullName-error" : undefined}
+              minLength={2}
+              maxLength={100}
             />
-            {state.errors?.fullName && (
-              <p id="fullName-error" className="text-xs text-red-600 dark:text-red-400">
-                {state.errors.fullName[0]}
-              </p>
-            )}
           </div>
-
-          <div className="space-y-1.5">
-            <Label htmlFor="contactInfo">{t?.contact?.contactInfo ?? "Contact Info"}</Label>
+          <div className="space-y-2">
+            <Label htmlFor="contactInfo">
+              {isAm ? "ስልክ ወይም ኢሜይል" : "Phone or email"}
+            </Label>
             <Input
               id="contactInfo"
               name="contactInfo"
               required
-              placeholder={t?.contact?.contactInfoPlaceholder ?? "+251 9... or email"}
-              disabled={isPending}
-              aria-invalid={Boolean(state.errors?.contactInfo)}
-              aria-describedby={state.errors?.contactInfo ? "contactInfo-error" : undefined}
+              maxLength={150}
             />
-            {state.errors?.contactInfo && (
-              <p id="contactInfo-error" className="text-xs text-red-600 dark:text-red-400">
-                {state.errors.contactInfo[0]}
-              </p>
-            )}
           </div>
         </div>
-
-        <div className="space-y-1.5">
-          <Label htmlFor="category">{t?.contact?.category ?? "Category"}</Label>
-          <select
-            id="category"
-            name="category"
-            defaultValue="visit"
-            disabled={isPending}
-            aria-invalid={Boolean(state.errors?.category)}
-            aria-describedby={state.errors?.category ? "category-error" : undefined}
-            className="border-border bg-surface rounded-xl px-4 py-2.5 text-foreground h-11 w-full text-sm border outline-none transition-all focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-primary-deep/50 dark:border-white/10 dark:text-white"
-          >
-            {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
-                {t?.contact?.categories?.[cat] ?? cat}
-              </option>
-            ))}
-          </select>
-          {state.errors?.category && (
-            <p id="category-error" className="text-xs text-red-600 dark:text-red-400">
-              {state.errors.category[0]}
-            </p>
-          )}
+        <div className="space-y-2">
+          <Label htmlFor="category">
+            {isAm ? "የመልእክት ዓይነት" : "How can we help?"}
+          </Label>
+          <FieldSelect id="category" name="category" defaultValue="visit" options={Object.entries(categories).map(([value, label]) => ({value, label}))} />
         </div>
-
-        <div className="space-y-1.5">
-          <Label htmlFor="message">{t?.contact?.message ?? "Message"}</Label>
+        <div className="space-y-2">
+          <Label htmlFor="message">{isAm ? "መልእክት" : "Your message"}</Label>
           <Textarea
             id="message"
             name="message"
-            rows={4}
             required
-            placeholder={t?.contact?.messagePlaceholder ?? "Let us know how we can serve you..."}
-            disabled={isPending}
-            aria-invalid={Boolean(state.errors?.message)}
-            aria-describedby={state.errors?.message ? "message-error" : undefined}
+            minLength={10}
+            maxLength={3000}
+            rows={5}
           />
-          {state.errors?.message && (
-            <p id="message-error" className="text-xs text-red-600 dark:text-red-400">
-              {state.errors.message[0]}
+        </div>
+        <Label className="flex items-center gap-3 text-sm font-normal text-muted-foreground leading-relaxed">
+          <Checkbox name="prayer" onCheckedChange={() => setDraft("")} />
+          {isAm ? "ይህ የጸሎት ጥያቄ ነው" : "This is a prayer request"}
+        </Label>
+        <Button type="submit">
+          {isAm ? "ኢሜይሉን ያዘጋጁ" : "Prepare email"}
+          <ArrowUpRight className="size-4" />
+        </Button>
+        {draft && (
+          <div role="status" className="rounded-2xl bg-tint p-5 space-y-4">
+            <p className="flex items-start gap-2 text-sm text-foreground">
+              <Check className="size-4 shrink-0 mt-0.5 text-primary" />
+              {isAm
+                ? "መልእክትዎ ተዘጋጅቷል። ለመላክ የኢሜይል መተግበሪያዎን ይክፈቱ።"
+                : "Your draft is ready. Open your email app to review and send it."}
             </p>
-          )}
-        </div>
-
-        <div className="flex items-center gap-2.5 pt-1">
-          <input
-            type="checkbox"
-            id="isPrayerRequest"
-            name="isPrayerRequest"
-            value="true"
-            disabled={isPending}
-            className="size-4 rounded border-border text-primary accent-primary focus:ring-primary"
-          />
-          <Label htmlFor="isPrayerRequest" className="text-xs font-normal text-muted-foreground cursor-pointer">
-            {t?.contact?.prayerRequest ?? "Confidential prayer request"}
-          </Label>
-        </div>
-
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
-          <Button type="submit" disabled={isPending} className="rounded-full w-full sm:w-auto min-w-36 font-semibold">
-            {isPending ? (
-              <>
-                <Loader2 className="size-4 animate-spin" />
-                <span>{t?.contact?.submitting ?? "Sending..."}</span>
-              </>
-            ) : (
-              <span>{t?.contact?.submit ?? "Send Message"}</span>
-            )}
-          </Button>
-
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Lock className="size-3.5 text-primary" />
-            <span>{isAm ? "መልእክትዎ በሚስጥር ይጠበቃል።" : "Your message is kept strictly confidential."}</span>
+            <a href={draft} className={buttonVariants({ variant: "primary" })}>
+              {isAm ? "የኢሜይል ረቂቁን ይክፈቱ" : "Open email draft"}
+              <ArrowUpRight className="size-4" />
+            </a>
           </div>
-        </div>
+        )}
       </form>
     </div>
   );

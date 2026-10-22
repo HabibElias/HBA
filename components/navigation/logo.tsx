@@ -1,10 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
+import { ChurchMark } from "@/components/brand/church-mark";
 import { useLanguage } from "@/lib/context/language-context";
 
-export function LogoLockup({ reversed = false, iconOnly = false }: { reversed?: boolean; iconOnly?: boolean }) {
+export function LogoLockup({
+  reversed = false,
+  iconOnly = false,
+}: {
+  reversed?: boolean;
+  iconOnly?: boolean;
+}) {
   const { lang, t } = useLanguage();
   const isAm = lang === "am";
 
@@ -15,8 +21,17 @@ export function LogoLockup({ reversed = false, iconOnly = false }: { reversed?: 
 
   if (iconOnly) {
     return (
-      <Link href="/" aria-label="Hiwot Birhan Addis Ababa Summit Branch Home" className="shrink-0 rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white group flex items-center">
-        <Image src="/logo-icon-white.svg" alt="Hiwot Birhan Church Seal" width={56} height={56} priority className="size-12 sm:size-14 object-contain transition-transform duration-200 group-hover:scale-105" />
+      <Link
+        href="/"
+        aria-label="Hiwot Birhan Addis Ababa Summit Branch Home"
+        className="shrink-0 rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white group flex items-center"
+      >
+        <ChurchMark
+          reversed={reversed}
+          size={64}
+          priority
+          className="size-14 sm:size-16 transition-transform duration-200 group-hover:scale-105"
+        />
       </Link>
     );
   }
@@ -28,23 +43,10 @@ export function LogoLockup({ reversed = false, iconOnly = false }: { reversed?: 
     >
       <div
         className={`w-16 h-16 shrink-0 flex items-center justify-center transition-colors ${
-          reversed
-            ? ""
-            : ""
+          reversed ? "" : ""
         }`}
       >
-        <Image
-          src={
-            reversed
-              ? "/logo-white-no-background.svg"
-              : "/logo-only-indigo-no-background.svg"
-          }
-          alt="Hiwot Birhan Church Seal"
-          width={64}
-          height={64}
-          className="w-16 h-16 object-contain"
-          priority
-        />
+        <ChurchMark reversed={reversed} size={64} className="size-16" />
       </div>
       <div className="flex flex-col">
         <span

@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1792580518765,
+      "tag": "0000_neat_speedball",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1792593750235,
+      "tag": "0001_moaning_shriek",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1792675740062,
+      "tag": "0002_glorious_master_mold",
+      "breakpoints": true
+    }
+  ]
+}

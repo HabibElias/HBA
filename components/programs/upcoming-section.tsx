@@ -1,42 +1,121 @@
-"use client";
-
+﻿"use client";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { Search, CalendarDays } from "lucide-react";
+import Link from "next/link";
 import { useLanguage } from "@/lib/context/language-context";
-import { upcomingEvents } from "@/lib/data/programs";
+import { useContent } from "@/lib/context/content-context";
 import { UpcomingCard } from "./upcoming-card";
-
 export function UpcomingSection() {
-  const { lang } = useLanguage();
-  const isAm = lang === "am";
-
+  const { events } = useContent(),
+    { lang } = useLanguage(),
+    isAm = lang === "am";
+  const [search, setSearch] = useState(""),
+    [category, setCategory] = useState("all");
+  const categories = [
+    ...new Map(
+      events.map((e) => [
+        e.category,
+        { id: e.category, label: isAm ? e.categoryLabelAm : e.categoryLabel },
+      ]),
+    ).values(),
+  ];
+  const filtered = events.filter(
+    (e) =>
+      (category === "all" || e.category === category) &&
+      `${e.title} ${e.titleAm} ${e.location} ${e.locationAm}`
+        .toLowerCase()
+        .includes(search.toLowerCase()),
+  );
   return (
     <section
-      className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 md:py-36 lg:py-40 scroll-mt-20"
+      className="site-container py-20 md:py-28 scroll-mt-24"
       id="upcoming"
     >
       <span id="events" className="sr-only" />
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-12 md:mb-16 gap-6">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-5 mb-10">
         <div>
-          <span className="font-script text-3xl sm:text-4xl text-primary-soft block mb-1 font-normal">
-            {isAm ? "የመርሐ ግብር ቀን መቁጠሪያ" : "Calendar & Events"}
-          </span>
-          <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
-            {isAm ? "መጪ ጉባኤያትና ካምፖች" : "Coming together soon"}
+          <h2 className="section-title">
+            {isAm ? "መጪ ጉባኤያትና ካምፖች" : "Find your next gathering."}
           </h2>
-        </div>
-        <div className="flex items-center gap-2 self-start sm:self-auto">
-          <span className="text-xs sm:text-sm text-muted-foreground font-medium px-4 py-1.5 rounded-full bg-tint/60 border border-border">
+          <p className="body-copy mt-4">
             {isAm
-              ? "የኢትዮጵያ ዘመን አቆጣጠር፡ 2019 ዓ.ም"
-              : "Ethiopian Year: 2019 E.C."}
-          </span>
+              ? "ከቤተ ክርስቲያን ቤተሰባችን ጋር ለአምልኮ፣ ለትምህርትና ለሕብረት ይቀላቀሉን።"
+              : "Worship, learn, and make time for one another."}
+          </p>
+        </div>
+        <span className="flex items-center gap-2 text-xs text-muted-foreground">
+          <CalendarDays size={16} />
+          {isAm ? "ሰዓቶች በምስራቅ አፍሪካ ሰዓት" : "All times in East Africa Time"}
+        </span>
+      </div>
+      <div className="program-filter-toolbar">
+        <label className="program-search">
+          <Search size={18} />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={isAm ? "ስብሰባ ይፈልጉ" : "Search gatherings"}
+            aria-label={isAm ? "ስብሰባ ይፈልጉ" : "Search gatherings"}
+          />
+        </label>
+        <div className="program-category-tabs">
+          <button
+            aria-pressed={category === "all"}
+            onClick={() => setCategory("all")}
+          >
+            {isAm ? "ሁሉም" : "All gatherings"}
+          </button>
+          {categories.map((c) => (
+            <button
+              key={c.id}
+              aria-pressed={category === c.id}
+              onClick={() => setCategory(c.id)}
+            >
+              {c.label}
+            </button>
+          ))}
         </div>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {upcomingEvents.map((event) => (
+      <p className="text-xs text-muted-foreground my-6" role="status">
+        {isAm
+          ? `${filtered.length} መርሐ ግብሮች`
+          : `${filtered.length} ${filtered.length === 1 ? "gathering" : "gatherings"}`}
+      </p>
+      <div className="space-y-7">
+        {filtered.map((event) => (
           <UpcomingCard key={event.id} event={event} />
         ))}
       </div>
+      {!filtered.length && (
+        <div className="py-16 text-center border border-border rounded-3xl bg-surface">
+          <h3 className="font-display text-2xl font-semibold">
+            {isAm ? "የተገኘ መርሐ ግብር የለም" : "No gatherings found."}
+          </h3>
+          <p className="text-muted-foreground mt-4">
+            {isAm
+              ? "ሌላ ፍለጋ ይሞክሩ ወይም ሳምንታዊ ስብሰባዎቻችንን ይመልከቱ።"
+              : "Try another search, or join one of our weekly gatherings."}
+          </p>
+          <div className="flex gap-6 justify-center mt-6">
+            <button
+              className="font-semibold text-primary"
+              onClick={() => {
+                setSearch("");
+                setCategory("all");
+              }}
+            >
+              {isAm ? "ፍለጋውን አጽዳ" : "Clear filters"}
+            </button>
+            <Link
+              className="font-semibold text-primary"
+              href="/visit#service-times"
+            >
+              {isAm ? "ሳምንታዊ መርሐ ግብር" : "Weekly schedule"}
+            </Link>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

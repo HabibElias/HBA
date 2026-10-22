@@ -1,18 +1,22 @@
 "use client";
+import { useContent } from "@/lib/context/content-context";
+
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, Phone, Send } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 import { LanguageToggle } from "./language-toggle";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/public-button";
 import { cn } from "@/lib/utils";
 
 export function MobileNav({ reversed = false }: { reversed?: boolean }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
   const { t } = useLanguage();
+  const {settings}=useContent();
 
   const navLinks = [
     { href: "/", label: t?.nav?.home ?? "Home" },
@@ -30,11 +34,25 @@ export function MobileNav({ reversed = false }: { reversed?: boolean }) {
       }
     };
 
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    const panel = document.querySelector<HTMLElement>('[aria-label="Mobile navigation"]');
+    panel?.querySelector<HTMLElement>('button, a')?.focus();
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== "Tab" || !panel) return;
+      const items = Array.from(panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), select'));
+      const first = items[0], last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    window.addEventListener("keydown", trapFocus);
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", trapFocus);
+      previousFocus?.focus();
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen]);
@@ -58,7 +76,7 @@ export function MobileNav({ reversed = false }: { reversed?: boolean }) {
         <Menu className="size-6 text-current" />
       </button>
 
-      {isOpen && (
+      {isOpen && createPortal(
         <div className="fixed inset-0 z-50 flex">
           <div
             className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
@@ -126,7 +144,7 @@ export function MobileNav({ reversed = false }: { reversed?: boolean }) {
 
             <div className="pt-6 border-t border-border flex flex-col gap-3 text-xs text-muted-foreground">
               <a
-                href="tel:+251911234567"
+                href={`tel:${settings.phone}`}
                 className="flex items-center gap-2 hover:text-primary transition-colors"
               >
                 <Phone className="size-4 text-primary" />
@@ -144,7 +162,7 @@ export function MobileNav({ reversed = false }: { reversed?: boolean }) {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
     </div>
   );
 }

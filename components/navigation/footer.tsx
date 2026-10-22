@@ -1,19 +1,28 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Phone, Mail, Send, MapPin, Clock, ArrowUpRight } from "lucide-react";
 import { LogoLockup } from "./logo";
 import { useLanguage } from "@/lib/context/language-context";
-import { heroServices } from "@/lib/data/schedules";
+import { useContent } from "@/lib/context/content-context";
+
 
 export function Footer() {
+  const { schedules, settings } = useContent();
+  const heroServices = schedules.map(s=>({...s,badge:s.day,badgeAm:s.dayAm,timeLocal:s.localTime}));
   const { lang, t } = useLanguage();
   const isAm = lang === "am";
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-primary-deep text-white border-t border-white/10 relative">
-      <div className="w-full py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+    <footer className="paint-footer bg-primary-deep text-white relative isolate">
+      <Image src="/illustrations/summit-sanctuary.png" alt="" width={1536} height={1024} sizes="(max-width: 910px) 90vw, 820px" className="footer-art" aria-hidden="true" />
+      <div className="relative w-full py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-14 md:mb-16">
+          <p className="font-script text-4xl sm:text-5xl lg:text-6xl max-w-2xl leading-tight">{isAm ? "እዚህ ለእርስዎም ስፍራ አለ።" : "There is room for you here."}</p>
+          <Link href="/visit" className="group inline-flex items-center gap-3 self-start md:self-auto rounded-full bg-white text-primary-deep font-semibold text-sm px-6 py-3.5 shrink-0 hover:bg-tint transition-colors">{t?.nav?.planVisit ?? "Plan your visit"}<ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"/></Link>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 md:gap-12 mb-12">
           {/* Brand & About (4 cols) */}
           <div className="lg:col-span-4 space-y-4">
@@ -24,7 +33,7 @@ export function Footer() {
             </p>
             <div className="flex items-center gap-3 pt-2">
               <a
-                href="https://t.me/HiwotBirhanSummit"
+                href={settings.telegram}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Telegram Channel"
@@ -33,14 +42,14 @@ export function Footer() {
                 <Send className="size-4" />
               </a>
               <a
-                href="tel:+251911234567"
+                href={`tel:${settings.phone}`}
                 aria-label="Phone"
                 className="size-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors text-white shadow-xs"
               >
                 <Phone className="size-4" />
               </a>
               <a
-                href="mailto:info@hiwotbirhan-summit.org"
+                href={`mailto:${settings.email}`}
                 aria-label="Email"
                 className="size-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors text-white shadow-xs"
               >
@@ -116,7 +125,7 @@ export function Footer() {
             </h3>
             <div className="text-xs text-white/80 leading-relaxed space-y-1.5">
               <p className="font-medium text-white">
-                {isAm ? "ሰሚት ኮንዶሚኒየም 2ኛ በር" : "Summit Condominium Gate 2"}
+                {isAm ? settings.addressAm : settings.address}
               </p>
               <p className="text-white/70">
                 {isAm ? "ከኢትዮጵያ ንግድ ባንክ አጠገብ፣ ቦሌ" : "Near CBE Summit Branch, Bole Subcity"}
@@ -124,10 +133,10 @@ export function Footer() {
               <p className="text-white/70">Addis Ababa, Ethiopia</p>
               <div className="pt-2">
                 <a
-                  href="tel:+251911234567"
+                  href={`tel:${settings.phone}`}
                   className="font-medium text-white hover:text-accent transition-colors block"
                 >
-                  +251 911 234 567
+                  {settings.phone}
                 </a>
               </div>
               <div className="pt-1">

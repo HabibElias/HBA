@@ -1,13 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
+
+  allowedDevOrigins: ["192.168.1.9"],
+  outputFileTracingIncludes: {
+    "/admin/**": ["./public/gallery/**/*"],
+    "/api/admin/media": ["./public/gallery/**/*"],
   },
   images: {
-    unoptimized: true,
+    remotePatterns: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME ? [{
+      protocol: "https",
+      hostname: "res.cloudinary.com",
+      pathname: `/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/**`,
+      search: "",
+    }] : [],
   },
-
-  allowedDevOrigins: ["192.168.1.8"],
 };
 
 export default nextConfig;

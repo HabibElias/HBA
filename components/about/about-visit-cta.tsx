@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { HeartHandshake, MapPin, Calendar } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/public-button";
 import { useLanguage } from "@/lib/context/language-context";
 import { cn } from "@/lib/utils";
 

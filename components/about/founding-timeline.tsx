@@ -55,7 +55,7 @@ export function FoundingTimeline() {
     <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-28 md:py-36 lg:py-40">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
         {/* Left: Narrative & Visual */}
-        <div className="lg:col-span-5 space-y-8">
+        <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-32">
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold leading-tight">
             {isAm
               ? "ከትሑት የሳሎን ጸሎት እስከ ደማቁ የሰሚት መቅደስ"

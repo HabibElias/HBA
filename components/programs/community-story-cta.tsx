@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useLanguage } from "@/lib/context/language-context";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/public-button";
 import { cn } from "@/lib/utils";
 
 export function CommunityStoryCta() {

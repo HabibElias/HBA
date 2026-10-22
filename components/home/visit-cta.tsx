@@ -1,19 +1,21 @@
 "use client";
+import { useContent } from "@/lib/context/content-context";
 
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Clock, Bus, ArrowUpRight } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/public-button";
 import { useLanguage } from "@/lib/context/language-context";
 import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export function VisitCta() {
   const { lang } = useLanguage();
+  const {schedules}=useContent();
   const isAm = lang === "am";
 
   return (
-    <section className="py-28 md:py-36 lg:py-40 bg-tint/25" id="visit-cta">
+    <section className="paint-band py-28 md:py-36 lg:py-40" id="visit-cta">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Details Column (6 cols) */}
@@ -56,7 +58,7 @@ export function VisitCta() {
                     {isAm ? "የእሑድ ዋና አምልኮ" : "Sunday Main Worship"}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    9:00 AM – 12:00 PM EAT (3:00 – 6:00 ጠዋት የኢትዮጵያ ሰዓት)
+                    {schedules[0] ? `${schedules[0].eatTime} (${schedules[0].localTime})` : (isAm ? "ለሰዓቱ ያነጋግሩን" : "Contact us for gathering times")}
                   </p>
                 </div>
               </div>

@@ -2,15 +2,15 @@
 name: Hiwot Birhan Addis Ababa Summit Branch
 description: A calm, warm, reverent digital home for the Addis Ababa Summit branch. Light and life, shared with everyone.
 colors:
-  primary: "#3A33A0"
-  primary-deep: "#1B1763"
-  primary-soft: "#6B64D6"
+  primary: "#4C24B8"
+  primary-deep: "#2A136E"
+  primary-soft: "#7652E4"
   accent: "#C8993A"
-  neutral-bg: "#FAF9F6"
+  neutral-bg: "#FAF9FE"
   neutral-surface: "#FFFFFF"
-  neutral-fg: "#14122B"
-  tint: "#ECEBF8"
-  muted-fg: "#5B5878"
+  neutral-fg: "#15103A"
+  tint: "#EDEAFB"
+  muted-fg: "#5E597D"
   destructive: "#DC2626"
   success: "#16A34A"
   warning: "#D97706"
@@ -24,10 +24,10 @@ state:
   focus-ring-dark: "2px solid #8F89EA"
   disabled-opacity: 0.4
 dark:
-  bg: "#14122B"
-  surface: "#1B1763"
+  bg: "#15103A"
+  surface: "#2A136E"
   tint: "#231F6E"
-  fg: "#FAF9F6"
+  fg: "#FAF9FE"
   muted-fg: "#B9B5E8"
   primary: "#8F89EA"
   border: "#231F6E"
@@ -45,7 +45,8 @@ spacing:
   "24": "6rem"
 rounded:
   sm: "8px"
-  md: "16px"
+  md: "24px"
+  control: "12px"
   pill: "9999px"
   full: "9999px"
 surface:
@@ -131,9 +132,9 @@ components:
 Hiwot Birhan Addis Ababa Summit branch is a Christian family that gathers in Addis Ababa to worship God, hear His Word, and grow together in faith. *Hiwot* means life and *Birhan* means light. The interface embodies this identity: clear, open, reverent, and welcoming, never corporate or institutional.
 
 Every visual decision traces directly back to the church mark:
-- **One indigo voice:** Summit Indigo (`#3A33A0`) is the authentic color sampled from the church logo file. It carries primary navigation, active actions, and identity.
+- **One indigo voice:** Summit Indigo (`#4C24B8`) is the authentic color sampled from the church logo file. It carries primary navigation, active actions, and identity.
 - **Soft, circular geometry:** Pill-shaped buttons (`rounded-full`) echo the circular mark. Cards and images use a comfortable 16px radius (`rounded-2xl`). Leader portraits are framed in clean circles.
-- **Paper, not sterile white:** The default canvas is warm Paper (`#FAF9F6`), with pure white (`#FFFFFF`) reserved for cards and surfaces that gently lift off it.
+- **Paper, not sterile white:** The default canvas is warm Paper (`#FAF9FE`), with pure white (`#FFFFFF`) reserved for cards and surfaces that gently lift off it.
 - **Gold is a whisper:** Radiance Gold (`#C8993A`) appears only as subtle accent rules, icons, and highlights on light surfaces. It is **never** used as text on light backgrounds (WCAG 2.47:1 contrast failure). On dark indigo, it provides warm, legible emphasis. Total gold footprint remains under 5% of any view.
 - **Tonal separation over heavy shadows:** Separation is achieved through clean background alternations (Paper vs. Mist vs. Deep Indigo) and 1px Mist borders, not artificial 20px black drop shadows or glassy blur blobs.
 - **Bilingual by default:** Equal care is given to English and Amharic. Amharic receives generous line-height (~1.7 for body, ~1.35 for headings), authentic Ethiopic typefaces (`Noto Serif Ethiopic` & `Noto Sans Ethiopic`), and strictly **no artificial italics**.
@@ -149,26 +150,26 @@ Every visual decision traces directly back to the church mark:
 
 | Token | Name | Hex | Role | Source |
 |---|---|---|---|---|
-| `primary` | Summit Indigo | `#3A33A0` | Primary buttons, active links, brand highlights, focus ring | Sampled from logo |
-| `primary-deep` | Deep Indigo | `#1B1763` | Dark sections, hero canvas, footer, reversed-logo surfaces | Brand Guidelines |
-| `primary-soft` | Soft Indigo | `#6B64D6` | Hover states, secondary accents, large display subtitles | Brand Guidelines |
+| `primary` | Summit Indigo | `#4C24B8` | Primary buttons, active links, brand highlights, focus ring | Sampled from logo |
+| `primary-deep` | Deep Indigo | `#2A136E` | Dark sections, hero canvas, footer, reversed-logo surfaces | Brand Guidelines |
+| `primary-soft` | Soft Indigo | `#7652E4` | Hover states, secondary accents, large display subtitles | Brand Guidelines |
 | `accent` | Radiance Gold | `#C8993A` | Thin divider rules, icons, highlights on light; text only on dark | Brand Guidelines |
-| `neutral-bg` | Paper | `#FAF9F6` | Default page background (warm luminous off-white) | Brand Guidelines |
+| `neutral-bg` | Paper | `#FAF9FE` | Default page background (warm luminous off-white) | Brand Guidelines |
 | `neutral-surface`| White | `#FFFFFF` | Cards, input fields, popovers | Brand Guidelines |
-| `neutral-fg` | Ink | `#14122B` | Primary body text and headings on light surfaces | Brand Guidelines |
-| `tint` | Mist | `#ECEBF8` | Resting borders, tinted cards, schedule bands | Brand Guidelines |
-| `muted-fg` | Muted Text | `#5B5878` | Secondary labels, captions, schedule metadata (6.4:1 contrast) | Brand Guidelines |
+| `neutral-fg` | Ink | `#15103A` | Primary body text and headings on light surfaces | Brand Guidelines |
+| `tint` | Mist | `#EDEAFB` | Resting borders, tinted cards, schedule bands | Brand Guidelines |
+| `muted-fg` | Muted Text | `#5E597D` | Secondary labels, captions, schedule metadata (6.4:1 contrast) | Brand Guidelines |
 
 #### Accessible Combinations (WCAG Standards)
 
 | Foreground | Background | Ratio | Permitted Use |
 |---|---|---|---|
-| Ink (`#14122B`) | Paper (`#FAF9F6`) | 17.3:1 | Primary body text and headlines |
-| Summit Indigo (`#3A33A0`) | Paper (`#FAF9F6`) | 9.2:1 | Headlines, primary buttons, links |
-| White (`#FFFFFF`) | Summit Indigo (`#3A33A0`) | 9.7:1 | Button text, badges |
-| White (`#FFFFFF`) | Deep Indigo (`#1B1763`) | 15.6:1 | Dark section headlines and copy |
-| Radiance Gold (`#C8993A`) | Deep Indigo (`#1B1763`) | 6.0:1 | Text and highlights on dark sections |
-| Radiance Gold (`#C8993A`) | Ink (`#14122B`) | 7.0:1 | Text and highlights on dark mode |
+| Ink (`#15103A`) | Paper (`#FAF9FE`) | 17.3:1 | Primary body text and headlines |
+| Summit Indigo (`#4C24B8`) | Paper (`#FAF9FE`) | 9.2:1 | Headlines, primary buttons, links |
+| White (`#FFFFFF`) | Summit Indigo (`#4C24B8`) | 9.7:1 | Button text, badges |
+| White (`#FFFFFF`) | Deep Indigo (`#2A136E`) | 15.6:1 | Dark section headlines and copy |
+| Radiance Gold (`#C8993A`) | Deep Indigo (`#2A136E`) | 6.0:1 | Text and highlights on dark sections |
+| Radiance Gold (`#C8993A`) | Ink (`#15103A`) | 7.0:1 | Text and highlights on dark mode |
 | **Radiance Gold (`#C8993A`)** | **Paper / White** | **2.47:1** | **FORBIDDEN FOR TEXT (Lines & icons only)** |
 
 ---
@@ -208,8 +209,8 @@ Every visual decision traces directly back to the church mark:
 - **Buttons & Tags:** Fully pill-shaped (`rounded-full` / `9999px`), echoing the circular church seal.
 - **Cards & Images:** Soft 16px radius (`rounded-2xl`).
 - **Portraits & Avatars:** Pure circles (`rounded-full` with 1:1 aspect ratio).
-- **Flat-by-Default:** Zero heavy drop shadows. No `shadow-2xl` or artificial colored halos. Resting cards use a crisp `1px solid #ECEBF8` border. On hover, apply subtle `-1px` transform and a gentle diffuse shadow (`0 4px 12px rgba(27, 23, 99, 0.06)`).
-- **Section Rhythm:** Alternating full-width horizontal bands of Paper (`#FAF9F6`), Mist (`#ECEBF8`), and Deep Indigo (`#1B1763`).
+- **Flat-by-Default:** Zero heavy drop shadows. No `shadow-2xl` or artificial colored halos. Resting cards use a crisp `1px solid #EDEAFB` border. On hover, apply subtle `-1px` transform and a gentle diffuse shadow (`0 4px 12px rgba(27, 23, 99, 0.06)`).
+- **Section Rhythm:** Alternating full-width horizontal bands of Paper (`#FAF9FE`), Mist (`#EDEAFB`), and Deep Indigo (`#2A136E`).
 
 ---
 
@@ -223,7 +224,7 @@ The church logo is a circular line-art mark with single stroke weight and one co
 5. **Outer circle**: Wholeness, family, belonging.
 
 ### Logo Rules
-- On light backgrounds: Summit Indigo (`#3A33A0`) on Paper or White.
+- On light backgrounds: Summit Indigo (`#4C24B8`) on Paper or White.
 - On dark backgrounds: Reversed pure White (`#FFFFFF`) on Deep Indigo or darkened photos.
 - Minimum full mark size: `64px` digital / `20mm` print.
 - Clear space `X` = width of the cross arm on all sides.
@@ -239,14 +240,14 @@ The project reference document `docs/Inspiration.webp` establishes the desired s
 
 | Inspiration Feature (`Inspiration.webp`) | Hiwot Birhan Summit Implementation | Rationale & Brand Alignment |
 |---|---|---|
-| **Deep Purple / Royal Hero Banner** | Deep Indigo (`#1B1763`) with authentic Ethiopian sanctuary worship photography | Rooted in brand guidelines color palette (`#1B1763` / `#3A33A0`) rather than arbitrary purple. |
+| **Deep Purple / Royal Hero Banner** | Deep Indigo (`#2A136E`) with authentic Ethiopian sanctuary worship photography | Rooted in brand guidelines color palette (`#2A136E` / `#4C24B8`) rather than arbitrary purple. |
 | **Organic Mask / Torn Edge on Hero** | Crisp soft 16px geometric framing (`rounded-2xl`) with single-line borders | Maintains authentic line-art character from the single-stroke church seal. |
 | **Quick Action Pill / Circular Cards** | Service Times bar with generous vertical spacing (`py-16 md:py-24`, replacing cramped negative margins) with circular icon discs and dual-time badges | Delivers immediate, practical schedule guidance for newcomers without superficial decoration. |
 | **Layered Photographic Storytelling** | Warm 16px cards with authentic Ethiopian fellowship photos and Fraunces editorial quotes | Real community presence replacing stock imagery or generic charity appeals. |
 | **Media & Sermon Showcase Card** | Side-by-side card with 16:9 thumbnail, gold play button, series tags, scripture reading box, and audio/video controls | Directly adapts the inspiration's media showcase (`Love the Lord Your God...`) to Pastor Dawit's sermon archive. |
 | **Event Calendar & Gathering List** | High-contrast `FeaturedEvent` card paired with date-aligned schedule rows (`WeeklyScheduleGrid`) | Provides clear chronological visibility for Sunday services, Thursday prayer, and Saturday youth. |
-| **Social & Community Channels** | Soft Mist (`#ECEBF8`) cards for phone, email, and official Telegram (`@HiwotBirhanSummit`) | Pragmatic local communication channels tailored to Addis Ababa habits. |
-| **Reverent Full-Bleed Footer** | Deep Indigo (`#1B1763`) container with white vector church seal and complete bilingual schedule summary | Dignified closing surface echoing the architectural line-art motif in the inspiration. |
+| **Social & Community Channels** | Soft Mist (`#EDEAFB`) cards for phone, email, and official Telegram (`@HiwotBirhanSummit`) | Pragmatic local communication channels tailored to Addis Ababa habits. |
+| **Reverent Full-Bleed Footer** | Deep Indigo (`#2A136E`) container with white vector church seal and complete bilingual schedule summary | Dignified closing surface echoing the architectural line-art motif in the inspiration. |
 
 ### 2. Deliberate Purging of Inspiration Anti-Patterns
 
@@ -261,21 +262,21 @@ While `docs/Inspiration.webp` offers strong layout inspiration, it contains gene
 ## Component Standards
 
 ### 1. Header Navigation
-- Unified Deep Indigo background (`#1B1763` / `bg-primary-deep text-white`), sticky container with subtle backdrop blur and clean `1px solid rgba(255, 255, 255, 0.1)` bottom border across ALL routes.
+- Unified Deep Indigo background (`#2A136E` / `bg-primary-deep text-white`), sticky container with subtle backdrop blur and clean `1px solid rgba(255, 255, 255, 0.1)` bottom border across ALL routes.
 - Authentic reversed White circular church seal icon lockup (`size-12 sm:size-14` / 48px–56px) calibrated to fit all viewports cleanly.
 - Clean navigation links in crisp white with active indicator highlight (`bg-white/20`).
 - High-contrast Language Toggle (English / አማርኛ) and on-dark pill CTA button (`variant: "on-dark"`).
 
 ### 2. Hero Section
-- Deep Indigo (`#1B1763`) background.
+- Deep Indigo (`#2A136E`) background.
 - Watermark: Subtle low-opacity (12–15%) authentic reversed church mark on the canvas—**never** generic Lucide Sparkles or pulsing radial blobs.
 - NO decorative lines or artificial accent bars above headlines. Clear, unencumbered space.
 - Display headline: "Come and worship *with us.*" / "በአዲስ አበባ የሕይወትን ብርሃን ማወጅ".
 - Dual pill buttons:
   - Primary: White pill with Deep Indigo text (`variant: "on-dark"`).
   - Secondary: Transparent pill with 1px White border and White text (`variant: "on-dark-outline"`).
-- **Hero Imagery (Brush Cut Out):** Hand-crafted painterly brush mask (directly inspired by `docs/Inspiration.webp`) replacing generic rectangular cards. Features layered artisanal underlays (Radiance Gold `#C8993A` and Soft Indigo `#6B64D6`) and organic bristle flicks along the left and bottom perimeter.
-- **Bottom Canvas Transition:** Organic torn-brush SVG divider tearing the Deep Indigo hero into the warm Paper canvas (`#FAF9F6`) below, followed by generous vertical breathing room (`py-16 md:py-24`) leading into service schedules.
+- **Hero Imagery (Brush Cut Out):** Hand-crafted painterly brush mask (directly inspired by `docs/Inspiration.webp`) replacing generic rectangular cards. Features layered artisanal underlays (Radiance Gold `#C8993A` and Soft Indigo `#7652E4`) and organic bristle flicks along the left and bottom perimeter.
+- **Bottom Canvas Transition:** Organic torn-brush SVG divider tearing the Deep Indigo hero into the warm Paper canvas (`#FAF9FE`) below, followed by generous vertical breathing room (`py-16 md:py-24`) leading into service schedules.
 
 ### 3. Service Times & Schedules
 - Clean 3-column layout on Paper or Mist (`Sunday Worship`, `Thursday Bible Study & Prayer`, `Saturday Youth & Choir`).
@@ -298,7 +299,7 @@ While `docs/Inspiration.webp` offers strong layout inspiration, it contains gene
 - Accessible contact form with clean error/success states.
 
 ### 7. Footer
-- Deep Indigo (`#1B1763`) full-bleed container with subtle top border.
+- Deep Indigo (`#2A136E`) full-bleed container with subtle top border.
 - Reversed White brand lockup, service schedules summary, contact channels, and warm benediction.
 
 ---
@@ -336,4 +337,21 @@ To prevent the design from regressing into generic "AI slop", every component mu
    - *Fix:* Section vertical padding floor is `py-28 md:py-36 lg:py-40`. Large cards use `p-8 sm:p-12 md:p-16` with generous internal rhythm (`space-y-8` to `space-y-14`) and relaxed grid gaps (`gap-8` to `gap-14`) allowing the content to breathe.
 10. **Unified Header and Hero Continuity Across All Routes.**
    - *Banned:* Header layout shifts, disparate navbar colors per page, or pale grey hero headers clashing with the landing page aesthetic.
-   - *Fix:* Unified sticky Deep Indigo (`#1B1763`) header with white church seal icon and on-dark pill actions across every page, matched seamlessly by Deep Indigo page intros (`PageIntro`, `VisitHero`) on all sub-routes without dividing lines.
+   - *Fix:* Unified sticky Deep Indigo (`#2A136E`) header with white church seal icon and on-dark pill actions across every page, matched seamlessly by Deep Indigo page intros (`PageIntro`, `VisitHero`) on all sub-routes without dividing lines.
+
+
+## Restored implementation and page direction (21 October 2026)
+
+The restored implementation preserves the current Summit purple palette. The existing hero uses the tonal stops #251060, #351786, #4C24B8, and #5627C9, with rgba(120, 84, 230, 0.32) and rgba(76, 36, 184, 0.38) atmospheric overlays. Its photograph shade uses rgb(37 16 96 / 36%) on desktop and rgb(37 16 96 / 20%) on mobile. These are incumbent treatments preserved during restoration, not new palette additions.
+
+- Home retains the original 65%-width desktop photo and painterly mask. No broad sweeping lower edge is applied to the landing hero.
+- The navigation is fully transparent at the top of each page. Once scrolled, it uses its solid purple surface and painted lower edge.
+- Painted section transitions belong to full-width bands and the footer. Cards and other photographs keep clean 24px rounded corners; inputs and selects use 12px (.75rem).
+- Sermon cards have white surfaces on the lilac band, wrapping metadata, equal row heights, and a one/two/three-column phone/tablet/desktop layout.
+- Reveals are prepared only below the viewport, run once, and stop for reduced motion or keyboard focus. There are no perpetual ambient or architectural floating animations.
+- About is a narrative photo essay with an editorial story, open values, faith accordion, and people profiles.
+- Programs is an agenda with landscape event rows, downloadable calendar entries, filters, recaps, and a genuine photo gallery.
+- Visit is a practical planner with a shared weekly timetable, directions, direct contact channels, and an email-draft composer.
+- Gathering times are maintained in lib/data/schedules.ts; homepage and footer summaries derive from that schedule.
+- Contact messages are prepared as email drafts for visitors to review and send in their own email app. The interface never claims delivery.
+- The generated sanctuary illustration remains a decorative footer asset, separate from the authentic church logo.

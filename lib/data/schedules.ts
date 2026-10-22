@@ -59,8 +59,8 @@ export const weeklySchedules: ScheduleItem[] = [
     titleAm: "የእሑድ አምልኮና ቃለ-እግዚአብሔር",
     day: "Sunday",
     dayAm: "እሑድ",
-    eatTime: "9:00 AM – 12:00 PM EAT",
-    localTime: "3:00 – 6:00 ጠዋት",
+    eatTime: "9:00 AM – 1:00 PM EAT",
+    localTime: "3:00 – 7:00 ጠዋት",
     location: "Main Sanctuary Auditorium, Summit",
     locationAm: "ዋናው የመሰብሰቢያ አዳራሽ፣ ሰሚት",
     description:
@@ -80,7 +80,7 @@ export const weeklySchedules: ScheduleItem[] = [
     day: "Sunday Afternoon",
     dayAm: "የእሑድ ከሰዓት",
     eatTime: "6:00 PM – 8:00 PM EAT",
-    localTime: "12:00 – 2:00 ከሰዓት",
+    localTime: "12:00 – 2:00 ማታ",
     location: "Main Sanctuary Auditorium, Summit",
     locationAm: "ዋናው የመሰብሰቢያ አዳራሽ፣ ሰሚት",
     description:
@@ -148,7 +148,7 @@ export interface HeroService {
   link: string;
 }
 
-export const heroServices: HeroService[] = [
+const serviceSummaries: Omit<HeroService, "timeLocal" | "eatTime">[] = [
   {
     id: "sunday-main",
     badge: "Sunday",
@@ -157,8 +157,6 @@ export const heroServices: HeroService[] = [
     titleAm: "ዋና የአምልኮ ቀን",
     desc: "Our main worship gathering on Sunday.",
     descAm: "የዋናው አምልኮ ጊዜ",
-    timeLocal: "3:00 – 7:00 LT",
-    eatTime: "9:00 AM – 1:00 PM",
     link: "/visit#service-times",
   },
   {
@@ -169,8 +167,6 @@ export const heroServices: HeroService[] = [
     titleAm: "ትምህርትና አምልኮ",
     desc: "Sunday afternoon teaching and worship.",
     descAm: "የእሑድ ከሰዓት ትምህርትና አምልኮ",
-    timeLocal: "12:00 – 2:00 LT",
-    eatTime: "6:00 PM – 8:00 PM",
     link: "/visit#service-times",
   },
   {
@@ -181,8 +177,6 @@ export const heroServices: HeroService[] = [
     titleAm: "ትምህርትና አምልኮ",
     desc: "A night of teaching and worship.",
     descAm: "የሌሊት ትምህርትና አምልኮ",
-    timeLocal: "12:00 – 2:00 LT",
-    eatTime: "6:00 PM – 8:00 PM",
     link: "/visit#service-times",
   },
   {
@@ -193,8 +187,13 @@ export const heroServices: HeroService[] = [
     titleAm: "የወጣቶች ፕሮግራም",
     desc: "Saturday afternoon youth program.",
     descAm: "የቅዳሜ ከሰዓት የወጣቶች ፕሮግራም",
-    timeLocal: "10:00 – 12:00 LT",
-    eatTime: "4:00 PM – 6:00 PM",
     link: "/programs#upcoming",
   },
 ];
+
+// Homepage and footer times always come from the full Visit schedule.
+export const heroServices: HeroService[] = serviceSummaries.map((service, index) => ({
+  ...service,
+  eatTime: weeklySchedules[index].eatTime.replace(" EAT", ""),
+  timeLocal: weeklySchedules[index].localTime.replace(/ (ጠዋት|ከሰዓት|ማታ)$/, " LT"),
+}));

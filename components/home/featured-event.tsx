@@ -3,13 +3,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Play, Calendar } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
-import { upcomingEvents } from "@/lib/data/programs";
+import { buttonVariants } from "@/components/ui/public-button";
+import { useContent } from "@/lib/context/content-context";
 import { useLanguage } from "@/lib/context/language-context";
 import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export function FeaturedEvent() {
+  const { events: upcomingEvents } = useContent();
   const { lang } = useLanguage();
   const isAm = lang === "am";
   const featured = upcomingEvents[0];

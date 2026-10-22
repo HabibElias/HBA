@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/public-button";
 import { useLanguage } from "@/lib/context/language-context";
 import { cn } from "@/lib/utils";
 
@@ -45,7 +45,7 @@ export function WhatToExpect() {
   const isAm = lang === "am";
 
   return (
-    <section className="py-28 md:py-36 lg:py-40">
+    <section id="expect" className="py-28 md:py-36 lg:py-40">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mb-14 md:mb-18">
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold">
@@ -84,7 +84,7 @@ export function WhatToExpect() {
         >
           <div className="max-w-2xl">
             <h3 className="font-display text-xl sm:text-2xl font-semibold text-foreground">
-              {isAm ? "የግል አስተናጋጅ ይፈልጋሉ?" : "Would You Like a Personal Host?"}
+              {isAm ? "የግል አስተናጋጅ ይፈልጋሉ?" : "A question before you come?"}
             </h3>
             <p className="text-sm text-muted-foreground mt-2 leading-relaxed">
               {isAm

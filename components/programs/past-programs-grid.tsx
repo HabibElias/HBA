@@ -1,23 +1,33 @@
 "use client";
+import { Search } from "lucide-react";
+
+import { Input } from "@/components/ui/input";
 
 import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Headphones, Images, ZoomIn } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
-import { pastPrograms } from "@/lib/data/programs";
+import { useContent } from "@/lib/context/content-context";
 import { Lightbox } from "@/components/ui/lightbox";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/public-button";
 import { cn } from "@/lib/utils";
 import { ArchiveFilterBar } from "./archive-filter-bar";
 import type { PastProgramPhoto } from "@/lib/types/programs";
 
 export function PastProgramsGrid() {
+  const { recaps: pastPrograms } = useContent();
   const { lang } = useLanguage();
   const isAm = lang === "am";
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedYear, setSelectedYear] = useState("all");
-  const [lightbox, setLightbox] = useState<{ isOpen: boolean; src: string; alt: string; caption?: string }>({
+  const [query, setQuery] = useState("");
+  const [lightbox, setLightbox] = useState<{
+    isOpen: boolean;
+    src: string;
+    alt: string;
+    caption?: string;
+  }>({
     isOpen: false,
     src: "",
     alt: "",
@@ -25,18 +35,31 @@ export function PastProgramsGrid() {
 
   const filtered = useMemo(() => {
     return pastPrograms.filter((p) => {
-      const matchCat = selectedCategory === "all" || p.category === selectedCategory;
-      const matchYear = selectedYear === "all" || p.year.toString() === selectedYear;
-      return matchCat && matchYear;
+      const matchCat =
+        selectedCategory === "all" || p.category === selectedCategory;
+      const matchYear =
+        selectedYear === "all" || p.year.toString() === selectedYear;
+      return (
+        matchCat &&
+        matchYear &&
+        `${p.title} ${p.titleAm} ${p.recap} ${p.recapAm}`
+          .toLowerCase()
+          .includes(query.toLowerCase())
+      );
     });
-  }, [selectedCategory, selectedYear]);
+  }, [pastPrograms, selectedCategory, selectedYear, query]);
 
   const openPhoto = (photo: PastProgramPhoto, title: string) => {
-    setLightbox({ isOpen: true, src: photo.src, alt: photo.alt, caption: photo.caption || title });
+    setLightbox({
+      isOpen: true,
+      src: photo.src,
+      alt: photo.alt,
+      caption: photo.caption || title,
+    });
   };
 
   return (
-    <section className="bg-tint/25 py-28 md:py-36 lg:py-40 scroll-mt-20" id="archive">
+    <section className="paint-band py-20 md:py-28 scroll-mt-20" id="archive">
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header without kicker eyebrow and without fake stat counter */}
         <div className="mb-12 md:mb-16">
@@ -50,6 +73,15 @@ export function PastProgramsGrid() {
           </p>
         </div>
 
+        <label className="program-search mb-5">
+          <Search size={18} aria-hidden="true" />
+          <Input
+            aria-label={isAm ? "ማህደሩን ይፈልጉ" : "Search past gatherings"}
+            placeholder={isAm ? "ማህደሩን ይፈልጉ" : "Search past gatherings"}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </label>
         <ArchiveFilterBar
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
@@ -57,24 +89,45 @@ export function PastProgramsGrid() {
           onSelectYear={setSelectedYear}
         />
 
-        <div className="mt-8 space-y-6">
+        <div className="mt-10 space-y-6" aria-live="polite" aria-atomic="false">
           {filtered.length === 0 ? (
             <div className="text-center py-16 bg-surface rounded-2xl border border-border p-8">
               <p className="text-muted-foreground font-medium">
-                {isAm ? "በተመረጠው መስፈርት የተገኘ ማህደር የለም።" : "No past programs match the selected filter."}
+                {isAm
+                  ? "በተመረጠው መስፈርት የተገኘ ማህደር የለም።"
+                  : "No past programs match the selected filter."}
               </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedCategory("all");
+                  setSelectedYear("all");
+                  setQuery("");
+                }}
+                className={cn(buttonVariants({ variant: "outline" }), "mt-5")}
+              >
+                {isAm ? "ሁሉንም ይመልከቱ" : "Clear filters"}
+              </button>
             </div>
           ) : (
             filtered.map((program) => {
               const programTitle = isAm ? program.titleAm : program.title;
-              const availablePhotos = program.photos.filter((photo) => photo.src.startsWith("/"));
+              const availablePhotos = program.photos.filter((photo) =>
+                photo.src.startsWith("/"),
+              );
               return (
                 <article
                   key={program.id}
                   className="bg-surface rounded-2xl border border-border hover:border-primary/40 transition-colors overflow-hidden p-6 md:p-8"
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                    <div className={availablePhotos.length ? "lg:col-span-7" : "lg:col-span-12"}>
+                    <div
+                      className={
+                        availablePhotos.length
+                          ? "lg:col-span-7"
+                          : "lg:col-span-12"
+                      }
+                    >
                       <div className="flex flex-wrap items-center gap-2.5 mb-3 text-xs">
                         <span className="px-3 py-1 rounded-full font-semibold bg-tint text-primary">
                           {isAm ? program.dateAm : program.date}
@@ -84,7 +137,9 @@ export function PastProgramsGrid() {
                         </span>
                         {program.scripture && (
                           <span className="text-primary font-semibold">
-                            {isAm ? program.scriptureAm || program.scripture : program.scripture}
+                            {isAm
+                              ? program.scriptureAm || program.scripture
+                              : program.scripture}
                           </span>
                         )}
                       </div>
@@ -96,57 +151,90 @@ export function PastProgramsGrid() {
                       </p>
 
                       <div className="flex flex-wrap items-center gap-3">
-                        <Link href="#photos" className={cn(buttonVariants({variant:"outline"}), "text-sm")}>{isAm ? "የቤተ ክርስቲያን ፎቶዎች" : "View church gallery"}</Link>
                         <Link
-                          href="/visit#contact"
-                          className={cn(buttonVariants({ variant: "default" }), "rounded-full px-5 gap-2 text-xs sm:text-sm font-semibold")}
+                          href="#photos"
+                          className={cn(
+                            buttonVariants({ variant: "outline" }),
+                            "text-sm",
+                          )}
+                        >
+                          {isAm ? "የቤተ ክርስቲያን ፎቶዎች" : "View church gallery"}
+                        </Link>
+                        <Link
+                          href={program.recordingUrl || "/visit#contact"}
+                          className={cn(
+                            buttonVariants({ variant: "default" }),
+                            "rounded-full px-5 gap-2 text-xs sm:text-sm font-semibold",
+                          )}
                         >
                           <Headphones className="size-4" />
-                          <span>{isAm ? "ቅጂ ይጠይቁ" : "Ask for a recording"}</span>
+                          <span>
+                            {program.recordingUrl
+                              ? isAm
+                                ? "ቅጂውን ያዳምጡ"
+                                : "Listen to recording"
+                              : isAm
+                                ? "ቅጂ ይጠይቁ"
+                                : "Ask for a recording"}
+                          </span>
                         </Link>
                         {availablePhotos[0] && (
                           <button
                             type="button"
-                            onClick={() => openPhoto(availablePhotos[0], programTitle)}
-                            className={cn(buttonVariants({ variant: "secondary" }), "rounded-full px-5 gap-1.5 text-xs sm:text-sm font-semibold cursor-pointer")}
+                            onClick={() =>
+                              openPhoto(availablePhotos[0], programTitle)
+                            }
+                            className={cn(
+                              buttonVariants({ variant: "secondary" }),
+                              "rounded-full px-5 gap-1.5 text-xs sm:text-sm font-semibold cursor-pointer",
+                            )}
                           >
                             <Images className="size-4 text-primary" />
-                            <span>{isAm ? `ፎቶዎችን ይመልከቱ (${availablePhotos.length})` : `View ${program.photoCount || availablePhotos.length} Photos`}</span>
+                            <span>
+                              {isAm
+                                ? `ፎቶዎችን ይመልከቱ (${availablePhotos.length})`
+                                : `View ${availablePhotos.length} Photos`}
+                            </span>
                           </button>
                         )}
                       </div>
                     </div>
 
-                    {availablePhotos.length > 0 && <div className="lg:col-span-5 grid grid-cols-2 gap-2">
-                      {availablePhotos.slice(0, 3).map((photo, i) => {
-                        const isWide = i === 2 || (i === 0 && availablePhotos.length === 1);
-                        return (
-                          <button
-                            type="button"
-                            key={photo.src}
-                            onClick={() => openPhoto(photo, programTitle)}
-                            aria-label={isAm ? "ፎቶውን አጉላ" : "Enlarge photo"}
-                            className={cn(
-                              "relative rounded-xl overflow-hidden group cursor-pointer bg-tint p-0 border border-border text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-                              isWide ? "col-span-2 h-36" : "h-36"
-                            )}
-                          >
-                            <Image
-                              src={photo.src}
-                              alt={photo.alt}
-                              fill
-                              sizes="(max-width: 1024px) 50vw, 25vw"
-                              className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
-                            />
-                            <div className="absolute inset-0 bg-primary-deep/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                              <span className="text-white text-xs font-semibold flex items-center gap-1">
-                                <ZoomIn className="size-3.5" /> {isAm ? "አጉላ" : "Enlarge"}
-                              </span>
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>}
+                    {availablePhotos.length > 0 && (
+                      <div className="lg:col-span-5 grid grid-cols-2 gap-2">
+                        {availablePhotos.slice(0, 3).map((photo, i) => {
+                          const isWide =
+                            i === 2 ||
+                            (i === 0 && availablePhotos.length === 1);
+                          return (
+                            <button
+                              type="button"
+                              key={photo.src}
+                              onClick={() => openPhoto(photo, programTitle)}
+                              aria-label={isAm ? "ፎቶውን አጉላ" : "Enlarge photo"}
+                              className={cn(
+                                "relative rounded-xl overflow-hidden group cursor-pointer bg-tint p-0 border border-border text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                                isWide ? "col-span-2 h-36" : "h-36",
+                              )}
+                            >
+                              <Image
+                                src={photo.src}
+                                alt={photo.alt}
+                                fill
+                                sizes="(max-width: 1024px) 50vw, 25vw"
+                                className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                              />
+                              <div className="absolute inset-0 bg-primary-deep/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                <span className="text-white text-xs font-semibold flex items-center gap-1">
+                                  <ZoomIn className="size-3.5" />{" "}
+                                  {isAm ? "አጉላ" : "Enlarge"}
+                                </span>
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 </article>
               );

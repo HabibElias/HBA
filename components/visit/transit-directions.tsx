@@ -1,6 +1,6 @@
 "use client";
 
-import { MapPin, ExternalLink, Church } from "lucide-react";
+import { MapPin, ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 
 const ROUTES = [
@@ -45,7 +45,7 @@ export function TransitDirections() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
         {/* Map Column (7 cols) */}
         <div className="lg:col-span-7 bg-surface border border-border/60 rounded-3xl overflow-hidden shadow-xs">
-          <div className="p-5 bg-tint/30 flex items-center justify-between">
+          <div className="p-5 bg-tint/30 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2">
               <MapPin className="size-4 text-primary shrink-0" />
               <span className="text-xs sm:text-sm font-semibold text-foreground">
@@ -57,10 +57,10 @@ export function TransitDirections() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={isAm ? "በጉግል ካርታ ይክፈቱ (በአዲስ መስኮት)" : "Open in Google Maps (opens in new tab)"}
-              className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
+              className="text-xs font-semibold text-primary hover:underline flex items-center gap-1 group"
             >
               <span>{isAm ? "በጉግል ካርታ ይክፈቱ" : "Open in Google Maps"}</span>
-              <ExternalLink className="size-3" />
+              <ArrowUpRight className="size-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </div>
 
@@ -70,20 +70,6 @@ export function TransitDirections() {
               src="https://maps.google.com/maps?q=9.0234,38.8682&z=15&output=embed"
               className="w-full h-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade"
             />
-            <div className="hidden bg-surface/95 p-4 rounded-xl border border-border">
-              <div className="flex items-start gap-3">
-                <div className="size-8 rounded-full bg-primary text-white flex items-center justify-center shrink-0 mt-0.5">
-                  <Church className="size-4" />
-                </div>
-                <div>
-                  <h3 className="font-display text-sm font-semibold text-foreground">Hiwot Birhan Summit</h3>
-                  <p className="text-xs text-muted-foreground">{isAm ? "ከኢትዮጵያ ንግድ ባንክ አጠገብ" : "Next to CBE Summit Branch"}</p>
-                  <p className="text-xs text-primary font-medium mt-1">
-                    {isAm ? "ነጻ የመኪና ማቆሚያ አለ" : "Free On-site Parking Available"}
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div className="p-5 bg-surface flex flex-wrap items-center justify-between text-xs text-muted-foreground gap-2">

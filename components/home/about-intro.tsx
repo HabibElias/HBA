@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, MapPin } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/public-button";
 import { useLanguage } from "@/lib/context/language-context";
 import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
@@ -109,7 +109,7 @@ export function AboutIntro() {
 
             {/* Pill Badge floating top right (like 10 year pathway badge in Inspiration.webp) */}
             <div className="absolute -top-3 right-0 sm:right-2 bg-tint border border-border/80 text-primary text-xs font-semibold px-4 py-2 rounded-full shadow-sm">
-              {isAm ? "10+ ዓመታት በሰሚት • አዲስ አበባ" : "10+ Years in Summit • Addis Ababa"}
+              {isAm ? "ሰሚት • አዲስ አበባ" : "Summit • Addis Ababa"}
             </div>
 
             {/* Playful Curved Dashed Line (from Inspiration.webp) */}

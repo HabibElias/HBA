@@ -1,62 +1,16 @@
 "use client";
+import { useContent } from "@/lib/context/content-context";
+
 
 import Link from "next/link";
 import { ArrowUpRight, Church, BookOpen, Flame, Heart } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
-const FEATURE_CARDS = [
-  {
-    id: "sunday-main",
-    icon: Church,
-    badge: "Sunday",
-    badgeAm: "እሑድ",
-    title: "Main Worship Day",
-    titleAm: "ዋና የአምልኮ ቀን",
-    desc: "Our main worship gathering on Sunday.",
-    descAm: "የዋናው አምልኮ ጊዜ",
-    timeLocal: "3:00 – 7:00 LT",
-    link: "/visit#service-times",
-  },
-  {
-    id: "sunday-afternoon",
-    icon: BookOpen,
-    badge: "Sunday Afternoon",
-    badgeAm: "የእሑድ ከሰዓት",
-    title: "Teaching and Worship",
-    titleAm: "ትምህርትና አምልኮ",
-    desc: "Sunday afternoon teaching and worship.",
-    descAm: "የእሑድ ከሰዓት ትምህርትና አምልኮ",
-    timeLocal: "12:00 – 2:00 LT",
-    link: "/visit#service-times",
-  },
-  {
-    id: "thursday",
-    icon: Flame,
-    badge: "Thursday",
-    badgeAm: "ሐሙስ",
-    title: "Teaching and Worship",
-    titleAm: "ትምህርትና አምልኮ",
-    desc: "A night of teaching and worship.",
-    descAm: "የሌሊት ትምህርትና አምልኮ",
-    timeLocal: "12:00 – 2:00 LT",
-    link: "/visit#service-times",
-  },
-  {
-    id: "saturday-youth",
-    icon: Heart,
-    badge: "Saturday",
-    badgeAm: "ቅዳሜ",
-    title: "Youth Program",
-    titleAm: "የወጣቶች ፕሮግራም",
-    desc: "Saturday afternoon youth program.",
-    descAm: "የቅዳሜ ከሰዓት የወጣቶች ፕሮግራም",
-    timeLocal: "10:00 – 12:00 LT",
-    link: "/programs#upcoming",
-  },
-];
-
 export function ServiceSummary() {
+  const { schedules } = useContent();
+  const symbols = [Church, BookOpen, Flame, Heart];
+  const FEATURE_CARDS = schedules.map((s,i)=>({id:s.id,icon:symbols[i % symbols.length],badge:s.day,badgeAm:s.dayAm,title:s.title,titleAm:s.titleAm,desc:s.description,descAm:s.descriptionAm,timeLocal:s.localTime,link:"/visit#service-times"}));
   const { lang } = useLanguage();
   const isAm = lang === "am";
 

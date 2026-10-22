@@ -1,113 +1,34 @@
-"use client";
-
-import { useEffect, useRef, useState, type ReactNode, type CSSProperties, type ElementType } from "react";
-import { cn } from "@/lib/utils";
-
+﻿"use client";
+import { useEffect, useRef, type ReactNode, type CSSProperties, type ElementType } from "react";
 export interface ScrollRevealProps {
-  children: ReactNode;
-  className?: string;
-  /** Delay in milliseconds before animating in */
-  delay?: number;
-  /** Duration of entrance transition in milliseconds */
-  duration?: number;
-  /** Animation movement variant */
+  children: ReactNode; className?: string; delay?: number; duration?: number;
   variant?: "fade-up" | "fade-down" | "fade-left" | "fade-right" | "zoom-in" | "fade";
-  /** Movement travel distance in pixels */
-  distance?: number;
-  /** Intersection threshold (0.0 to 1.0) */
-  threshold?: number;
-  /** Optional custom rootMargin */
-  rootMargin?: string;
-  style?: CSSProperties;
-  as?: ElementType;
+  distance?: number; threshold?: number; rootMargin?: string; style?: CSSProperties; as?: ElementType;
 }
-
-export function ScrollReveal({
-  children,
-  className,
-  delay = 0,
-  duration = 650,
-  variant = "fade-up",
-  distance = 28,
-  threshold = 0.08,
-  rootMargin = "0px 0px -30px 0px",
-  style,
-  as: Component = "div",
-}: ScrollRevealProps) {
+export function ScrollReveal({ children, className, delay = 0, duration = 500, variant = "fade-up", distance = 20, threshold = .08, rootMargin = "0px 0px -30px 0px", style, as: Component = "div" }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-
+  const revealed = useRef(false);
   useEffect(() => {
-    setIsMounted(true);
-
-    if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
-      setIsVisible(true);
-      return;
-    }
-
-    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReduced) {
-      setIsVisible(true);
-      return;
-    }
-
     const element = ref.current;
-    if (!element) return;
-
-    // Bidirectional IntersectionObserver:
-    // When element enters viewport (scrolling down OR scrolling up), isIntersecting is TRUE.
-    // When element leaves viewport completely, isIntersecting is FALSE, resetting state so it re-animates on return!
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      {
-        threshold,
-        rootMargin,
-      }
-    );
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [threshold, rootMargin]);
-
-  // Compute CSS transform based on variant and visibility
-  const getTransform = () => {
-    if (!isMounted || isVisible) return "none";
-    switch (variant) {
-      case "fade-up":
-        return `translate3d(0, ${distance}px, 0)`;
-      case "fade-down":
-        return `translate3d(0, -${distance}px, 0)`;
-      case "fade-left":
-        return `translate3d(${distance}px, 0, 0)`;
-      case "fade-right":
-        return `translate3d(-${distance}px, 0, 0)`;
-      case "zoom-in":
-        return `scale(0.96) translate3d(0, ${Math.round(distance * 0.4)}px, 0)`;
-      case "fade":
-      default:
-        return "none";
-    }
-  };
-
-  const dynamicStyle: CSSProperties = isMounted
-    ? {
-        opacity: isVisible ? 1 : 0,
-        transform: getTransform(),
-        transitionProperty: "opacity, transform",
-        transitionDuration: isVisible ? `${duration}ms` : "200ms",
-        transitionTimingFunction: isVisible ? "cubic-bezier(0.16, 1, 0.3, 1)" : "ease-out",
-        transitionDelay: isVisible ? `${delay}ms` : "0ms",
-        willChange: isVisible ? "auto" : "opacity, transform",
-        ...style,
-      }
-    : style || {};
-
-  return (
-    <Component ref={ref} className={cn(className)} style={dynamicStyle}>
-      {children}
-    </Component>
-  );
+    if (!element || revealed.current) return;
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (preference.matches || element.getBoundingClientRect().top < innerHeight || !("IntersectionObserver" in window) || typeof element.animate !== "function") { revealed.current = true; return; }
+    const original = { opacity: element.style.opacity, transform: element.style.transform };
+    const travel = Math.min(Math.max(distance, 0), 24);
+    const transform = variant === "fade-up" ? `translateY(${travel}px)` : variant === "fade-down" ? `translateY(-${travel}px)` : variant === "fade-left" ? `translateX(${travel}px)` : variant === "fade-right" ? `translateX(-${travel}px)` : variant === "zoom-in" ? "scale(.98)" : "none";
+    let animation: Animation | undefined;
+    const restore = () => { element.style.opacity = original.opacity; element.style.transform = original.transform; };
+    element.style.opacity = "0"; element.style.transform = transform;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting || revealed.current) return;
+      revealed.current = true; observer.disconnect();
+      animation = element.animate([{ opacity: 0, transform }, { opacity: 1, transform: original.transform || "none" }], { duration: Math.min(Math.max(duration, 0), 650), delay: Math.min(Math.max(delay, 0), 200), easing: "cubic-bezier(.16,1,.3,1)", fill: "backwards" });
+      restore();
+    }, { threshold, rootMargin });
+    const show = () => { revealed.current = true; observer.disconnect(); animation?.cancel(); restore(); };
+    const onPreference = () => { if (preference.matches) show(); };
+    observer.observe(element); element.addEventListener("focusin", show); preference.addEventListener("change", onPreference);
+    return () => { observer.disconnect(); animation?.cancel(); restore(); element.removeEventListener("focusin", show); preference.removeEventListener("change", onPreference); };
+  }, [delay, duration, variant, distance, threshold, rootMargin]);
+  return <Component ref={ref} className={className} style={style}>{children}</Component>;
 }

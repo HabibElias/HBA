@@ -17,8 +17,8 @@ export default function VisitPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <VisitHero />
-      <TimeExplainerCallout />
       <WeeklyScheduleGrid />
+      <TimeExplainerCallout />
       <WhatToExpect />
       <TransitDirections />
       <section id="contact" className="py-28 md:py-36 lg:py-40 bg-tint/25 scroll-mt-16">
