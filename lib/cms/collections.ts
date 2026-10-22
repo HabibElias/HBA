@@ -144,6 +144,7 @@ export const collectionConfig: Record<
       ...pair("location", "Location", { required: true }),
       { key: "eatTime", label: "Standard time · EAT", required: true },
       { key: "localTime", label: "Ethiopian local time", required: true },
+      { key: "photos", label: "Gathering photographs", type: "photos" },
       ...pair("badge", "Short label"),
       ...pair("translationNotes", "Language / translation notes", {
         type: "textarea",

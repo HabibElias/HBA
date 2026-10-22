@@ -15,6 +15,12 @@ export interface ScheduleItem {
   iconName: string;
   translationNotes: string;
   translationNotesAm: string;
+  photos?: {
+    src: string;
+    alt: string;
+    caption?: string;
+    isMain?: boolean;
+  }[];
 }
 
 export interface TimeExplainer {
