@@ -1,4 +1,5 @@
-﻿"use client";
+"use client";
+
 import { useState, type FormEvent } from "react";
 import { Mail, ArrowUpRight, Check } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/public-button";
@@ -9,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useLanguage } from "@/lib/context/language-context";
 import { useContent } from "@/lib/context/content-context";
+import { cn } from "@/lib/utils";
 
 export function ContactForm() {
   const { settings } = useContent();
@@ -17,6 +19,7 @@ export function ContactForm() {
   const isAm = lang === "am";
   const [draft, setDraft] = useState("");
   const [error, setError] = useState("");
+
   const categories = isAm
     ? {
         visit: "ስለ ጉብኝት",
@@ -30,12 +33,14 @@ export function ContactForm() {
         pastoral: "Pastoral care",
         general: "General question",
       };
+
   const prepare = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const name = String(form.get("fullName") || "").trim();
     const contact = String(form.get("contactInfo") || "").trim();
     const message = String(form.get("message") || "").trim();
+
     if (
       name.length < 2 ||
       message.length < 10 ||
@@ -50,53 +55,82 @@ export function ContactForm() {
       setDraft("");
       return;
     }
+
     const category = String(form.get("category")) as keyof typeof categories;
     const subject = `${categories[category]} — ${name}`;
     const body = `${name}\n${contact}\n\n${message}${form.get("prayer") ? "\n\nPrayer request / የጸሎት ጥያቄ" : ""}`;
+
     setDraft(
       `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
     );
     setError("");
   };
+
   return (
     <div
-      className="contact-composer grid lg:grid-cols-12 gap-10 lg:gap-16 items-start"
+      className="contact-composer grid lg:grid-cols-12 gap-10 lg:gap-16 items-start scroll-mt-24"
       id="contact-form-section"
     >
+      {/* Left Column: Narrative & Editorial Intro */}
       <div className="lg:col-span-4">
-        <Mail className="size-7 text-primary mb-5" />
-        <h3 className="section-title">
-          {isAm ? "ጥያቄዎን\nያካፍሉን።" : "Start a\nconversation."}
+        <div className="size-12 rounded-2xl bg-surface border border-primary/15 text-primary flex items-center justify-center mb-6 shadow-2xs">
+          <Mail className="size-6" />
+        </div>
+
+        <span className="font-script text-2xl sm:text-3xl text-primary-soft block mb-1 font-normal">
+          {isAm ? "መልእክት ይላኩ" : "Send a Note"}
+        </span>
+
+        <h3 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold leading-tight tracking-tight">
+          {isAm ? "ጥያቄዎን ያካፍሉን" : "Start a conversation"}
         </h3>
-        <p className="body-copy mt-5">
+
+        <p className="text-sm sm:text-base text-muted-foreground mt-4 leading-relaxed">
           {isAm
             ? "ስለ ጉብኝት፣ ሕብረት፣ የመጋቢ ምክር ወይም ጸሎት ይጻፉልን።"
             : "Ask about a visit, share a prayer request, or get in touch with our pastoral team."}
         </p>
-        <p className="text-sm text-muted-foreground mt-5 leading-relaxed">
-          {isAm
-            ? "መልእክትዎን ያዘጋጁ። ከዚያ በእርስዎ የኢሜይል መተግበሪያ ገምግመው ይላኩት።"
-            : "Prepare your message here, then review and send it from your own email app."}
-        </p>
+
+        <div className="mt-8 p-5 rounded-2xl bg-surface border border-border/80 shadow-2xs space-y-2">
+          <div className="flex items-center gap-2 text-xs font-semibold text-primary uppercase tracking-wider">
+            <Check className="size-3.5" />
+            <span>{isAm ? "ቀጥታና ግላዊ" : "Direct & Confidential"}</span>
+          </div>
+          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            {isAm
+              ? "መልእክትዎን እዚህ ያዘጋጁ፤ ከዚያ በራስዎ የኢሜይል መተግበሪያ ገምግመው ይላኩት።"
+              : "Prepare your message here, then review and send directly through your preferred email app."}
+          </p>
+        </div>
       </div>
+
+      {/* Right Column: Form Card */}
       <form
         onSubmit={prepare}
         onChange={() => {
           if (draft) setDraft("");
         }}
-        className="lg:col-span-8 rounded-3xl bg-surface border border-border p-6 sm:p-9 space-y-6"
+        className="lg:col-span-8 rounded-3xl bg-surface border border-border/80 p-6 sm:p-9 md:p-10 space-y-6 shadow-xs relative overflow-hidden"
       >
+        <Mail
+          className="absolute -bottom-8 -right-8 size-48 text-primary opacity-[0.03] rotate-[-12deg] pointer-events-none select-none"
+          aria-hidden="true"
+        />
+
         {error && (
           <p
             role="alert"
-            className="text-sm text-red-700 bg-red-50 p-4 rounded-xl"
+            className="text-sm text-red-700 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/40 p-4 rounded-xl"
           >
             {error}
           </p>
         )}
-        <div className="grid sm:grid-cols-2 gap-5">
+
+        <div className="grid sm:grid-cols-2 gap-5 relative z-10">
           <div className="space-y-2">
-            <Label htmlFor="fullName">{isAm ? "ሙሉ ስም" : "Your name"}</Label>
+            <Label htmlFor="fullName" className="text-sm font-medium text-foreground">
+              {isAm ? "ሙሉ ስም" : "Your name"}
+            </Label>
             <Input
               id="fullName"
               name="fullName"
@@ -104,10 +138,11 @@ export function ContactForm() {
               required
               minLength={2}
               maxLength={100}
+              className="rounded-xl border-border/80 focus-visible:ring-primary/20"
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="contactInfo">
+            <Label htmlFor="contactInfo" className="text-sm font-medium text-foreground">
               {isAm ? "ስልክ ወይም ኢሜይል" : "Phone or email"}
             </Label>
             <Input
@@ -115,17 +150,30 @@ export function ContactForm() {
               name="contactInfo"
               required
               maxLength={150}
+              className="rounded-xl border-border/80 focus-visible:ring-primary/20"
             />
           </div>
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="category">
+
+        <div className="space-y-2 relative z-10">
+          <Label htmlFor="category" className="text-sm font-medium text-foreground">
             {isAm ? "የመልእክት ዓይነት" : "How can we help?"}
           </Label>
-          <FieldSelect id="category" name="category" defaultValue="visit" options={Object.entries(categories).map(([value, label]) => ({value, label}))} />
+          <FieldSelect
+            id="category"
+            name="category"
+            defaultValue="visit"
+            options={Object.entries(categories).map(([value, label]) => ({
+              value,
+              label,
+            }))}
+          />
         </div>
-        <div className="space-y-2">
-          <Label htmlFor="message">{isAm ? "መልእክት" : "Your message"}</Label>
+
+        <div className="space-y-2 relative z-10">
+          <Label htmlFor="message" className="text-sm font-medium text-foreground">
+            {isAm ? "መልእክት" : "Your message"}
+          </Label>
           <Textarea
             id="message"
             name="message"
@@ -133,26 +181,42 @@ export function ContactForm() {
             minLength={10}
             maxLength={3000}
             rows={5}
+            className="rounded-xl border-border/80 focus-visible:ring-primary/20 resize-none"
           />
         </div>
-        <Label className="flex items-center gap-3 text-sm font-normal text-muted-foreground leading-relaxed">
-          <Checkbox name="prayer" onCheckedChange={() => setDraft("")} />
-          {isAm ? "ይህ የጸሎት ጥያቄ ነው" : "This is a prayer request"}
-        </Label>
-        <Button type="submit">
-          {isAm ? "ኢሜይሉን ያዘጋጁ" : "Prepare email"}
-          <ArrowUpRight className="size-4" />
-        </Button>
+
+        <div className="relative z-10">
+          <Label className="flex items-center gap-3 text-sm font-normal text-muted-foreground leading-relaxed cursor-pointer select-none">
+            <Checkbox name="prayer" onCheckedChange={() => setDraft("")} />
+            <span>{isAm ? "ይህ የጸሎት ጥያቄ ነው" : "This is a prayer request"}</span>
+          </Label>
+        </div>
+
+        <div className="pt-2 relative z-10">
+          <Button type="submit" variant="primary" className="shadow-xs gap-2">
+            <span>{isAm ? "ኢሜይሉን ያዘጋጁ" : "Prepare email"}</span>
+            <ArrowUpRight className="size-4" />
+          </Button>
+        </div>
+
         {draft && (
-          <div role="status" className="rounded-2xl bg-tint p-5 space-y-4">
-            <p className="flex items-start gap-2 text-sm text-foreground">
+          <div
+            role="status"
+            className="rounded-2xl bg-tint/80 border border-primary/25 p-5 space-y-4 relative z-10"
+          >
+            <p className="flex items-start gap-2.5 text-sm text-foreground">
               <Check className="size-4 shrink-0 mt-0.5 text-primary" />
-              {isAm
-                ? "መልእክትዎ ተዘጋጅቷል። ለመላክ የኢሜይል መተግበሪያዎን ይክፈቱ።"
-                : "Your draft is ready. Open your email app to review and send it."}
+              <span>
+                {isAm
+                  ? "መልእክትዎ ተዘጋጅቷል! ለመገምገምና ለመላክ የኢሜይል መተግበሪያዎን ይክፈቱ።"
+                  : "Your message draft is ready! Click below to review and send it in your email app."}
+              </span>
             </p>
-            <a href={draft} className={buttonVariants({ variant: "primary" })}>
-              {isAm ? "የኢሜይል ረቂቁን ይክፈቱ" : "Open email draft"}
+            <a
+              href={draft}
+              className={cn(buttonVariants({ variant: "primary" }), "shadow-xs gap-2")}
+            >
+              <span>{isAm ? "የኢሜይል ረቂቁን ይክፈቱ" : "Open email draft"}</span>
               <ArrowUpRight className="size-4" />
             </a>
           </div>
