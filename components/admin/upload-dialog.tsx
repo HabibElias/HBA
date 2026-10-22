@@ -58,6 +58,9 @@ export function UploadDialog({ open, onClose, onSuccess }: UploadDialogProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [globalError, setGlobalError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const itemsRef = useRef<UploadItem[]>(items);
+  itemsRef.current = items;
+  const prevOpenRef = useRef(open);
 
   // Clean up object URLs on unmount or when dialog closes
   const cleanupPreviews = useCallback((list: UploadItem[]) => {
@@ -71,19 +74,27 @@ export function UploadDialog({ open, onClose, onSuccess }: UploadDialogProps) {
   }, []);
 
   const handleReset = useCallback(() => {
-    cleanupPreviews(items);
-    setItems([]);
+    cleanupPreviews(itemsRef.current);
+    setItems((prev) => (prev.length === 0 ? prev : []));
     setDefaultAlt("");
     setGlobalError("");
     setIsUploading(false);
-  }, [items, cleanupPreviews]);
+  }, [cleanupPreviews]);
 
-  // Reset when dialog closes
+  // Reset only when dialog transitions from open to closed
   useEffect(() => {
-    if (!open) {
+    if (prevOpenRef.current && !open) {
       handleReset();
     }
+    prevOpenRef.current = open;
   }, [open, handleReset]);
+
+  // Clean up on component unmount
+  useEffect(() => {
+    return () => {
+      cleanupPreviews(itemsRef.current);
+    };
+  }, [cleanupPreviews]);
 
   const addFiles = (selectedFiles: FileList | File[]) => {
     const list = Array.from(selectedFiles);

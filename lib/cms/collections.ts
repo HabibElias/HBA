@@ -167,6 +167,11 @@ export const collectionConfig: Record<
       ...pair("role", "Ministry role", { required: true }),
       ...pair("bio", "Biography", { type: "textarea", required: true }),
       {
+        key: "image",
+        label: "Portrait photograph",
+        type: "image",
+      },
+      {
         key: "category",
         label: "Ministry",
         type: "select",

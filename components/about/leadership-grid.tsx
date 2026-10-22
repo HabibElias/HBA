@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import { useContent } from "@/lib/context/content-context";
 import { useLanguage } from "@/lib/context/language-context";
 export function LeadershipGrid() {
@@ -12,7 +12,15 @@ export function LeadershipGrid() {
       </div>
       <div className="grid md:grid-cols-2 gap-x-16 gap-y-12">
         {pastoralTeam.map(leader=><article key={leader.id} className="flex items-start gap-5 sm:gap-6 min-w-0">
-          <div className="size-16 sm:size-20 shrink-0 rounded-full bg-tint text-primary font-display text-2xl font-semibold flex items-center justify-center" aria-hidden="true">{leader.name.split(" ").slice(-2).map(p=>p[0]).join("")}</div>
+          {leader.image ? (
+            <img
+              src={leader.image}
+              alt={isAm ? leader.altAm || leader.nameAm : leader.alt || leader.name}
+              className="size-16 sm:size-20 shrink-0 rounded-full object-cover"
+            />
+          ) : (
+            <div className="size-16 sm:size-20 shrink-0 rounded-full bg-tint text-primary font-display text-2xl font-semibold flex items-center justify-center" aria-hidden="true">{leader.name.split(" ").slice(-2).map(p=>p[0]).join("")}</div>
+          )}
           <div className="min-w-0">
             <h3 className="font-display text-xl font-semibold">{isAm ? leader.nameAm : leader.name}</h3>
             <p className="text-sm text-primary font-medium mt-1">{isAm ? leader.roleAm : leader.role}</p>

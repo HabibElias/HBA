@@ -215,10 +215,10 @@ export function ContentEditor({
           </span>
           <div className="admin-image-field">
             {value ? (
-              <img src={value} alt="Selected event photograph" />
+              <img src={value} alt="Selected photograph" />
             ) : (
               <div className="admin-image-empty">
-                Choose a photograph for this gathering.
+                Choose a photograph from the library.
               </div>
             )}
             {canEdit && (
