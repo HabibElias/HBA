@@ -29,6 +29,9 @@ export async function listMediaPage(
   query: string | null,
 ): Promise<MediaPage> {
   const q = query?.trim().toLowerCase() || null;
+  const parsedCursor = cursor ? new Date(cursor) : null;
+  const validCursor =
+    parsedCursor && !Number.isNaN(parsedCursor.getTime()) ? parsedCursor : null;
 
   const rows = await db
     .select({
@@ -44,9 +47,7 @@ export async function listMediaPage(
     .where(
       and(
         isNotNull(media.url), // Cloudinary only
-        cursor
-          ? lt(media.createdAt, new Date(cursor))
-          : undefined,
+        validCursor ? lt(media.createdAt, validCursor) : undefined,
         q
           ? or(
               like(sql`lower(${media.name})`, `%${q}%`),
