@@ -129,7 +129,7 @@ export function ContentEditor({
       const photos = (data[f.key] || []) as {
         src: string;
         alt: string;
-        caption?: string;
+        isMain?: boolean;
       }[];
       return (
         <div key={f.key} className="admin-field wide">
@@ -137,7 +137,12 @@ export function ContentEditor({
           <div className="admin-photo-list">
             {photos.map((photo, i) => (
               <div key={i}>
-                <img src={photo.src} alt={photo.alt} />
+                <div style={{ position: "relative", display: "inline-block" }}>
+                  <img src={photo.src} alt={photo.alt} />
+                  {photo.isMain && (
+                    <span className="admin-media-main-badge" title="Main photograph">★</span>
+                  )}
+                </div>
                 <Label>
                   Image description
                   <Input
@@ -559,13 +564,27 @@ export function ContentEditor({
       {picker && (
         <MediaPicker
           onClose={() => setPicker(null)}
+          maxSelect={picker.type === "photos" ? 24 : 1}
+          allowMain={picker.type === "photos"}
           onChoose={(image) => {
-            if (picker.type === "photos")
-              update(picker.key, [
-                ...((data[picker.key] || []) as unknown[]),
-                { src: image.src, alt: image.alt },
-              ]);
-            else update(picker.key, image.src);
+            update(picker.key, image.src);
+            setPicker(null);
+          }}
+          onChooseMultiple={(images, mainId) => {
+            const existing = ((data[picker.key] || []) as {
+              src: string;
+              alt: string;
+              isMain?: boolean;
+            }[]);
+            const merged = [
+              ...existing,
+              ...images.map((img) => ({
+                src: img.src,
+                alt: img.alt,
+                isMain: mainId === img.id,
+              })),
+            ];
+            update(picker.key, merged);
             setPicker(null);
           }}
         />
