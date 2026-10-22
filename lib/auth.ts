@@ -5,17 +5,27 @@ import { eq } from "drizzle-orm";
 import { db } from "./db";
 import * as schema from "./db/schema";
 
+const baseURL =
+  process.env.BETTER_AUTH_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined);
+
 if (
   !process.env.BETTER_AUTH_SECRET ||
   process.env.BETTER_AUTH_SECRET.length < 32
 )
   throw new Error("Set a random BETTER_AUTH_SECRET of at least 32 characters.");
-if (!process.env.BETTER_AUTH_URL)
+if (!baseURL)
   throw new Error("BETTER_AUTH_URL must match this website's origin.");
+
 export const auth = betterAuth({
   appName: "Hiwot Birhan Summit",
-  baseURL: process.env.BETTER_AUTH_URL,
+  baseURL,
   secret: process.env.BETTER_AUTH_SECRET,
+  trustedOrigins: [
+    ...(process.env.BETTER_AUTH_URL ? [process.env.BETTER_AUTH_URL] : []),
+    ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
+    "https://*.vercel.app",
+  ],
   database: drizzleAdapter(db, {
     provider: "sqlite",
     schema,

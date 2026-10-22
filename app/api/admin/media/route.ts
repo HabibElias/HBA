@@ -24,10 +24,19 @@ export async function GET() {
 }
 export async function POST(request: Request) {
   try {
-    if (
-      request.headers.get("origin") !==
-      new URL(process.env.BETTER_AUTH_URL!).origin
-    )
+    const requestOrigin = request.headers.get("origin");
+    const configuredOrigin = process.env.BETTER_AUTH_URL
+      ? new URL(process.env.BETTER_AUTH_URL).origin
+      : process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : null;
+
+    const isOriginAllowed =
+      Boolean(requestOrigin) &&
+      (requestOrigin === configuredOrigin ||
+        (requestOrigin ? /^https:\/\/[a-zA-Z0-9_.-]+\.vercel\.app$/.test(requestOrigin) : false));
+
+    if (!isOriginAllowed)
       return Response.json(
         { message: "Invalid request origin." },
         { status: 403 },
