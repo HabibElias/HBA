@@ -44,7 +44,7 @@ No Turso Cloud URL/token was available during implementation. Integration is imp
 | Church details | Visit contact channels, contact email drafts, public address and footer contact links |
 | Image library | Existing local photographs and uploaded event/recap images |
 
-Page composition, the landing hero, static story/faith copy, ministry descriptions, and decorative artwork remain in code. They are not presented as editable CMS collections.
+Home and About text, photographs, links, ministry descriptions, history, values, and faith statements are editable under **Pages**. Page composition and decorative artwork remain in code. Events, schedules, sermons, recaps, and leadership profiles remain in their dedicated content editors.
 
 The editor provides English and Amharic fields, a draft preview, image selection, and display ordering. Start/end fields use East Africa Time; calendar downloads contain UTC dates. Events are sorted by start time and leave the upcoming list after their end time. A completed gathering's recap is authored separately, allowing staff to select appropriate photos and narrative.
 
@@ -113,3 +113,18 @@ The supplied `turso://` endpoint is configured with the equivalent `libsql://` s
 Use the Next.js preset and `npm run build` on Vercel. Do not run the local import or seed during every build. For later schema releases, run `npm run db:migrate` from a trusted terminal with the target cloud environment. `npm run db:seed` only fills missing default records. `npm run media:migrate` resumes any legacy image transfer. `npm run db:import-local` is a one-time, transaction-protected import requiring an empty migrated cloud database and a `SOURCE_DATABASE_URL=file:...` source.
 
 Check the production homepage, admin login, image library, and one upload after deploying. New uploads use the Cloudinary CDN; the public image gallery is explicitly included in the server trace for library discovery on Vercel.
+# Page editing
+
+Open **Pages** in the admin sidebar, choose **Home** or **About**, and select a section. Home text, button links, ministry and community cards, gallery captions, and photographs are editable. About includes the hero, calling, timeline, values, statement of faith, leadership introduction, and visit invitation. Leadership profiles remain in Leadership. English and Amharic use the existing language tabs. Home hero photographs rotate every 6.5 seconds; the starred photograph appears first. Remove all hero photographs to use the purple background alone. The old `/admin/landing` URL redirects to `/admin/pages/home`.
+
+Page changes use the existing **Church details** permissions and share that entry's draft, revision checks, and publication. Saving a draft does not change the public site; publishing applies saved Home, About, and church details together. The editor explains this shared publication scope.
+
+The weekly carousel uses published **Weekly schedule** entries in display order. Its background uses the starred gathering photograph, or the first photograph; a gathering without photos keeps the original lilac card. Events and sermons continue to be managed in their existing admin sections. The selected local photos are bundled under `public/gallery/landing`.
+
+## Managing library photographs
+
+Staff with `media.write` can edit a photograph's library name and alt text or remove it from the library using its **Edit** and **Remove** buttons. Existing content retains its saved descriptions. Removal checks both drafts and published content and refuses to remove referenced photographs. The confirmation makes clear that removal is from the library and picker; the hosted Cloudinary file is retained. Metadata edits and removal are audited and reject stale edits. Viewers cannot invoke these mutations, including directly through server actions.
+
+## Public-page caching
+
+Public pages are prerendered and published database content is cached. Publishing and unpublishing invalidate public content immediately; saving drafts does not. Admin authentication and draft reads remain uncached. A returning visitor's browser may reuse its route data for up to 60 seconds; an already-open page does not update itself automatically. See [PERFORMANCE.md](PERFORMANCE.md) for cache lifetimes, deployment considerations, measurements, and repeatable tests. No database migration is needed for this optimization.

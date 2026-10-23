@@ -1,4 +1,5 @@
 "use client";
+import { useLandingContent } from "@/lib/context/landing-context";
 import { useContent } from "@/lib/context/content-context";
 
 import Link from "next/link";
@@ -7,6 +8,7 @@ import { useLanguage } from "@/lib/context/language-context";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export function SermonPreview() {
+  const { homeText, homeValue } = useLandingContent();
   const { sermons: RECENT_SERMONS } = useContent();
   const { lang } = useLanguage();
   const isAm = lang === "am";
@@ -19,17 +21,17 @@ export function SermonPreview() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <span className="font-script text-3xl sm:text-4xl text-primary-soft block mb-1 font-normal">
-                {isAm ? "የቃሉ ትምህርት" : "Recent Messages"}
+                {homeText("home_sermon_preview_1")}
               </span>
               <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
-                {isAm ? "የቅርብ ጊዜ ስብከቶችና የትምህርት ማህደር" : "Recent Sermons & Teaching"}
+                {homeText("home_sermon_preview_2")}
               </h2>
             </div>
             <Link
-              href="/programs#archive"
+              href={homeValue("home_sermon_preview_3")}
               className="group inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:text-primary-deep transition-colors"
             >
-              <span>{isAm ? "ሁሉንም ስብከቶች ይመልከቱ" : "Explore sermon archive"}</span>
+              <span>{homeText("home_sermon_preview_4")}</span>
               <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
           </div>
@@ -46,7 +48,7 @@ export function SermonPreview() {
               className="min-w-0 h-full flex flex-col"
             >
               <Link
-                href="/programs#archive"
+                href={homeValue("home_sermon_preview_5")}
                 className="group relative overflow-hidden bg-surface border border-border hover:border-primary/30 rounded-3xl p-6 sm:p-8 flex flex-col justify-between flex-1 transition-colors duration-200 min-w-0 min-h-[320px]"
               >
                 {/* Subtle Watermark Icon in bottom-right corner */}

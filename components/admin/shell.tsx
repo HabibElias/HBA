@@ -27,6 +27,7 @@ import { authClient } from "@/lib/auth-client";
 import { ChurchMark } from "@/components/brand/church-mark";
 const links = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin/pages", label: "Pages", icon: BookOpen },
   {
     href: "/admin/content/events",
     label: "Programs & events",

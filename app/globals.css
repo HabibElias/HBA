@@ -142,7 +142,6 @@
 }
 
 html {
-  scroll-behavior: smooth;
   background-color: var(--background);
 }
 
@@ -199,48 +198,45 @@ html:lang(am) .italic {
 }
 
 .home-hero {
-  min-height: 740px;
+  min-height: clamp(820px, 95svh, 980px);
   display: flex;
   align-items: center;
 }
 
-.hero-ambient-glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse 75% 65% at 15% 20%, rgba(120, 84, 230, 0.32) 0%, transparent 70%),
-              radial-gradient(ellipse 60% 50% at 85% 75%, rgba(76, 36, 184, 0.38) 0%, transparent 65%);
-  pointer-events: none;
-
-}
-
 .hero-photo {
   width: 65%;
-  mask-image: url('/hero-paint-mask.svg');
-  mask-size: 100% 100%;
-  mask-repeat: no-repeat;
+  mask: url('/hero-paint-mask.svg') center / 100% 100% no-repeat;
 }
 .hero-photo-shade {
-  background: linear-gradient(180deg, rgb(37 16 96 / 36%), transparent 27%);
+  z-index: 2;
+  background: linear-gradient(180deg, rgb(0 0 0 / 74%), rgb(25 10 68 / 60%) 45%, rgb(18 10 38 / 72%));
 }
 .hero-watermark {
-  width: 540px;
-  height: 540px;
-  left: 20px;
-  top: 70px;
-  opacity: .075;
+  width: clamp(760px, 76vw, 1100px);
+  height: auto;
+  max-width: none;
+  left: clamp(-620px, -38vw, -300px);
+  top: -160px;
+  transform: rotate(-14deg);
+  opacity: .09;
 }
 .hero-copy h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); }
 @media (max-width: 1023px) {
-  .home-hero { min-height: 820px; align-items: flex-start; }
-  .hero-photo { width: 100%; top: 360px; mask-image: linear-gradient(transparent, black 38%); }
+  .home-hero { flex-direction: column; align-items: stretch; }
+  .hero-content { order: 1; padding-bottom: 2rem; }
+  .hero-photo {
+    position: relative;
+    order: 2;
+    width: 100%;
+    height: clamp(380px, 65vw, 520px);
+    mask-image: linear-gradient(transparent, black 25%);
+  }
   .hero-photo img { object-position: center 35%; }
-  .hero-photo-shade { background: linear-gradient(180deg, transparent 35%, rgb(37 16 96 / 20%)); }
+  .hero-watermark { width: 760px; left: -470px; top: -110px; opacity: .07; }
   .hero-copy { max-width: 36rem; }
   .hero-copy p { max-width: 32rem; }
 }
 @media (max-width: 639px) {
-  .home-hero { min-height: 920px; }
-  .hero-photo { top: 440px; }
   .hero-copy > div { gap: .75rem; }
 }
 /* Shared reading rhythm and keyboard access across the public site. */
@@ -289,6 +285,7 @@ html:lang(am) .italic {
 /* Painted edges belong to the header and full-width section transitions. */
 .site-header::before,
 .site-header::after,
+.home-hero::after,
 .subpage-hero::after,
 .paint-band::before,
 .paint-band::after,
@@ -319,6 +316,7 @@ html:lang(am) .italic {
 .site-header-hidden::after { opacity: 1; }
 .site-header-top::before, .site-header-top::after { opacity: 0; }
 .site-header:focus-within { transform: translateY(0); }
+.home-hero::after,
 .subpage-hero::after {
   inset: auto -1px -1px;
   height: clamp(36px, 5vw, 76px);

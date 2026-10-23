@@ -4,7 +4,6 @@ import { db } from "@/lib/db";
 import { media, auditLog } from "@/lib/db/schema";
 import sharp from "sharp";
 import { uploadImage } from "@/lib/cloudinary";
-export const runtime = "nodejs";
 export const maxDuration = 60;
 export async function GET(request: Request) {
   try {

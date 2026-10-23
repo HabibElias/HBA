@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from 'react';
 import "./admin.css";
+import { AdminStandaloneLoading } from "@/components/admin/loading";
 export const metadata: Metadata = {
   title: "Church workspace | Hiwot Birhan Summit",
   robots: { index: false, follow: false },
 };
-export const dynamic = "force-dynamic";
-export const runtime = "nodejs";
 export default function AdminLayout({
   children,
 }: {
@@ -13,7 +13,7 @@ export default function AdminLayout({
 }) {
   return (
     <div className="admin-root" lang="en">
-      {children}
+      <Suspense fallback={<AdminStandaloneLoading />}>{children}</Suspense>
     </div>
   );
 }

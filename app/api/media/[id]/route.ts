@@ -1,7 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { media } from "@/lib/db/schema";
-export const runtime = "nodejs";
 export async function GET(
   _request: Request,
   { params }: { params: Promise<{ id: string }> },

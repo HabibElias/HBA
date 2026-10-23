@@ -1,10 +1,12 @@
 "use server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
+import { PUBLIC_CONTENT_TAG } from '@/lib/cms/cache-tags';
 import { headers } from "next/headers";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { requirePermission, currentStaff } from "@/lib/cms/access";
 import * as service from "@/lib/cms/service";
+import { manageMedia } from '@/lib/cms/media-management';
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { user, auditLog } from "@/lib/db/schema";
@@ -35,7 +37,21 @@ function failure(error: unknown): ActionResult {
   return { ok: false, message };
 }
 function refresh() {
-  revalidatePath("/", "layout");
+  revalidatePath('/admin', 'layout');
+}
+function refreshPublishedContent() {
+  updateTag(PUBLIC_CONTENT_TAG);
+  revalidatePath('/(site)', 'layout');
+}
+export async function manageMediaAction(input: Parameters<typeof manageMedia>[1]): Promise<ActionResult> {
+  try {
+    const actor = await requirePermission('media.write');
+    await manageMedia(actor, input);
+    revalidatePath('/admin/media');
+    return { ok: true, message: input.intent === 'edit' ? 'Photograph details saved.' : 'Photograph removed from the library.' };
+  } catch (error) {
+    return failure(error);
+  }
 }
 export async function saveContentAction(
   input: service.SaveInput,
@@ -43,6 +59,7 @@ export async function saveContentAction(
   try {
     const actor = await requirePermission();
     const id = await service.saveContent(actor, input);
+    if (input.intent === 'publish') refreshPublishedContent();
     refresh();
     return {
       ok: true,
@@ -66,6 +83,7 @@ export async function contentStateAction(
       throw new Error("Unknown action.");
     const actor = await requirePermission();
     await service.changeContentState(actor, id, version, intent);
+    if (intent === 'publish' || intent === 'unpublish') refreshPublishedContent();
     refresh();
     return {
       ok: true,

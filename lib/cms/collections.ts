@@ -1,8 +1,12 @@
 import { z } from "zod";
+import { landingFields } from './landing';
+import { aboutFields } from './about';
+import { pageDefaults } from './pages';
 import { isCloudinaryImage } from "../cloudinary";
 import { collections, type Collection } from "./permissions";
 
 export interface Field {
+  group?: string;
   key: string;
   label: string;
   type?:
@@ -187,6 +191,8 @@ export const collectionConfig: Record<
     description: "Public contact information shared by the website.",
     publicPath: "/visit#contact",
     fields: [
+      ...landingFields,
+      ...aboutFields,
       ...pair("title", "Church name", { required: true }),
       ...pair("address", "Street address", { required: true }),
       {
@@ -215,6 +221,7 @@ export function isCollection(value: string): value is Collection {
 }
 export const safeLink = (value: string) =>
   !value ||
+  /^#[A-Za-z][A-Za-z0-9_-]*$/.test(value) ||
   /^\/(?!\/)[^\\\s]*$/.test(value) ||
   /^https:\/\/[^\s]+$/i.test(value);
 export const safeImage = (value: string) =>
@@ -241,7 +248,7 @@ export function parseContent(
           }),
         )
         .max(24)
-        .default([]);
+        .default((pageDefaults[field.key] as { src: string; alt: string }[] | undefined) ?? []);
     } else if (field.type === "number") {
       shape[field.key] = z.coerce.number().int().min(1900).max(2200);
     } else {
@@ -255,7 +262,7 @@ export function parseContent(
           `${field.label} is required${publishing ? " before publishing" : ""}.`,
         );
       shape[field.key] = rule
-        .default("")
+        .default(String(pageDefaults[field.key] ?? ""))
         .refine(
           (value) =>
             !value || field.type !== "select" || field.options!.includes(value),

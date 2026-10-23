@@ -1,4 +1,5 @@
 "use client";
+import { useLandingContent } from "@/lib/context/landing-context";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -6,51 +7,53 @@ import { ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
+
+
+export function GalleryPreview() {
+  const { homeText, homeValue } = useLandingContent();
 const galleryMoments = [
   {
     "id": "worship",
-    "title": "Together in worship",
-    "titleAm": "በአምልኮ አብረን",
-    "caption": "Our church family in Summit",
-    "captionAm": "በሰሚት ያለው መንፈሳዊ ቤተሰባችን",
-    "image": "/gallery/photo_18_2026-08-27_14-11-14.jpg",
+    "title": homeValue("home_gallery_preview_card1_title"),
+    "titleAm": homeValue("home_gallery_preview_card1_titleAm"),
+    "caption": homeValue("home_gallery_preview_card1_caption"),
+    "captionAm": homeValue("home_gallery_preview_card1_captionAm"),
+    "image": homeValue("home_gallery_preview_card1_image"),
     "featured": true
   },
   {
     "id": "study",
-    "title": "Learning from the Word",
-    "titleAm": "ከቃሉ መማር",
-    "caption": "Reading and reflecting together",
-    "captionAm": "አብሮ ማንበብና መወያየት",
-    "image": "/gallery/photo_10_2026-08-27_14-11-14.jpg"
+    "title": homeValue("home_gallery_preview_card2_title"),
+    "titleAm": homeValue("home_gallery_preview_card2_titleAm"),
+    "caption": homeValue("home_gallery_preview_card2_caption"),
+    "captionAm": homeValue("home_gallery_preview_card2_captionAm"),
+    "image": homeValue("home_gallery_preview_card2_image")
   },
   {
     "id": "praise",
-    "title": "Songs of praise",
-    "titleAm": "የምስጋና ዝማሬ",
-    "caption": "Offering our voices in worship",
-    "captionAm": "በዝማሬ እግዚአብሔርን ማምለክ",
-    "image": "/gallery/photo_24_2026-08-27_14-11-14.jpg"
+    "title": homeValue("home_gallery_preview_card3_title"),
+    "titleAm": homeValue("home_gallery_preview_card3_titleAm"),
+    "caption": homeValue("home_gallery_preview_card3_caption"),
+    "captionAm": homeValue("home_gallery_preview_card3_captionAm"),
+    "image": homeValue("home_gallery_preview_card3_image")
   },
   {
     "id": "prayer",
-    "title": "A moment of prayer",
-    "titleAm": "የጸሎት ጊዜ",
-    "caption": "Drawing near to God",
-    "captionAm": "ወደ እግዚአብሔር መቅረብ",
-    "image": "/gallery/photo_4_2026-08-27_14-11-14.jpg"
+    "title": homeValue("home_gallery_preview_card4_title"),
+    "titleAm": homeValue("home_gallery_preview_card4_titleAm"),
+    "caption": homeValue("home_gallery_preview_card4_caption"),
+    "captionAm": homeValue("home_gallery_preview_card4_captionAm"),
+    "image": homeValue("home_gallery_preview_card4_image")
   },
   {
     "id": "fellowship",
-    "title": "Faith in conversation",
-    "titleAm": "የእምነት ውይይት",
-    "caption": "Growing through fellowship",
-    "captionAm": "በሕብረት ማደግ",
-    "image": "/gallery/photo_15_2026-08-27_14-11-14.jpg"
+    "title": homeValue("home_gallery_preview_card5_title"),
+    "titleAm": homeValue("home_gallery_preview_card5_titleAm"),
+    "caption": homeValue("home_gallery_preview_card5_caption"),
+    "captionAm": homeValue("home_gallery_preview_card5_captionAm"),
+    "image": homeValue("home_gallery_preview_card5_image")
   }
 ];
-
-export function GalleryPreview() {
   const { lang } = useLanguage();
   const isAm = lang === "am";
 
@@ -61,17 +64,17 @@ export function GalleryPreview() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <span className="font-script text-3xl sm:text-4xl text-primary-soft block mb-1 font-normal">
-              {isAm ? "ትዝታዎቻችን" : "Moments & Fellowship"}
+              {homeText("home_gallery_preview_1")}
             </span>
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
-              {isAm ? "የአምልኮ፣ የሕብረትና የደስታ ጊዜያት" : "Life in our church family"}
+              {homeText("home_gallery_preview_2")}
             </h2>
           </div>
           <Link
-            href="/programs#photos"
+            href={homeValue("home_gallery_preview_3")}
             className="group inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:text-primary-deep transition-colors"
           >
-            <span>{isAm ? "ሁሉንም ፎቶዎች ይመልከቱ" : "Explore the gallery"}</span>
+            <span>{homeText("home_gallery_preview_4")}</span>
             <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </div>

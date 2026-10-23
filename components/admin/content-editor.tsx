@@ -32,6 +32,7 @@ import {
   type ActionResult,
 } from "@/app/admin/actions";
 import { MediaPicker } from "./media-library";
+import { pageDefaults, editablePages, sectionLabels, type EditablePage } from '@/lib/cms/pages';
 export interface EditorEntry {
   id?: string;
   kind: Collection;
@@ -61,13 +62,18 @@ function calendarDate(value: string) {
 export function ContentEditor({
   entry,
   permissions,
+  page,
 }: {
   entry: EditorEntry;
   permissions: string[];
+  page?: EditablePage;
 }) {
   const router = useRouter(),
     config = collectionConfig[entry.kind];
-  const [data, setData] = useState(entry.draft),
+  const pageConfig = page ? editablePages[page] : null;
+  const backPath = page ? '/admin/pages' : `/admin/content/${entry.kind}`;
+  const [section, setSection] = useState(pageConfig?.groups[0] ?? '');
+  const [data, setData] = useState(entry.kind === 'settings' ? { ...pageDefaults, ...entry.draft } : entry.draft),
     [position, setPosition] = useState(entry.position),
     [tab, setTab] = useState("English"),
     [preview, setPreview] = useState(false),
@@ -120,7 +126,7 @@ export function ContentEditor({
     });
   }
   const languageFields = config.fields.filter((f) =>
-    tab === "Amharic" ? f.key.endsWith("Am") : !f.key.endsWith("Am"),
+    (pageConfig ? f.group === section && pageConfig.groups.includes(f.group) : !f.group) && (tab === "Amharic" ? f.key.endsWith("Am") : !f.key.endsWith("Am")),
   );
   const field = (f: Field) => {
     const value = String(data[f.key] ?? "");
@@ -288,7 +294,7 @@ export function ContentEditor({
     <>
       <Link
         className="admin-back"
-        href={`/admin/content/${entry.kind}`}
+        href={backPath}
         onClick={(e) => {
           if (dirty) {
             e.preventDefault();
@@ -297,12 +303,12 @@ export function ContentEditor({
         }}
       >
         <ArrowLeft size={16} />
-        {config.name}
+        {pageConfig ? 'Pages' : config.name}
       </Link>
       <div className="admin-page-heading">
         <div>
           <h1>
-            {entry.id ? entry.title : `Create ${config.singular.toLowerCase()}`}
+            {pageConfig ? `${pageConfig.title} page` : entry.id ? entry.title : `Create ${config.singular.toLowerCase()}`}
           </h1>
           <p>
             {entry.publishedVersion === null
@@ -337,6 +343,7 @@ export function ContentEditor({
           onValueChange={(value) => setTab(String(value))}
           className="admin-editor-panel"
         >
+          {pageConfig && <div className="admin-page-section-picker"><Label className="admin-field">Page section<FieldSelect value={section} onValueChange={setSection} options={pageConfig.groups.map(group => ({ value: group, label: sectionLabels[group] }))}/></Label><p className="admin-muted">Edit page text and photos here. Programs, schedules, sermons, and leadership profiles have their own editors.</p></div>}
           <TabsList className="admin-tabs" aria-label="Content language">
             {["English", "Amharic"].map((t) => (
               <TabsTrigger key={t} value={t}>
@@ -378,7 +385,9 @@ export function ContentEditor({
                         "photos",
                       ].includes(f.key) && data[f.key],
                   )
-                  .map((f) => (
+                  .map((f) => f.type === 'photos' ? (
+                    <div key={f.key}><strong>{f.label}</strong>{(data[f.key] as {src: string; alt: string}[]).map((photo, i) => <img key={i} src={photo.src} alt={photo.alt}/>)}</div>
+                  ) : (
                     <div key={f.key}>
                       <strong>{f.label}</strong>
                       <p>{String(data[f.key])}</p>
@@ -403,7 +412,8 @@ export function ContentEditor({
               ? "You have unsaved changes."
               : "All changes on this screen are saved."}
           </p>
-          <Label className="admin-field">
+          {pageConfig && <p className="admin-muted">Home, About, and Church details share a draft. Publishing applies all their saved changes together.</p>}
+          {!pageConfig && <Label className="admin-field">
             Display order
             <Input
               type="number"
@@ -420,7 +430,7 @@ export function ContentEditor({
               Lower numbers appear first. Events are ordered by their start
               date.
             </small>
-          </Label>
+          </Label>}
           {canEdit && (
             <Button
               className="admin-button"
@@ -467,7 +477,7 @@ export function ContentEditor({
           )}
           <Link
             className="admin-text-link"
-            href={config.publicPath}
+            href={pageConfig?.path ?? config.publicPath}
             target="_blank"
           >
             View website ↗
@@ -570,7 +580,7 @@ export function ContentEditor({
               className="admin-button danger"
               onClick={() => {
                 setDirty(false);
-                router.push("/admin/content/" + entry.kind);
+                router.push(backPath);
               }}
             >
               Discard edits

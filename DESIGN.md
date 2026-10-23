@@ -344,7 +344,7 @@ To prevent the design from regressing into generic "AI slop", every component mu
 
 The restored implementation preserves the current Summit purple palette. The existing hero uses the tonal stops #251060, #351786, #4C24B8, and #5627C9, with rgba(120, 84, 230, 0.32) and rgba(76, 36, 184, 0.38) atmospheric overlays. Its photograph shade uses rgb(37 16 96 / 36%) on desktop and rgb(37 16 96 / 20%) on mobile. These are incumbent treatments preserved during restoration, not new palette additions.
 
-- Home retains the original 65%-width desktop photo and painterly mask. No broad sweeping lower edge is applied to the landing hero.
+- Home uses full-width rotating photographs with a deep indigo overlay, stronger behind the left-aligned welcome text. The former 65%-width photo mask and large background logo are removed. Hero navigation has no arrows or counter; a quiet pause/play control remains. Its taller hero has the same paper-cut lower edge as the other pages, with the weekly schedule card overlapping in front by 80–112px. Extra bottom padding keeps the hero controls clear of the card.
 - The navigation is fully transparent at the top of each page. Once scrolled, it uses its solid purple surface and painted lower edge.
 - Painted section transitions belong to full-width bands and the footer. Cards and other photographs keep clean 24px rounded corners; inputs and selects use 12px (.75rem).
 - Sermon cards have white surfaces on the lilac band, wrapping metadata, equal row heights, and a one/two/three-column phone/tablet/desktop layout.

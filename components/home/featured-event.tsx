@@ -1,4 +1,5 @@
 "use client";
+import { useLandingContent } from "@/lib/context/landing-context";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -10,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export function FeaturedEvent() {
+  const { homeText, homeValue } = useLandingContent();
   const { events: upcomingEvents } = useContent();
   const { lang } = useLanguage();
   const isAm = lang === "am";
@@ -24,17 +26,17 @@ export function FeaturedEvent() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <span className="font-script text-3xl sm:text-4xl text-primary-soft block mb-1 font-normal">
-              {isAm ? "የመርሐ ግብር ቀን መቁጠሪያ" : "calendar"}
+              {homeText("home_featured_event_1")}
             </span>
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
-              {isAm ? "መጪ ጉባኤያትና መርሐ ግብሮች" : "Upcoming Gatherings & Events"}
+              {homeText("home_featured_event_2")}
             </h2>
           </div>
           <Link
-            href="/programs"
+            href={homeValue("home_featured_event_3")}
             className="group inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:text-primary-deep transition-colors"
           >
-            <span>{isAm ? "የሙሉ ዓመት ፕሮግራሞች" : "Full program calendar"}</span>
+            <span>{homeText("home_featured_event_4")}</span>
             <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </div>
@@ -54,8 +56,8 @@ export function FeaturedEvent() {
           {/* Left Column (5 cols): Visual Image with Date Badge */}
           <div className="lg:col-span-5 relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:h-[260px] rounded-2xl overflow-hidden bg-tint/60 shadow-xs">
             <Image
-              src="/gallery/photo_16_2026-08-27_14-11-14.jpg"
-              alt={isAm ? "ኅብረት" : "Fellowship at Summit"}
+              src={homeValue("home_featured_event_5")}
+              alt={homeText("home_featured_event_6")}
               fill
               sizes="(max-width: 1024px) 100vw, 40vw"
               className="object-cover object-center group-hover:scale-[1.02] transition-transform duration-300"
@@ -85,13 +87,13 @@ export function FeaturedEvent() {
 
             <div className="flex items-center justify-between pt-2">
               <Link
-                href="/programs#upcoming"
+                href={homeValue("home_featured_event_7")}
                 className={cn(
                   buttonVariants({ variant: "primary", size: "default" }),
                   "group/btn rounded-full px-7 font-semibold shadow-sm hover:shadow-md hover:bg-primary-deep transition-all"
                 )}
               >
-                <span>{isAm ? "ይመዝገቡና ይሳተፉ" : "Register & Learn More"}</span>
+                <span>{homeText("home_featured_event_8")}</span>
                 <ArrowUpRight className="size-4 ml-1.5 transition-transform duration-200 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
               </Link>
             </div>
@@ -111,7 +113,7 @@ export function FeaturedEvent() {
             className="h-full flex flex-col"
           >
             <Link
-              href="/programs#upcoming"
+              href={homeValue("home_featured_event_9")}
               className="group relative overflow-hidden bg-tint hover:bg-surface border border-transparent hover:border-primary/20 rounded-3xl p-6 sm:p-7 flex flex-col justify-between flex-1 transition-all duration-200 cursor-pointer min-h-[220px]"
             >
               <div>
@@ -140,7 +142,7 @@ export function FeaturedEvent() {
               </div>
 
               <div className="mt-5 pt-3 border-t border-primary/10 flex items-center justify-between text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors">
-                <span>{isAm ? "ዝርዝሩን ይመልከቱ" : "View details"}</span>
+                <span>{homeText("home_featured_event_10")}</span>
                 <ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200" />
               </div>
             </Link>

@@ -9,7 +9,8 @@ import Link from "next/link";
 import { Headphones, Images, ZoomIn } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 import { useContent } from "@/lib/context/content-context";
-import { Lightbox } from "@/components/ui/lightbox";
+import dynamic from "next/dynamic";
+const Lightbox = dynamic(() => import("@/components/ui/lightbox").then(module => module.Lightbox));
 import { buttonVariants } from "@/components/ui/public-button";
 import { cn } from "@/lib/utils";
 import { ArchiveFilterBar } from "./archive-filter-bar";
@@ -242,13 +243,13 @@ export function PastProgramsGrid() {
           )}
         </div>
       </div>
-      <Lightbox
+      {lightbox.isOpen && <Lightbox
         isOpen={lightbox.isOpen}
         onClose={() => setLightbox((prev) => ({ ...prev, isOpen: false }))}
         src={lightbox.src}
         alt={lightbox.alt}
         caption={lightbox.caption}
-      />
+      />}
     </section>
   );
 }

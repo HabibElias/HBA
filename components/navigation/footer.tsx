@@ -8,12 +8,11 @@ import { useLanguage } from "@/lib/context/language-context";
 import { useContent } from "@/lib/context/content-context";
 
 
-export function Footer() {
+export function Footer({ year }: { year: number }) {
   const { schedules, settings } = useContent();
   const heroServices = schedules.map(s=>({...s,badge:s.day,badgeAm:s.dayAm,timeLocal:s.localTime}));
   const { lang, t } = useLanguage();
   const isAm = lang === "am";
-  const year = new Date().getFullYear();
 
   return (
     <footer className="paint-footer bg-primary-deep text-white relative isolate">

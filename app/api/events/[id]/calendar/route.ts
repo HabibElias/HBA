@@ -1,13 +1,11 @@
-import { getPublicContent } from "@/lib/cms/public";
+import { getPublicEvent } from "@/lib/cms/public";
 import { createEventCalendar } from "@/lib/calendar";
-export const dynamic = "force-dynamic";
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> },
 ) {
   const { id } = await params;
-  const { events } = await getPublicContent();
-  const event = events.find((e) => e.id === id);
+  const event = await getPublicEvent(id);
   if (!event) return new Response("Gathering not found", { status: 404 });
   const calendar = createEventCalendar(
     event,

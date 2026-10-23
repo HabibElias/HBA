@@ -21,8 +21,11 @@ import {
   Star,
   ChevronLeft,
   ChevronRight,
+  Pencil,
+  Trash2,
 } from "lucide-react";
 import { UploadDialog } from "./upload-dialog";
+import { MediaDetails } from './media-details';
 
 export interface MediaItem {
   id: string;
@@ -510,6 +513,8 @@ export function MediaPicker({
 }
 
 export function MediaLibrary({ canUpload }: MediaLibraryProps) {
+  const [editing, setEditing] = useState<{ photo: MediaItem; mode: 'edit' | 'remove' } | null>(null);
+  const [notice, setNotice] = useState('');
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
   const [items, setItems] = useState<MediaItem[]>([]);
@@ -633,6 +638,7 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
 
       {error && <p role="alert" className="admin-notice error">{error}</p>}
 
+      {notice && <p role="status" className="admin-notice success">{notice}</p>}
       <div className="admin-media-grid">
         {items.map((image, index) => (
           <div className="admin-media-item" key={image.id}>
@@ -649,6 +655,8 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
               </button>
             </div>
             <strong>{image.alt}</strong>
+            <span className="admin-muted admin-media-name">{image.name}</span>
+            {canUpload && <div className="admin-inline-actions"><Button type="button" className="admin-button" aria-label={`Edit ${image.name}`} onClick={() => setEditing({photo: image, mode: 'edit'})}><Pencil size={14}/>Edit</Button><Button type="button" className="admin-button danger" aria-label={`Remove ${image.name}`} onClick={() => setEditing({photo: image, mode: 'remove'})}><Trash2 size={14}/>Remove</Button></div>}
             <Button
               type="button"
               className="admin-button"
@@ -694,6 +702,13 @@ export function MediaLibrary({ canUpload }: MediaLibraryProps) {
       <div ref={sentinelRef} style={{ height: 1 }} aria-hidden="true" />
 
       {/* Standalone Lightbox */}
+      {editing && <MediaDetails key={`${editing.photo.id}-${editing.mode}`} photo={editing.photo} mode={editing.mode} onClose={() => setEditing(null)} onSaved={photo => {
+        setItems(previous => previous.map(item => item.id === photo.id ? photo : item));
+        setEditing(null); setNotice('Photograph details saved.');
+      }} onRemoved={() => {
+        setItems(previous => previous.filter(item => item.id !== editing.photo.id));
+        setLightboxIndex(null); setEditing(null); setNotice('Photograph removed from the library.');
+      }}/>}
       {lightboxIndex !== null && (
         <Lightbox
           images={items}
