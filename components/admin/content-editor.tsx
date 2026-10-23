@@ -129,20 +129,41 @@ export function ContentEditor({
       const photos = (data[f.key] || []) as {
         src: string;
         alt: string;
-        caption?: string;
+        isMain?: boolean;
       }[];
       return (
         <div key={f.key} className="admin-field wide">
           <span className="admin-label">{f.label}</span>
           <div className="admin-photo-list">
             {photos.map((photo, i) => (
-              <div key={i}>
-                <img src={photo.src} alt={photo.alt} />
-                <Label>
-                  Image description
+              <div key={i} className="admin-photo-row">
+                <div className="admin-photo-thumb-wrap">
+                  <img src={photo.src} alt={photo.alt || "Photograph"} />
+                  <button
+                    type="button"
+                    className={`admin-media-main-toggle ${photo.isMain ? "active" : ""}`}
+                    title={photo.isMain ? "Main photograph" : "Set as main photograph"}
+                    aria-label={photo.isMain ? "Main photograph" : "Set as main photograph"}
+                    disabled={!canEdit || pending}
+                    onClick={() => {
+                      update(
+                        f.key,
+                        photos.map((p, n) => ({
+                          ...p,
+                          isMain: n === i ? !p.isMain : false,
+                        }))
+                      );
+                    }}
+                  >
+                    ★
+                  </button>
+                </div>
+                <div className="admin-photo-desc-wrap">
                   <Input
                     value={photo.alt}
                     disabled={!canEdit || pending}
+                    placeholder="Describe this photograph (alt text)"
+                    aria-label={`Description for photograph ${i + 1}`}
                     onChange={(e) =>
                       update(
                         f.key,
@@ -152,12 +173,13 @@ export function ContentEditor({
                       )
                     }
                   />
-                </Label>
+                </div>
                 {canEdit && (
                   <Button
                     type="button"
                     className="admin-icon-button"
                     aria-label={`Remove photo ${i + 1}`}
+                    disabled={pending}
                     onClick={() =>
                       update(
                         f.key,
@@ -193,10 +215,10 @@ export function ContentEditor({
           </span>
           <div className="admin-image-field">
             {value ? (
-              <img src={value} alt="Selected event photograph" />
+              <img src={value} alt="Selected photograph" />
             ) : (
               <div className="admin-image-empty">
-                Choose a photograph for this gathering.
+                Choose a photograph from the library.
               </div>
             )}
             {canEdit && (
@@ -556,20 +578,41 @@ export function ContentEditor({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      {picker && (
-        <MediaPicker
-          onClose={() => setPicker(null)}
-          onChoose={(image) => {
-            if (picker.type === "photos")
-              update(picker.key, [
-                ...((data[picker.key] || []) as unknown[]),
-                { src: image.src, alt: image.alt },
-              ]);
-            else update(picker.key, image.src);
-            setPicker(null);
-          }}
-        />
-      )}
+      {picker && (() => {
+        const existingPhotos = ((data[picker.key] as any[]) || []);
+        const remainingCapacity = Math.max(1, 24 - existingPhotos.length);
+        return (
+          <MediaPicker
+            onClose={() => setPicker(null)}
+            maxSelect={picker.type === "photos" ? remainingCapacity : 1}
+            allowMain={picker.type === "photos"}
+            onChoose={(image) => {
+              update(picker.key, image.src);
+              setPicker(null);
+            }}
+            onChooseMultiple={(images, mainId) => {
+              const existing = ((data[picker.key] || []) as {
+                src: string;
+                alt: string;
+                isMain?: boolean;
+              }[]);
+              const updatedExisting = mainId
+                ? existing.map((p) => ({ ...p, isMain: false }))
+                : existing;
+              const merged = [
+                ...updatedExisting,
+                ...images.map((img) => ({
+                  src: img.src,
+                  alt: img.alt,
+                  isMain: mainId === img.id,
+                })),
+              ];
+              update(picker.key, merged);
+              setPicker(null);
+            }}
+          />
+        );
+      })()}
     </>
   );
 }

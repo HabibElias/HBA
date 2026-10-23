@@ -144,6 +144,7 @@ export const collectionConfig: Record<
       ...pair("location", "Location", { required: true }),
       { key: "eatTime", label: "Standard time · EAT", required: true },
       { key: "localTime", label: "Ethiopian local time", required: true },
+      { key: "photos", label: "Gathering photographs", type: "photos" },
       ...pair("badge", "Short label"),
       ...pair("translationNotes", "Language / translation notes", {
         type: "textarea",
@@ -166,6 +167,11 @@ export const collectionConfig: Record<
       ...pair("name", "Full name", { required: true }),
       ...pair("role", "Ministry role", { required: true }),
       ...pair("bio", "Biography", { type: "textarea", required: true }),
+      {
+        key: "image",
+        label: "Portrait photograph",
+        type: "image",
+      },
       {
         key: "category",
         label: "Ministry",
@@ -231,6 +237,7 @@ export function parseContent(
               .refine(safeImage, "Choose an image from the library."),
             alt: z.string().trim().min(1).max(300),
             caption: z.string().max(500).optional(),
+            isMain: z.boolean().optional(),
           }),
         )
         .max(24)

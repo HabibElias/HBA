@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { currentStaff } from "@/lib/cms/access";
 import { LoginForm } from "@/components/admin/login-form";
 import { ChurchMark } from "@/components/brand/church-mark";
+
 export default async function LoginPage() {
   const staff = await currentStaff();
   if (staff) redirect(staff.mustChangePassword ? "/admin/password" : "/admin");
@@ -30,7 +32,8 @@ export default async function LoginPage() {
       </div>
       <div className="admin-login-form">
         <Link href="/" className="admin-back">
-          ← Back to the website
+          <ArrowLeft size={14} />
+          Back to the website
         </Link>
         <h2>Welcome back.</h2>
         <p className="admin-muted">Sign in to your church workspace.</p>

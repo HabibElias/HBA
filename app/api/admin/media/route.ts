@@ -1,15 +1,19 @@
 import { requirePermission, AccessError } from "@/lib/cms/access";
-import { listMedia } from "@/lib/cms/media";
+import { listMediaPage } from "@/lib/cms/media";
 import { db } from "@/lib/db";
 import { media, auditLog } from "@/lib/db/schema";
 import sharp from "sharp";
 import { uploadImage } from "@/lib/cloudinary";
 export const runtime = "nodejs";
 export const maxDuration = 60;
-export async function GET() {
+export async function GET(request: Request) {
   try {
     await requirePermission();
-    return Response.json(await listMedia(), {
+    const { searchParams } = new URL(request.url);
+    const cursor = searchParams.get("cursor") || null;
+    const query = searchParams.get("q") || null;
+    const page = await listMediaPage(cursor, query);
+    return Response.json(page, {
       headers: { "Cache-Control": "private, no-store" },
     });
   } catch (e) {
