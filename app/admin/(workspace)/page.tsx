@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { desc, sql } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import {
-  ArrowRight,
+  ArrowUpRight,
   Plus,
   Clock3,
   CheckCircle2,
@@ -31,7 +31,14 @@ const collectionIcons: Record<string, typeof CalendarDays> = {
 
 export default async function Overview() {
   const staff = await requirePage();
-  const [counts, review, mediaResult, activity] = await Promise.all([
+  const [
+    counts,
+    review,
+    attentionResult,
+    publishedEvents,
+    mediaResult,
+    activity,
+  ] = await Promise.all([
     db
       .select({
         kind: content.kind,
@@ -53,18 +60,47 @@ export default async function Overview() {
       )
       .orderBy(desc(content.updatedAt))
       .limit(6),
+    db
+      .select({ count: sql<number>`count(*)` })
+      .from(content)
+      .where(
+        sql`(${content.publishedVersion} is null or ${content.version} > ${content.publishedVersion})`,
+      ),
+    db
+      .select({
+        published: content.published,
+      })
+      .from(content)
+      .where(
+        and(
+          eq(content.kind, "events"),
+          sql`${content.published} is not null`,
+        ),
+      ),
     db.select({ count: sql<number>`count(*)` }).from(media),
     staff.permissions.includes("audit.read")
       ? db.select().from(auditLog).orderBy(desc(auditLog.createdAt)).limit(6)
       : Promise.resolve([]),
   ]);
 
+  const now = new Date();
+  const upcomingEventsCount = publishedEvents.filter((e) => {
+    if (!e.published) return false;
+    const p = e.published as { startDate?: string; date?: string };
+    if (!p.startDate) return true;
+    const dateStr = p.startDate.replace(
+      /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})Z$/,
+      "$1-$2-$3T$4:$5:$6Z",
+    );
+    const parsed = new Date(dateStr);
+    return isNaN(parsed.getTime()) || parsed >= now;
+  }).length;
+
   const pulseMetrics = calculatePulseMetrics({
     counts,
     mediaCount: mediaResult[0]?.count ?? 0,
-    upcomingEventsCount:
-      counts.find((c) => c.kind === "events")?.published ?? 0,
-    reviewCount: review.length,
+    upcomingEventsCount,
+    reviewCount: attentionResult[0]?.count ?? 0,
   });
 
   const quickActions = getQuickActions(staff.permissions);
@@ -82,14 +118,16 @@ export default async function Overview() {
       {/* 1. Header & Greeting */}
       <div className="admin-page-heading">
         <div>
-          <h1>Welcome, {staff.name.split(" ")[0]}.</h1>
+          <h1 className="admin-greeting">
+            Welcome back, {staff.name.split(" ")[0]}.
+          </h1>
           <div className="admin-greeting-meta">
             <span className="admin-role-badge">
-              <span className="admin-role-badge-dot" />
+              <span className="admin-role-badge-dot" aria-hidden="true" />
               {staff.roleName}
             </span>
             <span className="admin-date-badge">
-              <Calendar size={13} />
+              <Calendar size={13} aria-hidden="true" />
               {addisDate} · Addis Ababa
             </span>
           </div>
@@ -101,7 +139,7 @@ export default async function Overview() {
         <div className="admin-pulse-chip">
           <div className="admin-pulse-top">
             <span className="admin-pulse-label">Live Content</span>
-            <span className="admin-pulse-indicator live" />
+            <span className="admin-pulse-indicator live" aria-hidden="true" />
           </div>
           <div className="admin-pulse-value">{pulseMetrics.publishedTotal}</div>
           <div className="admin-pulse-subtext">Across website sections</div>
@@ -110,7 +148,10 @@ export default async function Overview() {
         <div className="admin-pulse-chip">
           <div className="admin-pulse-top">
             <span className="admin-pulse-label">Needs Attention</span>
-            <span className="admin-pulse-indicator attention" />
+            <span
+              className="admin-pulse-indicator attention"
+              aria-hidden="true"
+            />
           </div>
           <div className="admin-pulse-value">{pulseMetrics.needsAttention}</div>
           <div className="admin-pulse-subtext">Drafts & pending edits</div>
@@ -119,7 +160,10 @@ export default async function Overview() {
         <div className="admin-pulse-chip">
           <div className="admin-pulse-top">
             <span className="admin-pulse-label">Media Assets</span>
-            <span className="admin-pulse-indicator neutral" />
+            <span
+              className="admin-pulse-indicator neutral"
+              aria-hidden="true"
+            />
           </div>
           <div className="admin-pulse-value">{pulseMetrics.mediaTotal}</div>
           <div className="admin-pulse-subtext">Photos in library</div>
@@ -128,7 +172,7 @@ export default async function Overview() {
         <div className="admin-pulse-chip">
           <div className="admin-pulse-top">
             <span className="admin-pulse-label">Upcoming Events</span>
-            <span className="admin-pulse-indicator gold" />
+            <span className="admin-pulse-indicator gold" aria-hidden="true" />
           </div>
           <div className="admin-pulse-value">{pulseMetrics.upcomingEvents}</div>
           <div className="admin-pulse-subtext">Published gatherings</div>
@@ -166,7 +210,11 @@ export default async function Overview() {
                   </div>
                   <div className="admin-action-header">
                     <span className="admin-action-title">{action.title}</span>
-                    <ArrowRight size={15} className="admin-action-arrow" />
+                    <ArrowUpRight
+                      size={15}
+                      className="admin-action-arrow"
+                      aria-hidden="true"
+                    />
                   </div>
                   <p className="admin-action-subtitle">{action.subtitle}</p>
                 </Link>
@@ -175,7 +223,7 @@ export default async function Overview() {
           </div>
         ) : (
           <div className="admin-quick-actions-empty">
-            <Eye size={18} />
+            <Eye size={18} aria-hidden="true" />
             <span>
               Your current role (<strong>{staff.roleName}</strong>) has
               read-only access. Content creation shortcuts are hidden.
@@ -238,15 +286,16 @@ export default async function Overview() {
                       <Link
                         href={`/admin/content/${kind}`}
                         className="admin-content-hub-link"
+                        aria-label={`Manage ${config.name}`}
                       >
-                        Manage <ArrowRight size={13} />
+                        Manage <ArrowUpRight size={13} aria-hidden="true" />
                       </Link>
                       {kind !== "settings" && canWrite ? (
                         <Link
                           href={`/admin/content/${kind}/new`}
                           className="admin-content-hub-create"
                         >
-                          <Plus size={13} /> New{" "}
+                          <Plus size={13} aria-hidden="true" /> New{" "}
                           {config.singular.toLowerCase()}
                         </Link>
                       ) : kind === "settings" && canWrite ? (
@@ -269,7 +318,7 @@ export default async function Overview() {
           <section className="admin-review">
             <div className="admin-section-heading">
               <h2>Ready for review</h2>
-              <Clock3 size={18} />
+              <Clock3 size={18} aria-hidden="true" />
             </div>
             {review.length ? (
               review.map((entry) => (
@@ -299,7 +348,7 @@ export default async function Overview() {
               ))
             ) : (
               <div className="admin-review-empty">
-                <CheckCircle2 size={24} />
+                <CheckCircle2 size={24} aria-hidden="true" />
                 <strong>You’re all caught up</strong>
                 <p>Drafts and unpublished changes will appear here.</p>
               </div>
@@ -317,7 +366,7 @@ export default async function Overview() {
                   : "You can read content and preview drafts."}
             </p>
             <Link href="/admin/roles">
-              See role permissions <ArrowRight size={15} />
+              See role permissions <ArrowUpRight size={15} aria-hidden="true" />
             </Link>
           </section>
         </aside>
@@ -329,7 +378,7 @@ export default async function Overview() {
           <div className="admin-section-heading">
             <h2>Recent activity</h2>
             <Link href="/admin/activity">
-              View activity log <ArrowRight size={15} />
+              View activity log <ArrowUpRight size={15} aria-hidden="true" />
             </Link>
           </div>
           {activity.length ? (
@@ -340,7 +389,7 @@ export default async function Overview() {
                     <strong>{event.actorName}</strong>
                     <p>{event.detail}</p>
                   </div>
-                  <time>
+                  <time dateTime={event.createdAt.toISOString()}>
                     {event.createdAt.toLocaleString("en-GB", {
                       dateStyle: "medium",
                       timeStyle: "short",

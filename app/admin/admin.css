@@ -394,6 +394,13 @@
   font-size: 12px;
   font-weight: 600;
 }
+.admin-greeting {
+  font-family: var(--font-fraunces), serif !important;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
 .admin-greeting-meta {
   display: inline-flex;
   align-items: center;
@@ -529,7 +536,8 @@
   margin-bottom: 12px;
   transition: background 0.15s ease, color 0.15s ease;
 }
-.admin-quick-action-card:hover .admin-action-icon {
+.admin-quick-action-card:hover .admin-action-icon,
+.admin-quick-action-card:focus-visible .admin-action-icon {
   background: var(--admin-accent);
   color: white;
 }
@@ -547,12 +555,22 @@
 .admin-action-arrow {
   color: var(--admin-accent);
   opacity: 0;
-  transform: translateX(-4px);
+  transform: translate(-3px, 3px);
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
-.admin-quick-action-card:hover .admin-action-arrow {
+.admin-quick-action-card:hover .admin-action-arrow,
+.admin-quick-action-card:focus-visible .admin-action-arrow {
   opacity: 1;
-  transform: translateX(0);
+  transform: translate(0, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .admin-quick-action-card:hover,
+  .admin-quick-action-card:focus-visible {
+    transform: none;
+  }
+  .admin-action-arrow {
+    transform: none !important;
+  }
 }
 .admin-action-subtitle {
   font-size: 12px;
@@ -657,8 +675,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-top: 1px solid #f0edf6;
-  padding-top: 12px;
+  padding-top: 14px;
   margin-top: auto;
 }
 .admin-content-hub-link {
@@ -1626,10 +1643,6 @@
   }
   .admin-root h1 {
     font-size: 24px;
-  }
-  .admin-overview-header {
-    flex-direction: column;
-    gap: 12px;
   }
   .admin-pulse-bar {
     grid-template-columns: 1fr;
