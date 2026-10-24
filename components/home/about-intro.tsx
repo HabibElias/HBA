@@ -51,7 +51,7 @@ export function AboutIntro() {
               href={homeValue("home_about_intro_7")}
               className={cn(
                 buttonVariants({ variant: "primary", size: "default" }),
-                "group rounded-full px-7 font-semibold shadow-sm hover:shadow-md hover:bg-primary-deep transition-all"
+                "group rounded-full px-7 font-semibold shadow-sm hover:shadow-md hover:bg-primary-deep hover:text-white transition-all"
               )}
             >
               <span>{homeText("home_about_intro_8")}</span>

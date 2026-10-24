@@ -41,7 +41,7 @@ export function SermonCard({ sermon }: SermonCardProps) {
       />
 
       <div className="w-full flex flex-col items-start text-left relative z-10">
-        <div className="flex flex-wrap items-center gap-2.5 mb-3.5">
+        <div className="flex flex-wrap items-center justify-between w-full gap-2.5 mb-5">
           <span className="inline-block self-start px-3.5 py-1 rounded-full bg-surface group-hover:bg-tint border border-primary/10 group-hover:border-primary/20 text-xs font-semibold text-primary transition-all duration-200">
             {series || (isAm ? "ነጠላ መልእክት" : "Standalone message")}
           </span>

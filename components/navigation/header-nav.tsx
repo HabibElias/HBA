@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LogoLockup } from "./logo";
 import { LanguageToggle } from "./language-toggle";
 import { MobileNav } from "./mobile-nav";
@@ -47,8 +48,6 @@ export function HeaderNav() {
     { href: "/", label: t?.nav?.home ?? "Home" },
     { href: "/about", label: t?.nav?.about ?? "About" },
     { href: "/programs", label: t?.nav?.programs ?? "Programs & Events" },
-    { href: "/sermons", label: lang === "am" ? "ስብከቶች" : "Sermons" },
-    { href: "/gallery", label: lang === "am" ? "ፎቶዎች" : "Gallery" },
     { href: "/visit", label: t?.nav?.visit ?? "Visit & Contact" },
   ];
 
@@ -113,6 +112,7 @@ export function HeaderNav() {
 
         {/* Right Action Bar */}
         <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+          <ThemeToggle isAm={lang === "am"} className="border-white/20 bg-white/10 text-white hover:bg-white/20 focus-visible:outline-white" />
           <LanguageToggle />
 
           {/* Reverted "Plan your visit" back to solid on-dark pill button */}

@@ -90,7 +90,7 @@ export function FeaturedEvent() {
                 href={homeValue("home_featured_event_7")}
                 className={cn(
                   buttonVariants({ variant: "primary", size: "default" }),
-                  "group/btn rounded-full px-7 font-semibold shadow-sm hover:shadow-md hover:bg-primary-deep transition-all"
+                  "group/btn rounded-full px-7 font-semibold shadow-sm hover:shadow-md hover:bg-primary-deep hover:text-white transition-all"
                 )}
               >
                 <span>{homeText("home_featured_event_8")}</span>
@@ -128,7 +128,7 @@ export function FeaturedEvent() {
 
                 {/* Centered Play icon */}
                 <div className="my-5 flex items-center justify-center">
-                  <div className="size-12 rounded-full bg-surface group-hover:bg-primary text-primary group-hover:text-white border border-primary/10 flex items-center justify-center transition-all duration-200 shadow-xs group-hover:scale-110">
+                  <div className="size-12 rounded-full bg-surface group-hover:bg-primary text-primary group-hover:text-primary-foreground border border-primary/10 flex items-center justify-center transition-all duration-200 shadow-xs group-hover:scale-110">
                     <Play className="size-5 fill-current ml-0.5" />
                   </div>
                 </div>

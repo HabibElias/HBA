@@ -21,7 +21,7 @@ export function ChurchMark({
       width={size}
       height={size}
       priority={priority}
-      className={cn("shrink-0 object-contain", className)}
+      className={cn("shrink-0 object-contain", !reversed && "dark:brightness-0 dark:invert", className)}
     />
   );
 }

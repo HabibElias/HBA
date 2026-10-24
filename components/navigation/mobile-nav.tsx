@@ -15,15 +15,13 @@ import { cn } from "@/lib/utils";
 export function MobileNav({ reversed = false }: { reversed?: boolean }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
-  const { t, lang } = useLanguage();
+  const { t } = useLanguage();
   const {settings}=useContent();
 
   const navLinks = [
     { href: "/", label: t?.nav?.home ?? "Home" },
     { href: "/about", label: t?.nav?.about ?? "About" },
     { href: "/programs", label: t?.nav?.programs ?? "Programs & Events" },
-    { href: "/sermons", label: lang === "am" ? "ስብከቶች" : "Sermons" },
-    { href: "/gallery", label: lang === "am" ? "ፎቶዎች" : "Gallery" },
     { href: "/visit", label: t?.nav?.visit ?? "Visit & Contact" },
   ];
 
@@ -120,7 +118,7 @@ export function MobileNav({ reversed = false }: { reversed?: boolean }) {
                       className={cn(
                         "px-4 py-3 rounded-full text-base font-semibold transition-all",
                         isActive
-                          ? "bg-primary text-white shadow-xs"
+                          ? "bg-primary text-primary-foreground shadow-xs"
                           : "text-foreground hover:bg-tint hover:text-primary"
                       )}
                     >
