@@ -22,6 +22,20 @@
       "when": 1792675740062,
       "tag": "0002_glorious_master_mold",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1792852347261,
+      "tag": "0003_gallery-permissions",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1792852892602,
+      "tag": "0004_gallery-folders",
+      "breakpoints": true
     }
   ]
 }

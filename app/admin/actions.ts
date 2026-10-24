@@ -1,12 +1,12 @@
 "use server";
 import { revalidatePath, updateTag } from "next/cache";
-import { PUBLIC_CONTENT_TAG } from '@/lib/cms/cache-tags';
+import { PUBLIC_CONTENT_TAG } from "@/lib/cms/cache-tags";
 import { headers } from "next/headers";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { requirePermission, currentStaff } from "@/lib/cms/access";
 import * as service from "@/lib/cms/service";
-import { manageMedia } from '@/lib/cms/media-management';
+import { manageMedia } from "@/lib/cms/media-management";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { user, auditLog } from "@/lib/db/schema";
@@ -37,18 +37,26 @@ function failure(error: unknown): ActionResult {
   return { ok: false, message };
 }
 function refresh() {
-  revalidatePath('/admin', 'layout');
+  revalidatePath("/admin", "layout");
 }
 function refreshPublishedContent() {
   updateTag(PUBLIC_CONTENT_TAG);
-  revalidatePath('/(site)', 'layout');
+  revalidatePath("/(site)", "layout");
 }
-export async function manageMediaAction(input: Parameters<typeof manageMedia>[1]): Promise<ActionResult> {
+export async function manageMediaAction(
+  input: Parameters<typeof manageMedia>[1],
+): Promise<ActionResult> {
   try {
-    const actor = await requirePermission('media.write');
+    const actor = await requirePermission("media.write");
     await manageMedia(actor, input);
-    revalidatePath('/admin/media');
-    return { ok: true, message: input.intent === 'edit' ? 'Photograph details saved.' : 'Photograph removed from the library.' };
+    revalidatePath("/admin/media");
+    return {
+      ok: true,
+      message:
+        input.intent === "edit"
+          ? "Photograph details saved."
+          : "Photograph removed from the library.",
+    };
   } catch (error) {
     return failure(error);
   }
@@ -59,7 +67,7 @@ export async function saveContentAction(
   try {
     const actor = await requirePermission();
     const id = await service.saveContent(actor, input);
-    if (input.intent === 'publish') refreshPublishedContent();
+    if (input.intent === "publish") refreshPublishedContent();
     refresh();
     return {
       ok: true,
@@ -83,7 +91,8 @@ export async function contentStateAction(
       throw new Error("Unknown action.");
     const actor = await requirePermission();
     await service.changeContentState(actor, id, version, intent);
-    if (intent === 'publish' || intent === 'unpublish') refreshPublishedContent();
+    if (intent === "publish" || intent === "unpublish")
+      refreshPublishedContent();
     refresh();
     return {
       ok: true,
@@ -172,5 +181,37 @@ export async function changePasswordAction(
     return { ok: true, message: "Password updated." };
   } catch (e) {
     return failure(e);
+  }
+}
+
+export async function audioUploadConfigAction() {
+  try {
+    await requirePermission("media.write");
+    const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    const preset =
+      process.env.NEXT_PUBLIC_CLOUDINARY_AUDIO_UPLOAD_PRESET ||
+      process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+    if (!cloud || !preset) throw new Error("Audio upload is not configured.");
+    return { ok: true as const, cloud, preset };
+  } catch (error) {
+    return { ok: false as const, message: failure(error).message };
+  }
+}
+export async function createRecapAction(
+  id: string,
+  version: number,
+): Promise<ActionResult> {
+  try {
+    const actor = await requirePermission();
+    const recapId = await service.createEventRecap(actor, id, version);
+    refresh();
+    return {
+      ok: true,
+      id: recapId,
+      message:
+        "Past gathering draft created. Review and publish it to show its photos in the gallery.",
+    };
+  } catch (error) {
+    return failure(error);
   }
 }

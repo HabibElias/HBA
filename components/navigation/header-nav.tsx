@@ -17,29 +17,28 @@ export function HeaderNav() {
   const [headerState, setHeaderState] = useState<"top" | "hidden" | "pinned">("top");
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
+    const getScrollY = () => Math.max(0, Math.min(
+      window.scrollY,
+      document.documentElement.scrollHeight - window.innerHeight
+    ));
+    let lastScrollY = getScrollY();
+    setHeaderState(lastScrollY <= 60 ? "top" : "pinned");
 
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const heroEl = document.querySelector(".home-hero, .subpage-hero");
-      const threshold = heroEl ? (heroEl as HTMLElement).offsetHeight - 100 : 450;
-
-      const isScrollingDown = currentScrollY > lastScrollY;
-      lastScrollY = currentScrollY;
+      const currentScrollY = getScrollY();
+      const delta = currentScrollY - lastScrollY;
 
       if (currentScrollY <= 60) {
         setHeaderState("top");
-      } else if (currentScrollY >= threshold) {
-        setHeaderState("pinned");
-      } else if (isScrollingDown) {
-        setHeaderState("hidden");
-      } else {
-        setHeaderState("pinned");
+        lastScrollY = currentScrollY;
+      } else if (Math.abs(delta) >= 8) {
+        // Ignore tiny scroll movements so the header does not flicker.
+        setHeaderState(delta > 0 ? "hidden" : "pinned");
+        lastScrollY = currentScrollY;
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
@@ -56,7 +55,7 @@ export function HeaderNav() {
   return (
     <header
       className={cn(
-        "site-header fixed top-0 left-0 right-0 z-50 w-full text-white transition-transform duration-300 ease-out",
+        "site-header fixed top-0 left-0 right-0 z-50 w-full text-white transition-transform duration-300 ease-out motion-reduce:transition-none",
         headerState === "top" && "site-header-top translate-y-0",
         headerState === "hidden" && "site-header-hidden -translate-y-[calc(100%+24px)]",
         headerState === "pinned" && "site-header-pinned translate-y-0"

@@ -2,13 +2,22 @@ import type { UpcomingEvent, PastProgram } from "@/lib/types/programs";
 import type { ScheduleItem } from "@/lib/data/schedules";
 import type { Leader } from "@/lib/data/leadership";
 import type { Sermon } from "@/lib/data/sermons";
-import type { StatementOfFaith } from '../data/faith';
-import type { GuidingPillar } from '../data/values';
-import type { milestones } from '../data/history';
+import type { StatementOfFaith } from "../data/faith";
+import type { GuidingPillar } from "../data/values";
+import type { milestones } from "../data/history";
 export interface AboutPageContent {
   photos: { src: string; alt: string }[];
   milestones: typeof milestones;
-  guidingPillars: Pick<GuidingPillar, 'id' | 'title' | 'titleAm' | 'description' | 'descriptionAm' | 'scripture' | 'scriptureAm'>[];
+  guidingPillars: Pick<
+    GuidingPillar,
+    | "id"
+    | "title"
+    | "titleAm"
+    | "description"
+    | "descriptionAm"
+    | "scripture"
+    | "scriptureAm"
+  >[];
   faithStatements: StatementOfFaith[];
 }
 export interface ChurchSettings {
@@ -22,6 +31,7 @@ export interface ChurchSettings {
   telegram: string;
 }
 export interface PublicContent {
+  albums?: GalleryAlbum[];
   gallery?: GalleryPhoto[];
   about?: AboutPageContent;
   events: UpcomingEvent[];
@@ -41,4 +51,16 @@ export interface GalleryPhoto {
   captionAm: string;
   album: string;
   albumAm: string;
+}
+
+export interface GalleryAlbum {
+  id: string;
+  title: string;
+  titleAm: string;
+  date: string;
+  dateAm: string;
+  description?: string;
+  descriptionAm?: string;
+  photos: { src: string; alt: string; caption?: string; isMain?: boolean }[];
+  recapId?: string;
 }

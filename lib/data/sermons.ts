@@ -39,4 +39,4 @@ export const recentSermons = [
     themeAm: "የክርስቶስን ፍቅር ስፋት፣ ርዝመት፣ ከፍታና ጥልቀት ማወቅ።",
   },
 ];
-export type Sermon = (typeof recentSermons)[number] & { recordingUrl?: string; publishedAt?: string };
+export type Sermon = (typeof recentSermons)[number] & { body?: string; bodyAm?: string; audioUrl?: string; recordingUrl?: string; publishedAt?: string };

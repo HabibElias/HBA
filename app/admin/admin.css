@@ -2097,6 +2097,19 @@
   margin-bottom: 8px;
 }
 
+.admin-audio-thumb { display: grid; place-items: center; color: var(--admin-accent); }
+.admin-audio-preview { display: block; width: 100%; min-width: 0; }
+.admin-audio-filename { max-width: 100%; overflow-wrap: anywhere; color: var(--admin-ink); }
+.admin-audio-upload-actions { justify-content: space-between; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--admin-line); }
+.admin-audio-upload-dialog .admin-dropzone:focus-visible { outline: 2px solid var(--admin-accent); outline-offset: 3px; }
+.admin-audio-upload-dialog .admin-dropzone[aria-disabled="true"] { cursor: wait; opacity: 0.6; }
+@media (max-width: 480px) {
+  .admin-audio-upload-dialog { padding: 20px; }
+  .admin-audio-upload-dialog .admin-upload-card { flex-wrap: wrap; }
+  .admin-audio-upload-dialog .admin-upload-card-status { width: 100%; justify-content: flex-end; }
+  .admin-audio-upload-dialog .admin-upload-card-top { align-items: flex-start; flex-direction: column; gap: 2px; }
+}
+
 /* Custom styled dropzone */
 .admin-dropzone {
   border: 2px dashed #cfcbd9;

@@ -4,34 +4,32 @@ import Link from "next/link";
 import { ArrowUpRight, BookOpen, Headphones, User } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 import type { Sermon } from "@/lib/data/sermons";
-import { cn } from "@/lib/utils";
 
 export interface SermonCardProps {
   sermon: Sermon;
-  preview?: boolean;
-  onSelect?: (sermon: Sermon) => void;
-  isActive?: boolean;
 }
 
-export function SermonCard({
-  sermon,
-  preview = false,
-  onSelect,
-  isActive = false,
-}: SermonCardProps) {
+export function SermonCard({ sermon }: SermonCardProps) {
   const { lang } = useLanguage();
   const isAm = lang === "am";
 
   const title = isAm ? sermon.titleAm || sermon.title : sermon.title;
-  const scripture = isAm ? sermon.scriptureAm || sermon.scripture : sermon.scripture;
+  const scripture = isAm
+    ? sermon.scriptureAm || sermon.scripture
+    : sermon.scripture;
   const series = isAm ? sermon.seriesAm || sermon.series : sermon.series;
   const speaker = isAm ? sermon.speakerAm || sermon.speaker : sermon.speaker;
   const theme = isAm ? sermon.themeAm || sermon.theme : sermon.theme;
 
-  const href = preview
-    ? `/sermons#message-${encodeURIComponent(sermon.id)}`
-    : `#sermon-post`;
-  const label = isAm ? "ስብከቱን ያንብቡና ያዳምጡ" : "Read & Listen";
+  const href = `/sermons/${encodeURIComponent(sermon.id)}`;
+  const label =
+    !sermon.audioUrl && !sermon.recordingUrl
+      ? isAm
+        ? "መልእክቱን ያንብቡ"
+        : "Read message"
+      : isAm
+        ? "ስብከቱን ያንብቡና ያዳምጡ"
+        : "Read & Listen";
 
   const content = (
     <>
@@ -45,7 +43,7 @@ export function SermonCard({
       <div className="w-full flex flex-col items-start text-left relative z-10">
         <div className="flex flex-wrap items-center gap-2.5 mb-3.5">
           <span className="inline-block self-start px-3.5 py-1 rounded-full bg-surface group-hover:bg-tint border border-primary/10 group-hover:border-primary/20 text-xs font-semibold text-primary transition-all duration-200">
-            {series}
+            {series || (isAm ? "ነጠላ መልእክት" : "Standalone message")}
           </span>
           <span className="text-xs font-medium text-muted-foreground">
             {scripture}
@@ -79,26 +77,8 @@ export function SermonCard({
     </>
   );
 
-  const cardClassName = cn(
-    "group relative overflow-hidden bg-tint hover:bg-surface border rounded-3xl p-7 sm:p-8 text-left flex flex-col items-start justify-between transition-all duration-200 cursor-pointer min-h-[300px] h-full w-full",
-    isActive
-      ? "border-primary/40 bg-surface shadow-sm ring-2 ring-primary/20"
-      : "border-transparent hover:border-primary/20"
-  );
-
-  if (onSelect) {
-    return (
-      <button
-        type="button"
-        id={`message-${sermon.id}`}
-        onClick={() => onSelect(sermon)}
-        className={cardClassName}
-        aria-label={`${label}: ${title}`}
-      >
-        {content}
-      </button>
-    );
-  }
+  const cardClassName =
+    "group relative overflow-hidden bg-tint hover:bg-surface border border-transparent hover:border-primary/20 rounded-3xl p-7 sm:p-8 text-left flex flex-col items-start justify-between transition-all duration-200 cursor-pointer min-h-[300px] h-full w-full";
 
   return (
     <Link

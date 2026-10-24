@@ -2,6 +2,7 @@ import { HeroSection } from "@/components/home/hero-section";
 import { ContentProvider } from '@/lib/context/content-context';
 import { getPublicContent } from '@/lib/cms/public';
 import { AboutIntro } from "@/components/home/about-intro";
+import { ServiceSummary } from "@/components/home/service-summary";
 import { MinistriesPreview } from "@/components/home/ministries-preview";
 import { FeaturedEvent } from "@/components/home/featured-event";
 import { SermonPreview } from "@/components/home/sermon-preview";
@@ -15,6 +16,7 @@ export default async function HomePage() {
     <ContentProvider value={content}><div className="flex flex-col min-h-screen">
       <HeroSection />
       <AboutIntro />
+      <ServiceSummary />
       <MinistriesPreview />
       <FeaturedEvent />
       <SermonPreview />

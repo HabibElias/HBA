@@ -49,6 +49,28 @@ const actors = Object.fromEntries(
   ]),
 );
 const eventData = { ...upcomingEvents[0], registerLink: "" };
+test('completed events create one editable recap draft with server-side date and permission checks', async () => {
+  const past = { ...eventData, startDate: '20200101T060000Z', endDate: '20200101T150000Z' };
+  const id = await service.saveContent(actors.owner, { kind: 'events', version: 0, position: 0, data: past, intent: 'publish' });
+  await assert.rejects(service.createEventRecap(actors.viewer, id, 1), /role/);
+  await assert.rejects(service.createEventRecap(actors.owner, id, 2), /changed/);
+  const recapId = await service.createEventRecap(actors.editor, id, 1);
+  assert.equal(await service.createEventRecap(actors.editor, id, 1), recapId);
+  const recap = await database.db.query.content.findFirst({ where: eq(schema.content.id, recapId) });
+  assert.equal(recap?.published, null);
+  assert.equal(recap?.draft.recap, past.description);
+  assert.equal((recap?.draft.photos as unknown[]).length, 1);
+  const future = await service.saveContent(actors.owner, { kind: 'events', version: 0, position: 0, data: { ...past, startDate: '20990101T060000Z', endDate: '20990101T150000Z' }, intent: 'draft' });
+  await assert.rejects(service.createEventRecap(actors.owner, future, 1), /completed/);
+});
+test('gallery folders follow draft/publish permissions and sermon HTML is sanitized before storage', async () => {
+  const folder = await service.saveContent(actors.editor, { kind: 'albums', version: 0, position: 0, data: { title: 'Sunday', titleAm: 'Sunday', photos: [] }, intent: 'draft' });
+  await assert.rejects(service.changeContentState(actors.editor, folder, 1, 'publish'), /role/);
+  await service.changeContentState(actors.owner, folder, 1, 'publish');
+  const sermon = await service.saveContent(actors.editor, { kind: 'sermons', version: 0, position: 0, data: { title: 'Teaching', body: '<p>Faith<script>bad()</script></p>' }, intent: 'draft' });
+  const row = await database.db.query.content.findFirst({ where: eq(schema.content.id, sermon) });
+  assert.equal(row?.draft.body, '<p>Faith</p>');
+});
 before(async () => {
   database = await import("../lib/db");
   schema = await import("../lib/db/schema");

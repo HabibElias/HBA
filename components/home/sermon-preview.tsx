@@ -16,7 +16,7 @@ export function SermonPreview() {
   const displaySermons = sermons.slice(0, 3);
 
   return (
-    <section className="paint-band py-20 md:py-28" id="sermons">
+    <section className="paint-band paint-band-surface py-20 md:py-28" id="sermons">
       <div className="site-container">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 md:mb-12">
           <div>
@@ -39,7 +39,7 @@ export function SermonPreview() {
         {displaySermons.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {displaySermons.map((sermon) => (
-              <SermonCard key={sermon.id} sermon={sermon} preview />
+              <SermonCard key={sermon.id} sermon={sermon} />
             ))}
           </div>
         ) : (

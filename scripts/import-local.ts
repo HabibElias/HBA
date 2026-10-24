@@ -1,14 +1,14 @@
 import { loadEnvConfig } from "@next/env";
 import { createClient, type InValue } from "@libsql/client";
-loadEnvConfig(process.cwd());
+loadEnvConfig(process.cwd(), process.env.DATABASE_ENV !== "production");
 
 async function main() {
   const sourceUrl = process.env.SOURCE_DATABASE_URL;
-  const targetUrl = process.env.TURSO_DATABASE_URL;
+  const targetUrl = process.env.TURSO_PRODUCTION_DATABASE_URL || process.env.TURSO_DATABASE_URL;
   if (!sourceUrl?.startsWith("file:") || !targetUrl || targetUrl.startsWith("file:"))
     throw new Error("Set SOURCE_DATABASE_URL to the local file and TURSO_DATABASE_URL to the cloud destination.");
   const source = createClient({ url: sourceUrl });
-  const target = createClient({ url: targetUrl, authToken: process.env.TURSO_AUTH_TOKEN });
+  const target = createClient({ url: targetUrl, authToken: process.env.TURSO_PRODUCTION_AUTH_TOKEN || process.env.TURSO_AUTH_TOKEN });
   // Do not copy sessions or rate limits. Existing users sign in again on the new host.
   const tables = ["roles", "user", "account", "content", "media", "audit_log"];
   try {

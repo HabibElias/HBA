@@ -1,7 +1,7 @@
 ﻿"use client";
-import { Input } from "@/components/ui/input";
+import { GatheringFilter } from "@/components/ui/gathering-filter";
 import { useState } from "react";
-import { Search, CalendarDays } from "lucide-react";
+import { CalendarDays } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/context/language-context";
 import { useContent } from "@/lib/context/content-context";
@@ -10,22 +10,9 @@ export function UpcomingSection() {
   const { events } = useContent(),
     { lang } = useLanguage(),
     isAm = lang === "am";
-  const [search, setSearch] = useState(""),
-    [category, setCategory] = useState("all");
-  const categories = [
-    ...new Map(
-      events.map((e) => [
-        e.category,
-        { id: e.category, label: isAm ? e.categoryLabelAm : e.categoryLabel },
-      ]),
-    ).values(),
-  ];
+  const [gathering, setGathering] = useState("all");
   const filtered = events.filter(
-    (e) =>
-      (category === "all" || e.category === category) &&
-      `${e.title} ${e.titleAm} ${e.location} ${e.locationAm}`
-        .toLowerCase()
-        .includes(search.toLowerCase()),
+    (event) => gathering === "all" || event.id === gathering,
   );
   return (
     <section
@@ -49,34 +36,16 @@ export function UpcomingSection() {
           {isAm ? "ሰዓቶች በምስራቅ አፍሪካ ሰዓት" : "All times in East Africa Time"}
         </span>
       </div>
-      <div className="program-filter-toolbar">
-        <label className="program-search">
-          <Search size={18} />
-          <Input
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder={isAm ? "ስብሰባ ይፈልጉ" : "Search gatherings"}
-            aria-label={isAm ? "ስብሰባ ይፈልጉ" : "Search gatherings"}
-          />
-        </label>
-        <div className="program-category-tabs">
-          <button
-            aria-pressed={category === "all"}
-            onClick={() => setCategory("all")}
-          >
-            {isAm ? "ሁሉም" : "All gatherings"}
-          </button>
-          {categories.map((c) => (
-            <button
-              key={c.id}
-              aria-pressed={category === c.id}
-              onClick={() => setCategory(c.id)}
-            >
-              {c.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <GatheringFilter
+        id="upcoming-gathering"
+        value={gathering}
+        onChange={setGathering}
+        isAm={isAm}
+        options={events.map((event) => ({
+          value: event.id,
+          label: isAm ? event.titleAm || event.title : event.title,
+        }))}
+      />
       <p className="text-xs text-muted-foreground my-6" role="status">
         {isAm
           ? `${filtered.length} መርሐ ግብሮች`
@@ -101,8 +70,7 @@ export function UpcomingSection() {
             <button
               className="font-semibold text-primary"
               onClick={() => {
-                setSearch("");
-                setCategory("all");
+                setGathering("all");
               }}
             >
               {isAm ? "ፍለጋውን አጽዳ" : "Clear filters"}

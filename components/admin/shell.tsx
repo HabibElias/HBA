@@ -41,6 +41,7 @@ const links = [
   },
   { href: "/admin/content/schedules", label: "Weekly schedule", icon: Clock },
   { href: "/admin/content/leaders", label: "Leadership", icon: Users },
+  { href: "/admin/content/albums", label: "Gallery folders", icon: Image },
   { href: "/admin/media", label: "Image library", icon: Image },
   { href: "/admin/content/settings", label: "Church details", icon: Settings },
   {

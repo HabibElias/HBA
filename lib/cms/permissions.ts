@@ -1,6 +1,7 @@
 export const collections = [
   "events",
   "recaps",
+  "albums",
   "sermons",
   "schedules",
   "leaders",

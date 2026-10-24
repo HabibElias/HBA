@@ -8,24 +8,14 @@ import { Button } from "@/components/ui/public-button";
 import { useContent } from "@/lib/context/content-context";
 import { useLanguage } from "@/lib/context/language-context";
 import { SermonCard } from "./sermon-card";
-import { SermonPost } from "./sermon-post";
-import type { Sermon } from "@/lib/data/sermons";
 
 export function SermonsPageContent() {
   const { sermons = [] } = useContent();
   const { lang } = useLanguage();
   const isAm = lang === "am";
 
-  const [activeSermonId, setActiveSermonId] = useState<string>(
-    sermons[0]?.id || ""
-  );
   const [query, setQuery] = useState("");
   const [limit, setLimit] = useState(12);
-
-  const activeSermon = useMemo(
-    () => sermons.find((s) => s.id === activeSermonId) || sermons[0],
-    [sermons, activeSermonId]
-  );
 
   const searching = !!query.trim();
 
@@ -34,20 +24,10 @@ export function SermonsPageContent() {
       sermons.filter((sermon) =>
         `${sermon.title} ${sermon.titleAm} ${sermon.speaker} ${sermon.speakerAm} ${sermon.series} ${sermon.seriesAm} ${sermon.scripture} ${sermon.scriptureAm}`
           .toLocaleLowerCase()
-          .includes(query.trim().toLocaleLowerCase())
+          .includes(query.trim().toLocaleLowerCase()),
       ),
-    [sermons, query]
+    [sermons, query],
   );
-
-  const handleSelectSermon = (sermon: Sermon) => {
-    setActiveSermonId(sermon.id);
-    if (typeof window !== "undefined") {
-      const element = document.getElementById("sermon-post");
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  };
 
   return (
     <>
@@ -68,14 +48,6 @@ export function SermonsPageContent() {
         </div>
       </section>
 
-      {/* Main Single Sermon Post View */}
-      {activeSermon && !searching && (
-        <div className="bg-surface border-b border-border">
-          <SermonPost sermon={activeSermon} />
-        </div>
-      )}
-
-      {/* Earlier / All Messages Section */}
       <div className="site-container py-16 md:py-24">
         <section aria-labelledby="messages-heading">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
@@ -93,14 +65,16 @@ export function SermonsPageContent() {
                     : "Search results"
                   : isAm
                     ? "ተጨማሪ ስብከቶችና ትምህርቶች"
-                    : "More Teaching & Earlier Messages"}
+                    : "All messages"}
               </h2>
             </div>
 
             {/* Search Input using shadcn Input with Icon and Label */}
             <div className="w-full md:max-w-sm">
               <Label htmlFor="sermon-search" className="sr-only">
-                {isAm ? "ስብከቶችን ይፈልጉ" : "Search title, speaker, series or scripture"}
+                {isAm
+                  ? "ስብከቶችን ይፈልጉ"
+                  : "Search title, speaker, series or scripture"}
               </Label>
               <div className="relative">
                 <Search
@@ -131,12 +105,7 @@ export function SermonsPageContent() {
             {filtered.length ? (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filtered.slice(0, limit).map((sermon) => (
-                  <SermonCard
-                    key={sermon.id}
-                    sermon={sermon}
-                    onSelect={handleSelectSermon}
-                    isActive={sermon.id === activeSermonId && !searching}
-                  />
+                  <SermonCard key={sermon.id} sermon={sermon} />
                 ))}
               </div>
             ) : (
