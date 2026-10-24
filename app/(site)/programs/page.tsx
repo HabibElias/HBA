@@ -4,7 +4,6 @@ import { getPublicContent } from '@/lib/cms/public';
 import { ProgramsHero } from "@/components/programs/programs-hero";
 import { UpcomingSection } from "@/components/programs/upcoming-section";
 import { PastProgramsGrid } from "@/components/programs/past-programs-grid";
-import { ArchivalPhotoGrid } from "@/components/programs/archival-photo-grid";
 import { CommunityStoryCta } from "@/components/programs/community-story-cta";
 
 export const metadata: Metadata = {
@@ -20,7 +19,6 @@ export default async function ProgramsPage() {
       <ProgramsHero />
       <UpcomingSection />
       <PastProgramsGrid />
-      <ArchivalPhotoGrid />
       <CommunityStoryCta />
     </div></ContentProvider>
   );

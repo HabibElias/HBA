@@ -10,6 +10,7 @@ import * as schema from '../lib/db/schema';
 import { defaultRoles } from '../lib/cms/permissions';
 import { parseContent } from '../lib/cms/collections';
 import { upcomingEvents } from '../lib/data/upcoming-events';
+import { recentSermons } from '../lib/data/sermons';
 
 async function main() {
   await mkdir('test-results', { recursive: true });
@@ -68,15 +69,30 @@ async function main() {
     assert.equal((await save(1, settings, 'publish')).ok, true);
     assert((await html('/')).includes('CACHE ORIGINAL HEADING'));
     assert((await html('/about')).includes('CACHE ORIGINAL ABOUT'));
-    await html('/'); await html('/about'); // warm both route caches
-    const edited = { ...settings, home_hero_section_4: 'CACHE PUBLISHED HEADING', about_story_hero_1: 'CACHE PUBLISHED ABOUT' };
+    await html('/'); await html('/about'); await html('/gallery'); await html('/sermons');
+    const edited = { ...settings, home_hero_section_4: 'CACHE PUBLISHED HEADING', about_story_hero_1: 'CACHE PUBLISHED ABOUT', home_gallery_preview_card1_title: 'CACHE PUBLISHED GALLERY MOMENT' };
     assert.equal((await save(2, edited, 'publish', false)).ok, false, 'Anonymous publication is rejected');
     assert.equal((await save(2, edited, 'draft')).ok, true);
     assert(!(await html('/')).includes('CACHE PUBLISHED HEADING'), 'Draft stays out of the warmed Home cache');
     assert(!(await html('/about')).includes('CACHE PUBLISHED ABOUT'), 'Draft stays out of the warmed About cache');
+    assert(!(await html('/gallery')).includes('CACHE PUBLISHED GALLERY MOMENT'), 'Gallery drafts remain private');
     assert.equal((await save(3, edited, 'publish')).ok, true);
     assert((await html('/')).includes('CACHE PUBLISHED HEADING'), 'First request after publish sees fresh Home content');
     assert((await html('/about')).includes('CACHE PUBLISHED ABOUT'), 'First request after publish sees fresh About content');
+    assert((await html('/gallery')).includes('CACHE PUBLISHED GALLERY MOMENT'), 'Gallery refreshes immediately after publishing its Home photo content');
+    const sermon = { ...recentSermons[0], title: 'CACHE SERMON VISIBILITY', recordingUrl: 'https://example.test/recording' };
+    const draftSermon = await action('saveContentAction', [{ kind: 'sermons', version: 0, position: 0, data: sermon, intent: 'draft' }]);
+    assert.equal(draftSermon.ok, true, draftSermon.message);
+    assert(!(await html('/sermons')).includes(sermon.title), 'Sermon drafts remain private');
+    const publishSermon = await action('saveContentAction', [{ id: draftSermon.id, kind: 'sermons', version: 1, position: 0, data: sermon, intent: 'publish' }]);
+    assert.equal(publishSermon.ok, true, publishSermon.message);
+    const sermonPage = await html('/sermons');
+    assert(sermonPage.includes(sermon.title), 'Sermon publication refreshes the warmed Sermons page');
+    assert(sermonPage.includes('https://example.test/recording'), 'Recording links point to the actual message');
+    assert((await html('/')).includes(sermon.title), 'Published sermon also appears on Home');
+    assert.equal((await action('contentStateAction', [draftSermon.id, 2, 'unpublish'])).ok, true);
+    assert(!(await html('/sermons')).includes(sermon.title), 'Unpublished sermon disappears from Sermons');
+    assert(!(await html('/')).includes(sermon.title), 'Unpublished sermon disappears from Home');
     const event = { ...upcomingEvents[0], title: 'CACHE EVENT VISIBILITY', startDate: '20990101T080000Z', endDate: '20990101T100000Z', registerLink: '' };
     const created = await action('saveContentAction', [{ kind: 'events', version: 0, position: 0, data: event, intent: 'publish' }]);
     assert.equal(created.ok, true, created.message);
@@ -86,7 +102,7 @@ async function main() {
     assert.equal(removed.ok, true, removed.message);
     assert(!(await html('/programs')).includes('CACHE EVENT VISIBILITY'), 'Unpublished event is removed from warmed pages');
     assert.equal((await fetch(`${origin}/api/events/${created.id}/calendar`)).status, 404, 'Unpublished event is removed from the calendar endpoint');
-    console.log('PASS: authenticated publication refreshes warmed Home/About caches immediately; drafts stay private; unpublishing refreshes Programs and calendar; anonymous mutations are rejected.');
+    console.log('PASS: publishing refreshes Home, About, Gallery and Sermons; drafts stay private; sermon unpublishing removes messages from both pages; event unpublishing refreshes Programs and calendar; anonymous mutations are rejected.');
   } catch (error) {
     console.error(logs.slice(-6000));
     throw error;

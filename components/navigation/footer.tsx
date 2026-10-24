@@ -79,6 +79,16 @@ export function Footer({ year }: { year: number }) {
                 </Link>
               </li>
               <li>
+                <Link href="/sermons" className="hover:text-white transition-colors">
+                  {isAm ? "ስብከቶች" : "Sermons"}
+                </Link>
+              </li>
+              <li>
+                <Link href="/gallery" className="hover:text-white transition-colors">
+                  {isAm ? "ፎቶዎች" : "Gallery"}
+                </Link>
+              </li>
+              <li>
                 <Link href="/visit" className="hover:text-white transition-colors">
                   {t?.nav?.visit ?? "Visit & Contact"}
                 </Link>

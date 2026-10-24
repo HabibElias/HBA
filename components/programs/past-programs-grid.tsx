@@ -65,7 +65,7 @@ export function PastProgramsGrid() {
         {/* Header without kicker eyebrow and without fake stat counter */}
         <div className="mb-12 md:mb-16">
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
-            {isAm ? "ያለፉ ፕሮግራሞች ማህደር" : "Past Programs Archive"}
+            {isAm ? "ያለፉ ፕሮግራሞች" : "Past gatherings"}
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
             {isAm
@@ -113,9 +113,7 @@ export function PastProgramsGrid() {
           ) : (
             filtered.map((program) => {
               const programTitle = isAm ? program.titleAm : program.title;
-              const availablePhotos = program.photos.filter((photo) =>
-                photo.src.startsWith("/"),
-              );
+              const availablePhotos = program.photos;
               return (
                 <article
                   key={program.id}
@@ -153,7 +151,7 @@ export function PastProgramsGrid() {
 
                       <div className="flex flex-wrap items-center gap-3">
                         <Link
-                          href="#photos"
+                          href="/gallery"
                           className={cn(
                             buttonVariants({ variant: "outline" }),
                             "text-sm",

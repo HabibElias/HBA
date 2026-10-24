@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import { Card } from "@/components/ui/card";
 
 
 
@@ -89,8 +90,8 @@ const galleryMoments = [
             distance={20}
             className={item.featured ? "md:col-span-2 lg:col-span-2 md:row-span-2" : ""}
           >
-            <div
-              className={`rounded-3xl overflow-hidden relative group border border-border min-h-[240px] bg-tint shadow-xs h-full ${
+            <Link href="/gallery"
+              className={`block rounded-3xl overflow-hidden relative group border border-border min-h-[240px] bg-tint shadow-xs h-full ${
                 item.featured ? "min-h-[340px]" : "h-64"
               }`}
             >
@@ -110,7 +111,7 @@ const galleryMoments = [
                   {isAm ? item.captionAm : item.caption}
                 </p>
               </div>
-            </div>
+            </Link>
           </ScrollReveal>
         ))}
       </div>

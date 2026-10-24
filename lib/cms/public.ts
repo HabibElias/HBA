@@ -14,10 +14,10 @@ async function readPublishedCollection(kind: PublicCollection) {
   cacheTag(PUBLIC_CONTENT_TAG);
   cacheLife({ stale: 60, revalidate: 3600, expire: 86400 });
   // No drafts, authentication data, or staff records enter the shared cache.
-  const rows = await db.select({ id: content.id, payload: content.published })
+  const rows = await db.select({ id: content.id, payload: content.published, publishedAt: content.publishedAt })
     .from(content).where(and(eq(content.kind, kind), isNotNull(content.published)))
     .orderBy(asc(content.publishedPosition), asc(content.id));
-  return rows.map(row => ({ ...row.payload, id: row.id }));
+  return rows.map(row => ({ ...row.payload, id: row.id, ...(kind === 'sermons' ? { publishedAt: row.publishedAt?.toISOString() } : {}) }));
 }
 const getPublishedCollection = cache(readPublishedCollection);
 

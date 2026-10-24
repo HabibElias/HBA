@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 
 export function HeaderNav() {
   const pathname = usePathname();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [headerState, setHeaderState] = useState<"top" | "hidden" | "pinned">("top");
 
   useEffect(() => {
@@ -48,6 +48,8 @@ export function HeaderNav() {
     { href: "/", label: t?.nav?.home ?? "Home" },
     { href: "/about", label: t?.nav?.about ?? "About" },
     { href: "/programs", label: t?.nav?.programs ?? "Programs & Events" },
+    { href: "/sermons", label: lang === "am" ? "ስብከቶች" : "Sermons" },
+    { href: "/gallery", label: lang === "am" ? "ፎቶዎች" : "Gallery" },
     { href: "/visit", label: t?.nav?.visit ?? "Visit & Contact" },
   ];
 
@@ -65,7 +67,7 @@ export function HeaderNav() {
 
         {/* Desktop Navigation Links — no pill background, active is underlined, hover has animated arrow */}
         <nav
-          className="hidden lg:flex items-center gap-6 xl:gap-8"
+          className="hidden xl:flex items-center gap-5"
           aria-label="Main Navigation"
         >
           {navLinks.map((link) => {

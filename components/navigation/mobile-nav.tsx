@@ -15,13 +15,15 @@ import { cn } from "@/lib/utils";
 export function MobileNav({ reversed = false }: { reversed?: boolean }) {
   const [isOpen, setIsOpen] = React.useState(false);
   const pathname = usePathname();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const {settings}=useContent();
 
   const navLinks = [
     { href: "/", label: t?.nav?.home ?? "Home" },
     { href: "/about", label: t?.nav?.about ?? "About" },
     { href: "/programs", label: t?.nav?.programs ?? "Programs & Events" },
+    { href: "/sermons", label: lang === "am" ? "ስብከቶች" : "Sermons" },
+    { href: "/gallery", label: lang === "am" ? "ፎቶዎች" : "Gallery" },
     { href: "/visit", label: t?.nav?.visit ?? "Visit & Contact" },
   ];
 
@@ -60,7 +62,7 @@ export function MobileNav({ reversed = false }: { reversed?: boolean }) {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <div className="lg:hidden flex items-center">
+    <div className="xl:hidden flex items-center">
       <button
         type="button"
         onClick={() => setIsOpen(true)}

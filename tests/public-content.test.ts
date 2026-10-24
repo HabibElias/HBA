@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { projectPublicContent, upcomingEvents as filterEvents } from '../lib/cms/public-data';
+import { projectPublicContent, upcomingEvents as filterEvents, newestSermons, buildGalleryPhotos } from '../lib/cms/public-data';
 import { upcomingEvents } from '../lib/data/upcoming-events';
 import { weeklySchedules } from '../lib/data/schedules';
 import { recentSermons } from '../lib/data/sermons';
@@ -30,7 +30,7 @@ test('shared navigation payload excludes page copy, galleries, and unrelated col
 test('homepage previews are bounded and include only their own editable settings', () => {
   const home = projectPublicContent(content, 'home', now);
   assert.equal(home.events.length, 4);
-  assert.equal(home.sermons.length, 6);
+  assert.equal(home.sermons.length, 4);
   assert.equal(home.settings.home_hero_section_4, 'Home heading');
   assert.deepEqual(home.settings.homeHeroPhotos, []);
   assert.equal(home.settings.about_story_hero_1, undefined);
@@ -64,4 +64,39 @@ test('expired events disappear as time advances without mutating cached records'
   assert.equal(filterEvents(input, now + 1).length, 0);
   assert.equal(input.length, 1);
   assert.equal(input[0], event);
+});
+
+test('latest published sermon leads Home and Sermons without mutating collection order', () => {
+  const sermons = [
+    { ...recentSermons[0], id: 'old', publishedAt: '2026-09-01T10:00:00Z' },
+    { ...recentSermons[1], id: 'new', publishedAt: '2026-10-24T10:00:00Z' },
+    { ...recentSermons[2], id: 'legacy' },
+  ];
+  assert.deepEqual(newestSermons(sermons).map(item => item.id), ['new', 'old', 'legacy']);
+  assert.equal(sermons[0].id, 'old');
+  assert.equal(projectPublicContent({ ...content, sermons }, 'home', now).sermons[0].id, 'new');
+  const page = projectPublicContent(content, 'sermons', now);
+  assert.equal(page.sermons.length, 10);
+  assert.deepEqual([page.events, page.recaps, page.leaders, page.schedules], [[], [], [], []]);
+  assert.equal(page.settings.home_hero_section_4, undefined);
+});
+
+test('gallery combines editable moments and published recap photos once, including CDN URLs', () => {
+  const settings = { ...content.settings, home_gallery_preview_card1_image: 'https://res.cloudinary.com/church/image/upload/moment.jpg', home_gallery_preview_card1_title: 'Published moment', home_gallery_preview_card2_image: 'https://res.cloudinary.com/church/image/upload/moment.jpg' };
+  const recaps = [{ ...pastPrograms[0], photos: [{ src: '/gallery/unique.jpg', alt: 'Published recap photo' }, { src: 'https://res.cloudinary.com/church/image/upload/moment.jpg', alt: 'Repeated photo' }] }];
+  const photos = buildGalleryPhotos(settings, recaps);
+  assert.equal(photos[0].title, 'Published moment');
+  assert.equal(photos.filter(photo => photo.src.includes('moment.jpg')).length, 1);
+  assert(photos.some(photo => photo.src === '/gallery/unique.jpg'));
+  const page = projectPublicContent({ ...content, settings, recaps }, 'gallery', now);
+  assert.deepEqual(page.gallery, photos);
+  assert.deepEqual([page.events, page.sermons, page.recaps, page.schedules, page.leaders], [[], [], [], [], []]);
+  assert.equal(page.settings.home_hero_section_4, undefined);
+});
+
+test('legacy archive links point at dedicated destinations without replacing custom links', () => {
+  const home = projectPublicContent({ ...content, settings: { ...content.settings, home_gallery_preview_3: '/programs#photos', home_sermon_preview_3: '/programs#archive', home_community_connect_card2_link: 'https://example.test/messages' } }, 'home', now);
+  assert.equal(home.settings.home_gallery_preview_3, '/gallery');
+  assert.equal(home.settings.home_sermon_preview_3, '/sermons');
+  assert.equal(home.settings.home_community_connect_card2_link, 'https://example.test/messages');
 });

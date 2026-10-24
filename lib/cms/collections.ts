@@ -121,8 +121,8 @@ export const collectionConfig: Record<
   sermons: {
     name: "Sermons & teaching",
     singular: "Sermon",
-    description: "Manage the recent messages shown on the home page.",
-    publicPath: "/#sermons",
+    description: "Publish messages for the Sermons page and the latest-message preview on Home.",
+    publicPath: "/sermons",
     fields: [
       ...pair("title", "Message title", { required: true }),
       ...pair("speaker", "Speaker", { required: true }),

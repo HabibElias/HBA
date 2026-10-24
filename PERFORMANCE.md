@@ -1,6 +1,6 @@
 # Public-page performance
 
-The public website uses Next.js 16 Cache Components (`use cache`, `cacheLife`, and `cacheTag`). It prerenders Home, About, Programs, and Visit. Public database reads are cached by collection, and independent collection reads run concurrently. Authentication, staff data, drafts, and media management remain request-time operations outside shared caches.
+The public website uses Next.js 16 Cache Components (`use cache`, `cacheLife`, and `cacheTag`). It prerenders Home, About, Programs, Visit, Sermons, and Gallery. Public database reads are cached by collection, and independent collection reads run concurrently. Authentication, staff data, drafts, and media management remain request-time operations outside shared caches.
 
 ## Freshness
 
@@ -8,7 +8,7 @@ The public website uses Next.js 16 Cache Components (`use cache`, `cacheLife`, a
 | --- | --- | --- |
 | Published collection data | 1 hour | 1 day |
 | Home, Programs, individual events | 1 minute | 5 minutes |
-| About, Visit, shared navigation/footer data | 1 hour | 1 day |
+| About, Visit, Sermons, Gallery, shared navigation/footer data | 1 hour | 1 day |
 
 Publishing or unpublishing calls `updateTag('public-content')` and invalidates the public route layout. The next server request waits for fresh content rather than intentionally serving an old published snapshot. Draft saves and staff changes refresh the admin workspace without invalidating public data. Already-open browser tabs are not pushed updates; their client router can reuse content for 60 seconds. Event lists reevaluate the clock on refresh so finished events age out even without a new publication. Time-based refresh uses stale-while-revalidate, so automatic event removal is not an exact-to-the-second scheduler.
 
@@ -17,7 +17,7 @@ Direct database edits/import scripts bypass the publishing actions. Allow the re
 ## Browser work
 
 - Shared navigation receives contact information and schedules without photo arrays. Page providers send only that route's collections and editable settings.
-- Home shows at most four upcoming events and six recent sermons. The Programs archive retains its complete content and filters.
+- Home shows at most four upcoming events and four sermons (one large latest message and three earlier messages). Sermons are ordered by their most recent publication timestamp, with display order breaking ties. The dedicated Sermons page has search and progressively reveals messages; Gallery progressively reveals photos and only loads its lightbox when opened. Both pages have an hour's revalidation interval and share immediate publication invalidation.
 - About defaults and editable lists are resolved on the server. Its browser code no longer imports the CMS field definitions or reconstructs all lists on every component render.
 - Hero and schedule carousels initially mount only the visible photograph. Neighboring photographs are prepared after hydration; at most three backgrounds are mounted at once.
 - Photo lightboxes load on demand. Leadership portraits and schedule thumbnails use responsive Next.js image optimization.

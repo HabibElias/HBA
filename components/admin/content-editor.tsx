@@ -427,8 +427,8 @@ export function ContentEditor({
               }}
             />
             <small>
-              Lower numbers appear first. Events are ordered by their start
-              date.
+              Lower numbers appear first. Events use their start date; sermons
+              use their most recent publication date.
             </small>
           </Label>}
           {canEdit && (

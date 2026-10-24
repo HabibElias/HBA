@@ -15,7 +15,7 @@ export function ProgramsHero() {
         <p className="text-base sm:text-lg text-white/85 mt-6 max-w-xl leading-relaxed">{isAm ? "መጪ ስብሰባዎችን ይመልከቱ፣ የቀን መቁጠሪያዎ ላይ ያስቀምጡ፣ ካለፉ የሕብረት ጊዜያትም ትዝታዎችን ያስሱ።" : "Find your next gathering, save the date, and explore the moments that have brought our church family together."}</p>
         <div className="flex flex-wrap gap-4 mt-8">
           <Link href="#upcoming" className={buttonVariants({variant:"on-dark"})}>{isAm ? "መጪ ስብሰባዎች" : "Find a gathering"}</Link>
-          <Link href="#archive" className={buttonVariants({variant:"on-dark-outline"})}>{isAm ? "ያለፉ መርሐ ግብሮች" : "Browse the archive"}</Link>
+          <Link href="#archive" className={buttonVariants({variant:"on-dark-outline"})}>{isAm ? "ያለፉ መርሐ ግብሮች" : "Past gatherings"}</Link>
         </div>
       </div>
       {next && <Link href={`/programs/${next.id}`} className="group lg:col-span-5 rounded-3xl bg-white text-foreground overflow-hidden block focus-visible:outline-white">

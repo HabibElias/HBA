@@ -125,6 +125,12 @@ The weekly carousel uses published **Weekly schedule** entries in display order.
 
 Staff with `media.write` can edit a photograph's library name and alt text or remove it from the library using its **Edit** and **Remove** buttons. Existing content retains its saved descriptions. Removal checks both drafts and published content and refuses to remove referenced photographs. The confirmation makes clear that removal is from the library and picker; the hosted Cloudinary file is retained. Metadata edits and removal are audited and reject stale edits. Viewers cannot invoke these mutations, including directly through server actions.
 
-## Public-page caching
+## Sermons and Gallery
+
+The public **Sermons** page (`/sermons`) contains the latest message and earlier teaching, searchable by title, speaker, series, or scripture. **Sermons & teaching** in the workspace controls both this page and the Home preview. The most recently published message receives the large feature; publishing an updated message moves it to the front. A recording link opens that message's recording; without one, visitors can ask the church for a copy. Home shows up to four messages.
+
+The public **Gallery** page (`/gallery`, “Moments we share”) combines photos and bilingual captions from **Pages → Home → Photo gallery** with photos from published **Past gatherings** entries. Repeated image URLs appear once. Uploading a photo to the image library alone does not publish it to the gallery. The gallery supports gathering filters and enlarged photos. Programs keeps upcoming events and past gathering recaps; sermon and gallery links now lead to their dedicated pages. No database migration is required.
+
+## Public-page caching behavior
 
 Public pages are prerendered and published database content is cached. Publishing and unpublishing invalidate public content immediately; saving drafts does not. Admin authentication and draft reads remain uncached. A returning visitor's browser may reuse its route data for up to 60 seconds; an already-open page does not update itself automatically. See [PERFORMANCE.md](PERFORMANCE.md) for cache lifetimes, deployment considerations, measurements, and repeatable tests. No database migration is needed for this optimization.

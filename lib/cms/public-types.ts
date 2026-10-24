@@ -22,6 +22,7 @@ export interface ChurchSettings {
   telegram: string;
 }
 export interface PublicContent {
+  gallery?: GalleryPhoto[];
   about?: AboutPageContent;
   events: UpcomingEvent[];
   recaps: (PastProgram & { recordingUrl?: string })[];
@@ -29,4 +30,15 @@ export interface PublicContent {
   schedules: ScheduleItem[];
   leaders: Leader[];
   settings: ChurchSettings;
+}
+export interface GalleryPhoto {
+  id: string;
+  src: string;
+  alt: string;
+  title: string;
+  titleAm: string;
+  caption: string;
+  captionAm: string;
+  album: string;
+  albumAm: string;
 }
