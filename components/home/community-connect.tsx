@@ -1,4 +1,5 @@
 "use client";
+import { useLandingContent } from "@/lib/context/landing-context";
 import { useContent } from "@/lib/context/content-context";
 
 import Link from "next/link";
@@ -6,40 +7,42 @@ import { Send, Video, Users, ArrowUpRight, Heart } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
+
+
+export function CommunityConnect() {
+  const { homeText, homeValue } = useLandingContent();
 const SOCIAL_CHANNELS = [
   {
     id: "telegram",
     icon: Send,
-    name: "Telegram Channel",
-    nameAm: "ይፋዊ ቴሌግራም",
-    handle: "@HiwotBirhanSummit",
-    desc: "Weekly bulletins, prayer notes & audio sermons",
-    descAm: "ሳምንታዊ ማስታወቂያዎች፣ የጸሎት ነጥቦችና ስብከቶች",
-    link: "https://t.me/HiwotBirhanSummit",
+    name: homeValue("home_community_connect_card1_name"),
+    nameAm: homeValue("home_community_connect_card1_nameAm"),
+    handle: homeValue("home_community_connect_card1_handle"),
+    desc: homeValue("home_community_connect_card1_desc"),
+    descAm: homeValue("home_community_connect_card1_descAm"),
+    link: homeValue("home_community_connect_card1_link"),
   },
   {
     id: "youtube",
     icon: Video,
-    name: "Media & Messages",
-    nameAm: "የሚዲያና ስብከቶች ቻናል",
-    handle: "Hiwot Birhan Media",
-    desc: "Stream Sunday messages and uplifting songs",
-    descAm: "የእሑድ ስብከቶችና የዝማሬ ቪዲዮዎች",
-    link: "/programs#archive",
+    name: homeValue("home_community_connect_card2_name"),
+    nameAm: homeValue("home_community_connect_card2_nameAm"),
+    handle: homeValue("home_community_connect_card2_handle"),
+    desc: homeValue("home_community_connect_card2_desc"),
+    descAm: homeValue("home_community_connect_card2_descAm"),
+    link: homeValue("home_community_connect_card2_link"),
   },
   {
     id: "community",
     icon: Users,
-    name: "Community Care",
-    nameAm: "የማኅበረሰብ ሕብረት",
-    handle: "Summit Care Circle",
-    desc: "Connect with small groups and fellowship circles",
-    descAm: "ከአካባቢ የጸሎትና የሕብረት ቡድኖች ጋር ይገናኙ",
-    link: "/visit#contact",
+    name: homeValue("home_community_connect_card3_name"),
+    nameAm: homeValue("home_community_connect_card3_nameAm"),
+    handle: homeValue("home_community_connect_card3_handle"),
+    desc: homeValue("home_community_connect_card3_desc"),
+    descAm: homeValue("home_community_connect_card3_descAm"),
+    link: homeValue("home_community_connect_card3_link"),
   },
 ];
-
-export function CommunityConnect() {
   const { lang } = useLanguage();
   const {settings}=useContent();
   const isAm = lang === "am";
@@ -49,10 +52,10 @@ export function CommunityConnect() {
       {/* Editorial Header */}
       <ScrollReveal variant="fade-up" duration={600} className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">
         <span className="font-script text-3xl sm:text-4xl text-primary-soft block mb-1 font-normal">
-          {isAm ? "እያንዳንዱ አባል ታሪክ አለው" : "Every Member has a story, What's yours?"}
+          {homeText("home_community_connect_1")}
         </span>
         <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
-          {isAm ? "ከመንፈሳዊ ቤተሰባችን ጋር ይገናኙ" : "Connect With Our Church Family"}
+          {homeText("home_community_connect_2")}
         </h2>
       </ScrollReveal>
 
@@ -95,7 +98,7 @@ export function CommunityConnect() {
               </div>
 
               <div className="mt-8 pt-4 w-full flex items-center justify-between text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors relative z-10">
-                <span>{isAm ? "ይቀላቀሉ" : "Join & Follow"}</span>
+                <span>{homeText("home_community_connect_3")}</span>
                 <ArrowUpRight
                   className="size-6 text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
                   strokeWidth={1.75}
@@ -115,18 +118,16 @@ export function CommunityConnect() {
             <Heart className="size-4 fill-primary" />
           </div>
           <p className="font-display text-sm sm:text-base font-semibold text-foreground">
-            {isAm
-              ? "በክርስቶስ ፍቅር ሁላችሁም ተጋብዛችኋል • እዚህ ለእርስዎም ስፍራ አለ"
-              : "There is room for you in God’s house • You are always warmly welcome"}
+            {homeText("home_community_connect_4")}
           </p>
         </div>
 
         <Link
-          href="/visit"
+          href={homeValue("home_community_connect_5")}
           className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-surface text-primary font-semibold text-xs sm:text-sm shadow-sm hover:shadow-md hover:bg-surface/90 transition-all shrink-0"
         >
           <Heart className="size-3.5 fill-primary text-primary" />
-          <span>{isAm ? "ጉብኝትዎን ያቅዱ" : "Plan Your Visit"}</span>
+          <span>{homeText("home_community_connect_6")}</span>
         </Link>
       </div>
     </ScrollReveal>

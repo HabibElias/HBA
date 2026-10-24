@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { LogoLockup } from "./logo";
 import { LanguageToggle } from "./language-toggle";
 import { MobileNav } from "./mobile-nav";
@@ -13,33 +14,32 @@ import { cn } from "@/lib/utils";
 
 export function HeaderNav() {
   const pathname = usePathname();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [headerState, setHeaderState] = useState<"top" | "hidden" | "pinned">("top");
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
+    const getScrollY = () => Math.max(0, Math.min(
+      window.scrollY,
+      document.documentElement.scrollHeight - window.innerHeight
+    ));
+    let lastScrollY = getScrollY();
+    setHeaderState(lastScrollY <= 60 ? "top" : "pinned");
 
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      const heroEl = document.querySelector(".home-hero, .subpage-hero");
-      const threshold = heroEl ? (heroEl as HTMLElement).offsetHeight - 100 : 450;
-
-      const isScrollingDown = currentScrollY > lastScrollY;
-      lastScrollY = currentScrollY;
+      const currentScrollY = getScrollY();
+      const delta = currentScrollY - lastScrollY;
 
       if (currentScrollY <= 60) {
         setHeaderState("top");
-      } else if (currentScrollY >= threshold) {
-        setHeaderState("pinned");
-      } else if (isScrollingDown) {
-        setHeaderState("hidden");
-      } else {
-        setHeaderState("pinned");
+        lastScrollY = currentScrollY;
+      } else if (Math.abs(delta) >= 8) {
+        // Ignore tiny scroll movements so the header does not flicker.
+        setHeaderState(delta > 0 ? "hidden" : "pinned");
+        lastScrollY = currentScrollY;
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
@@ -54,7 +54,7 @@ export function HeaderNav() {
   return (
     <header
       className={cn(
-        "site-header fixed top-0 left-0 right-0 z-50 w-full text-white transition-transform duration-300 ease-out",
+        "site-header fixed top-0 left-0 right-0 z-50 w-full text-white transition-transform duration-300 ease-out motion-reduce:transition-none",
         headerState === "top" && "site-header-top translate-y-0",
         headerState === "hidden" && "site-header-hidden -translate-y-[calc(100%+24px)]",
         headerState === "pinned" && "site-header-pinned translate-y-0"
@@ -65,7 +65,7 @@ export function HeaderNav() {
 
         {/* Desktop Navigation Links — no pill background, active is underlined, hover has animated arrow */}
         <nav
-          className="hidden lg:flex items-center gap-6 xl:gap-8"
+          className="hidden xl:flex items-center gap-5"
           aria-label="Main Navigation"
         >
           {navLinks.map((link) => {
@@ -112,6 +112,7 @@ export function HeaderNav() {
 
         {/* Right Action Bar */}
         <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+          <ThemeToggle isAm={lang === "am"} className="border-white/20 bg-white/10 text-white hover:bg-white/20 focus-visible:outline-white" />
           <LanguageToggle />
 
           {/* Reverted "Plan your visit" back to solid on-dark pill button */}

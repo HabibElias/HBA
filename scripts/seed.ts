@@ -1,3 +1,4 @@
+import { landingDefaults } from "../lib/cms/landing";
 import { loadEnvConfig } from "@next/env";
 import { upcomingEvents } from "../lib/data/upcoming-events";
 import { pastPrograms } from "../lib/data/past-programs";
@@ -5,8 +6,8 @@ import { weeklySchedules } from "../lib/data/schedules";
 import { pastoralTeam } from "../lib/data/leadership";
 import { recentSermons } from "../lib/data/sermons";
 import { defaultRoles, type Collection } from "../lib/cms/permissions";
-import { contentTitle, parseContent } from "../lib/cms/collections";
-loadEnvConfig(process.cwd());
+import { contentTitle, parseContent, safeImage } from "../lib/cms/collections";
+loadEnvConfig(process.cwd(), process.env.DATABASE_ENV !== "production");
 async function main() {
   const { db, client } = await import("../lib/db");
   const { roles, content } = await import("../lib/db/schema");
@@ -30,9 +31,10 @@ async function main() {
         photos: p.photos.filter((f) => f.src.startsWith("/")),
       })),
     ],
+    ["albums", [{ id: "gallery-church-life", title: "Church life", titleAm: "የቤተ ክርስቲያን ሕይወት", date: "", dateAm: "", photos: [1, 2, 3, 4, 5].map(i => ({ src: landingDefaults[`home_gallery_preview_card${i}_image`], alt: landingDefaults[`home_gallery_preview_card${i}_title`], caption: landingDefaults[`home_gallery_preview_card${i}_caption`] })) }]],
     ["sermons", recentSermons],
     ["schedules", weeklySchedules.map((s) => ({ ...s }))],
-    ["leaders", pastoralTeam.map((l) => ({ ...l }))],
+    ["leaders", pastoralTeam.map((l) => ({ ...l, image: safeImage(l.image) ? l.image : "" }))],
     [
       "settings",
       [

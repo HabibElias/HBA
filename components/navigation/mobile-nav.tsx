@@ -60,7 +60,7 @@ export function MobileNav({ reversed = false }: { reversed?: boolean }) {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <div className="lg:hidden flex items-center">
+    <div className="xl:hidden flex items-center">
       <button
         type="button"
         onClick={() => setIsOpen(true)}
@@ -118,7 +118,7 @@ export function MobileNav({ reversed = false }: { reversed?: boolean }) {
                       className={cn(
                         "px-4 py-3 rounded-full text-base font-semibold transition-all",
                         isActive
-                          ? "bg-primary text-white shadow-xs"
+                          ? "bg-primary text-primary-foreground shadow-xs"
                           : "text-foreground hover:bg-tint hover:text-primary"
                       )}
                     >

@@ -1,4 +1,5 @@
 "use client";
+import { useAboutContent } from "@/lib/context/about-context";
 
 import { useState } from "react";
 import {
@@ -11,7 +12,6 @@ import {
   Flame,
   ChevronDown,
 } from "lucide-react";
-import { faithStatements } from "@/lib/data/faith";
 import { useLanguage } from "@/lib/context/language-context";
 import { cn } from "@/lib/utils";
 
@@ -26,6 +26,7 @@ const faithIcons: Record<string, React.ComponentType<{ className?: string }>> = 
 };
 
 export function FaithAccordion() {
+  const { pageText, faithStatements } = useAboutContent();
   const { lang } = useLanguage();
   const isAm = lang === "am";
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({
@@ -40,12 +41,10 @@ export function FaithAccordion() {
     <section className="site-container about-faith section-space" id="faith">
       <div className="text-left">
         <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold">
-          {isAm ? "ምን እናምናለን?" : "What We Believe"}
+          {pageText("about_faith_accordion_1")}
         </h2>
         <p className="text-muted-foreground text-sm sm:text-base mt-3 max-w-xl leading-relaxed">
-          {isAm
-            ? "በዘመናት ወንጌላዊ እውነትና በታሪካዊ ክርስቲያናዊ ትምህርት ላይ የጸና መሠረታዊ የእምነት መግለጫ።"
-            : "The biblical beliefs that shape our worship, our life together, and our service to others."}
+          {pageText("about_faith_accordion_2")}
         </p>
       </div>
 

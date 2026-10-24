@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getPublicContent } from "@/lib/cms/public";
+import { getPublicEvent } from "@/lib/cms/public";
 import { EventDetail } from "@/components/programs/event-detail";
 export async function generateMetadata({
   params,
@@ -7,8 +7,7 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { events } = await getPublicContent();
-  const event = events.find((e) => e.id === id);
+  const event = await getPublicEvent(id);
   return {
     title: event
       ? `${event.title} | Hiwot Birhan Summit`
@@ -22,8 +21,7 @@ export default async function EventPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { events } = await getPublicContent();
-  const event = events.find((e) => e.id === id);
+  const event = await getPublicEvent(id);
   if (!event) notFound();
   return <EventDetail event={event} />;
 }

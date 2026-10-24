@@ -4,10 +4,10 @@ import * as React from "react";
 import {
   Dialog,
   DialogContent,
-  DialogClose,
+  DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
-import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface LightboxProps {
@@ -35,34 +35,30 @@ export function Lightbox({
       }}
     >
       <DialogContent
-        showCloseButton={false}
-        overlayClassName="bg-black/90 backdrop-blur-none"
-        className="w-[calc(100%-2rem)] max-w-5xl sm:max-w-5xl flex flex-col items-center justify-center bg-transparent text-white p-0 ring-0"
+        className="w-[calc(100%-2rem)] max-w-4xl sm:max-w-4xl rounded-3xl bg-surface border border-border p-6 shadow-2xl gap-4"
+        showCloseButton={true}
       >
-        <DialogTitle className="sr-only">{alt || "Image lightbox"}</DialogTitle>
-        <div className="relative max-h-[85vh] max-w-5xl w-full flex flex-col items-center justify-center pointer-events-auto">
-          <DialogClose
-            className="absolute -top-12 right-0 md:top-2 md:right-2 z-10 flex size-10 items-center justify-center rounded-full bg-white/10 text-white backdrop-blur-md transition-all hover:bg-white/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white cursor-pointer"
-            aria-label="Close lightbox"
-          >
-            <X className="size-5" />
-          </DialogClose>
-          <div className="relative max-h-[75vh] w-full flex items-center justify-center overflow-hidden rounded-xl">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={src}
-              alt={alt}
-              className={cn(
-                "max-h-[75vh] max-w-full rounded-xl object-contain shadow-2xl transition-transform",
-                className,
-              )}
-            />
-          </div>
-          {caption && (
-            <p className="mt-4 text-center text-sm md:text-base font-medium text-white/90 bg-black/40 backdrop-blur-xs px-4 py-1.5 rounded-full max-w-2xl">
+        <DialogHeader className="pr-10 space-y-1">
+          <DialogTitle className="font-display text-xl sm:text-2xl font-semibold text-foreground leading-snug">
+            {alt || "Photograph"}
+          </DialogTitle>
+          {caption && caption !== alt && (
+            <DialogDescription className="text-sm text-muted-foreground leading-relaxed">
               {caption}
-            </p>
+            </DialogDescription>
           )}
+        </DialogHeader>
+
+        <div className="relative max-h-[70vh] w-full flex items-center justify-center overflow-hidden rounded-2xl bg-tint/30 p-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={src}
+            alt={alt}
+            className={cn(
+              "max-h-[66vh] w-auto max-w-full rounded-xl object-contain shadow-xs",
+              className
+            )}
+          />
         </div>
       </DialogContent>
     </Dialog>

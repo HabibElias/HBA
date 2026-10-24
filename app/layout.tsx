@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@/components/theme-provider";
 import { Analytics } from "@vercel/analytics/next";
 
 import type { Metadata, Viewport } from "next";
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  colorScheme: "light",
+  colorScheme: "light dark",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "#FAF9F6" },
     { media: "(prefers-color-scheme: dark)", color: "#14122B" },
@@ -34,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={cn("font-sans", figtree.variable)}>
       <body className="min-h-screen antialiased selection:bg-[#3A33A0] selection:text-white flex flex-col bg-[var(--background)] text-[var(--foreground)]">
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
         {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>

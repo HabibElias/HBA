@@ -1,20 +1,26 @@
 "use client";
+import { useAboutContent } from "@/lib/context/about-context";
 import { useContent } from "@/lib/context/content-context";
 import { useLanguage } from "@/lib/context/language-context";
+import Image from 'next/image';
 export function LeadershipGrid() {
+  const { pageText, pageValue } = useAboutContent();
   const { leaders: pastoralTeam } = useContent();
   const { lang } = useLanguage(); const isAm = lang === "am";
   return <section className="section-space bg-surface" id="leadership">
     <div className="site-container">
       <div className="max-w-2xl mb-12">
-        <h2 className="section-title">{isAm ? "የመጋቢዎችና የሽማግሌዎች አመራር" : "Meet our pastoral team."}</h2>
-        <p className="body-copy mt-5">{isAm ? "በጸሎት፣ በቃሉና በምክር መንፈሳዊ ቤተሰባችንን የሚያገለግሉ።" : "Serving our church family through prayer, teaching, pastoral care, and the everyday work of walking alongside one another."}</p>
+        <h2 className="section-title">{pageText("about_leadership_grid_1")}</h2>
+        <p className="body-copy mt-5">{pageText("about_leadership_grid_2")}</p>
       </div>
       <div className="grid md:grid-cols-2 gap-x-16 gap-y-12">
         {pastoralTeam.map(leader=><article key={leader.id} className="flex items-start gap-5 sm:gap-6 min-w-0">
           {leader.image ? (
-            <img
+            <Image
               src={leader.image}
+              width={80}
+              height={80}
+              sizes="(max-width: 640px) 64px, 80px"
               alt={isAm ? leader.altAm || leader.nameAm : leader.alt || leader.name}
               className="size-16 sm:size-20 shrink-0 rounded-full object-cover"
             />

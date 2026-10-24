@@ -15,10 +15,10 @@ export function ProgramsHero() {
         <p className="text-base sm:text-lg text-white/85 mt-6 max-w-xl leading-relaxed">{isAm ? "መጪ ስብሰባዎችን ይመልከቱ፣ የቀን መቁጠሪያዎ ላይ ያስቀምጡ፣ ካለፉ የሕብረት ጊዜያትም ትዝታዎችን ያስሱ።" : "Find your next gathering, save the date, and explore the moments that have brought our church family together."}</p>
         <div className="flex flex-wrap gap-4 mt-8">
           <Link href="#upcoming" className={buttonVariants({variant:"on-dark"})}>{isAm ? "መጪ ስብሰባዎች" : "Find a gathering"}</Link>
-          <Link href="#archive" className={buttonVariants({variant:"on-dark-outline"})}>{isAm ? "ያለፉ መርሐ ግብሮች" : "Browse the archive"}</Link>
+          <Link href="#archive" className={buttonVariants({variant:"on-dark-outline"})}>{isAm ? "ያለፉ መርሐ ግብሮች" : "Past gatherings"}</Link>
         </div>
       </div>
-      {next && <Link href={`/programs/${next.id}`} className="group lg:col-span-5 rounded-3xl bg-white text-foreground overflow-hidden block focus-visible:outline-white">
+      {next && <Link href={`/programs/${next.id}`} className="group lg:col-span-5 rounded-3xl bg-surface text-foreground overflow-hidden block focus-visible:outline-white">
         <div className="relative h-52 sm:h-60 overflow-hidden"><Image src={next.image} alt={isAm?next.titleAm:next.title} fill preload sizes="(max-width:1024px) 100vw, 480px" className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"/></div>
         <div className="p-7 sm:p-8"><div className="flex items-center gap-3 text-primary text-sm font-semibold"><CalendarDays className="size-5"/><span>{isAm ? "በቀጣይ የሚካሄድ" : "Next in our calendar"}</span></div>
         <p className="font-display text-2xl sm:text-3xl font-semibold text-primary mt-4">{isAm ? next.dateAm : next.date}</p>

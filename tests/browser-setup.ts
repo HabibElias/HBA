@@ -5,7 +5,7 @@ import { hashPassword } from "better-auth/crypto";
 async function main() {
   const filename = `cms-browser-${crypto.randomUUID()}.db`;
   copyFileSync(path.resolve("data/church.db"), path.resolve("data", filename));
-  process.env.TURSO_DATABASE_URL = `file:./data/${filename}`;
+  process.env.TURSO_DEVELOPMENT_DATABASE_URL = `file:./data/${filename}`;
   delete process.env.TURSO_AUTH_TOKEN;
   const { db, client } = await import("../lib/db");
   const { user, account } = await import("../lib/db/schema");
@@ -43,7 +43,7 @@ async function main() {
   writeFileSync(
     path.join(tmpdir(), "summit-browser-qa.json"),
     JSON.stringify({
-      databaseUrl: process.env.TURSO_DATABASE_URL,
+      databaseUrl: process.env.TURSO_DEVELOPMENT_DATABASE_URL,
       secret: crypto.randomUUID() + crypto.randomUUID(),
       users,
     }),

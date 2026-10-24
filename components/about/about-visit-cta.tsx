@@ -1,4 +1,5 @@
 "use client";
+import { useAboutContent } from "@/lib/context/about-context";
 
 import Link from "next/link";
 import { HeartHandshake, MapPin, Calendar } from "lucide-react";
@@ -7,6 +8,7 @@ import { useLanguage } from "@/lib/context/language-context";
 import { cn } from "@/lib/utils";
 
 export function AboutVisitCta() {
+  const { pageText, pageValue } = useAboutContent();
   const { lang } = useLanguage();
   const isAm = lang === "am";
 
@@ -25,42 +27,38 @@ export function AboutVisitCta() {
         </div>
 
         <span className="font-script text-3xl sm:text-4xl text-primary-soft block mb-1 font-normal relative z-10">
-          {isAm ? "እንኳን ደህና መጡ" : "Come and See"}
+          {pageText("about_about_visit_cta_1")}
         </span>
 
         <h2 className="font-display text-2xl sm:text-3xl md:text-4xl text-foreground font-semibold mb-3 relative z-10">
-          {isAm
-            ? "በአካል ተገኝተው ይህንን መንፈሳዊ ማኅበረሰብ ይለማመዱ"
-            : "Experience this community in person"}
+          {pageText("about_about_visit_cta_2")}
         </h2>
 
         <p className="text-muted-foreground text-sm sm:text-base max-w-xl mx-auto mb-8 leading-relaxed relative z-10">
-          {isAm
-            ? "ስለ ክርስትና እምነት ለማወቅ የሚፈልጉ ወይም በአዲስ አበባ ወንጌላዊ መንፈሳዊ ቤት የሚሹ ከሆኑ፤ በራችን ሁልጊዜ ለሁሉም ክፍት ነው።"
-            : "Whether you are exploring Christianity for the first time or searching for a gospel-centered home church in Addis Ababa, our doors are wide open."}
+          {pageText("about_about_visit_cta_3")}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
           <Link
-            href="/visit"
+            href={pageValue("about_about_visit_cta_4")}
             className={cn(
               buttonVariants({ variant: "primary", size: "lg" }),
               "rounded-full px-7 w-full sm:w-auto gap-2 font-semibold"
             )}
           >
             <Calendar className="size-4" />
-            <span>{isAm ? "በዚህ እሁድ ይቀላቀሉን" : "Join Us This Sunday"}</span>
+            <span>{pageText("about_about_visit_cta_5")}</span>
           </Link>
 
           <Link
-            href="/visit#transit"
+            href={pageValue("about_about_visit_cta_6")}
             className={cn(
               buttonVariants({ variant: "secondary", size: "lg" }),
               "rounded-full px-7 w-full sm:w-auto gap-2 font-semibold"
             )}
           >
             <MapPin className="size-4 text-primary" />
-            <span>{isAm ? "የሰሚት አድራሻና ካርታ" : "Summit Location & Map"}</span>
+            <span>{pageText("about_about_visit_cta_7")}</span>
           </Link>
         </div>
       </div>

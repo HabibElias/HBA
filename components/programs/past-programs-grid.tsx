@@ -1,27 +1,27 @@
 "use client";
-import { Search } from "lucide-react";
 
-import { Input } from "@/components/ui/input";
+import { GatheringFilter } from "@/components/ui/gathering-filter";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Headphones, Images, ZoomIn } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 import { useContent } from "@/lib/context/content-context";
-import { Lightbox } from "@/components/ui/lightbox";
+import dynamic from "next/dynamic";
+const Lightbox = dynamic(() =>
+  import("@/components/ui/lightbox").then((module) => module.Lightbox),
+);
 import { buttonVariants } from "@/components/ui/public-button";
 import { cn } from "@/lib/utils";
-import { ArchiveFilterBar } from "./archive-filter-bar";
+
 import type { PastProgramPhoto } from "@/lib/types/programs";
 
 export function PastProgramsGrid() {
   const { recaps: pastPrograms } = useContent();
   const { lang } = useLanguage();
   const isAm = lang === "am";
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedYear, setSelectedYear] = useState("all");
-  const [query, setQuery] = useState("");
+  const [gathering, setGathering] = useState("all");
   const [lightbox, setLightbox] = useState<{
     isOpen: boolean;
     src: string;
@@ -33,21 +33,9 @@ export function PastProgramsGrid() {
     alt: "",
   });
 
-  const filtered = useMemo(() => {
-    return pastPrograms.filter((p) => {
-      const matchCat =
-        selectedCategory === "all" || p.category === selectedCategory;
-      const matchYear =
-        selectedYear === "all" || p.year.toString() === selectedYear;
-      return (
-        matchCat &&
-        matchYear &&
-        `${p.title} ${p.titleAm} ${p.recap} ${p.recapAm}`
-          .toLowerCase()
-          .includes(query.toLowerCase())
-      );
-    });
-  }, [pastPrograms, selectedCategory, selectedYear, query]);
+  const filtered = pastPrograms.filter(
+    (program) => gathering === "all" || program.id === gathering,
+  );
 
   const openPhoto = (photo: PastProgramPhoto, title: string) => {
     setLightbox({
@@ -64,7 +52,7 @@ export function PastProgramsGrid() {
         {/* Header without kicker eyebrow and without fake stat counter */}
         <div className="mb-12 md:mb-16">
           <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
-            {isAm ? "ያለፉ ፕሮግራሞች ማህደር" : "Past Programs Archive"}
+            {isAm ? "ያለፉ ፕሮግራሞች" : "Past gatherings"}
           </h2>
           <p className="text-muted-foreground text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
             {isAm
@@ -73,20 +61,15 @@ export function PastProgramsGrid() {
           </p>
         </div>
 
-        <label className="program-search mb-5">
-          <Search size={18} aria-hidden="true" />
-          <Input
-            aria-label={isAm ? "ማህደሩን ይፈልጉ" : "Search past gatherings"}
-            placeholder={isAm ? "ማህደሩን ይፈልጉ" : "Search past gatherings"}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </label>
-        <ArchiveFilterBar
-          selectedCategory={selectedCategory}
-          onSelectCategory={setSelectedCategory}
-          selectedYear={selectedYear}
-          onSelectYear={setSelectedYear}
+        <GatheringFilter
+          id="past-gathering"
+          value={gathering}
+          onChange={setGathering}
+          isAm={isAm}
+          options={pastPrograms.map((program) => ({
+            value: program.id,
+            label: isAm ? program.titleAm || program.title : program.title,
+          }))}
         />
 
         <div className="mt-10 space-y-6" aria-live="polite" aria-atomic="false">
@@ -100,9 +83,7 @@ export function PastProgramsGrid() {
               <button
                 type="button"
                 onClick={() => {
-                  setSelectedCategory("all");
-                  setSelectedYear("all");
-                  setQuery("");
+                  setGathering("all");
                 }}
                 className={cn(buttonVariants({ variant: "outline" }), "mt-5")}
               >
@@ -112,12 +93,11 @@ export function PastProgramsGrid() {
           ) : (
             filtered.map((program) => {
               const programTitle = isAm ? program.titleAm : program.title;
-              const availablePhotos = program.photos.filter((photo) =>
-                photo.src.startsWith("/"),
-              );
+              const availablePhotos = program.photos;
               return (
                 <article
                   key={program.id}
+                  id={program.id}
                   className="bg-surface rounded-2xl border border-border hover:border-primary/40 transition-colors overflow-hidden p-6 md:p-8"
                 >
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -152,7 +132,7 @@ export function PastProgramsGrid() {
 
                       <div className="flex flex-wrap items-center gap-3">
                         <Link
-                          href="#photos"
+                          href="/gallery"
                           className={cn(
                             buttonVariants({ variant: "outline" }),
                             "text-sm",
@@ -242,13 +222,15 @@ export function PastProgramsGrid() {
           )}
         </div>
       </div>
-      <Lightbox
-        isOpen={lightbox.isOpen}
-        onClose={() => setLightbox((prev) => ({ ...prev, isOpen: false }))}
-        src={lightbox.src}
-        alt={lightbox.alt}
-        caption={lightbox.caption}
-      />
+      {lightbox.isOpen && (
+        <Lightbox
+          isOpen={lightbox.isOpen}
+          onClose={() => setLightbox((prev) => ({ ...prev, isOpen: false }))}
+          src={lightbox.src}
+          alt={lightbox.alt}
+          caption={lightbox.caption}
+        />
+      )}
     </section>
   );
 }

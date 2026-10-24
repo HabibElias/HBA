@@ -1,6 +1,7 @@
 export const collections = [
   "events",
   "recaps",
+  "albums",
   "sermons",
   "schedules",
   "leaders",
@@ -16,7 +17,7 @@ export const permissionLabels: Record<string, string> = {
     ]),
   ),
   "content.delete": "Delete content",
-  "media.write": "Upload public images",
+  "media.write": "Upload and manage library images",
   "users.manage": "Manage staff accounts",
   "roles.manage": "Manage roles and permissions",
   "audit.read": "View activity log",

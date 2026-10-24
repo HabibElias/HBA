@@ -1,4 +1,5 @@
 "use client";
+import { useLandingContent } from "@/lib/context/landing-context";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -6,40 +7,42 @@ import { ArrowUpRight, Heart } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
+
+
+export function MinistriesPreview() {
+  const { homeText, homeValue } = useLandingContent();
 const MINISTRY_SHOWCASE = [
   {
     id: "worship-choir",
-    name: "Worship & Choir",
-    nameAm: "የአምልኮና የመዘምራን አገልግሎት",
-    schedule: "Saturdays 3:30 PM & Sundays 8:00 AM",
-    scheduleAm: "ቅዳሜ ከሰዓት 9:30 እና እሑድ ጠዋት 2:00",
+    name: homeValue("home_ministries_preview_card1_name"),
+    nameAm: homeValue("home_ministries_preview_card1_nameAm"),
+    schedule: homeValue("home_ministries_preview_card1_schedule"),
+    scheduleAm: homeValue("home_ministries_preview_card1_scheduleAm"),
     image:
-      "/gallery/photo_24_2026-08-27_14-11-14.jpg",
-    link: "/visit#contact",
+      homeValue("home_ministries_preview_card1_image"),
+    link: homeValue("home_ministries_preview_card1_link"),
   },
   {
     id: "youth-ministry",
-    name: "Youth & Young Adults",
-    nameAm: "የወጣቶችና የዩኒቨርሲቲ ተማሪዎች",
-    schedule: "Saturdays 4:00 PM – 6:00 PM EAT",
-    scheduleAm: "ቅዳሜ ከሰዓት 10:00 – 12:00",
+    name: homeValue("home_ministries_preview_card2_name"),
+    nameAm: homeValue("home_ministries_preview_card2_nameAm"),
+    schedule: homeValue("home_ministries_preview_card2_schedule"),
+    scheduleAm: homeValue("home_ministries_preview_card2_scheduleAm"),
     image:
-      "/gallery/photo_15_2026-08-27_14-11-14.jpg",
-    link: "/visit#contact",
+      homeValue("home_ministries_preview_card2_image"),
+    link: homeValue("home_ministries_preview_card2_link"),
   },
   {
     id: "children-awana",
-    name: "Children & Awana Club",
-    nameAm: "የሕፃናትና የአዋና አገልግሎት",
-    schedule: "Sundays 9:30 AM & Saturdays 9:00 AM",
-    scheduleAm: "እሑድ ጠዋት 3:30 እና ቅዳሜ ጠዋት 3:00",
+    name: homeValue("home_ministries_preview_card3_name"),
+    nameAm: homeValue("home_ministries_preview_card3_nameAm"),
+    schedule: homeValue("home_ministries_preview_card3_schedule"),
+    scheduleAm: homeValue("home_ministries_preview_card3_scheduleAm"),
     image:
-      "/gallery/photo_11_2026-08-27_14-11-14.jpg",
-    link: "/visit#contact",
+      homeValue("home_ministries_preview_card3_image"),
+    link: homeValue("home_ministries_preview_card3_link"),
   },
 ];
-
-export function MinistriesPreview() {
   const { lang } = useLanguage();
   const isAm = lang === "am";
 
@@ -50,17 +53,17 @@ export function MinistriesPreview() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div>
             <span className="font-script text-3xl sm:text-4xl text-primary-soft block mb-1 font-normal">
-              {isAm ? "አገልግሎቶቻችን" : "Help & Fellowship"}
+              {homeText("home_ministries_preview_1")}
             </span>
             <h2 className="font-display text-2xl sm:text-3xl md:text-4xl font-semibold text-foreground">
-              {isAm ? "እያንዳንዱ ልብ የሚያድግበት ስፍራ" : "Ministries & Current Appeals"}
+              {homeText("home_ministries_preview_2")}
             </h2>
           </div>
           <Link
-            href="/visit#contact"
+            href={homeValue("home_ministries_preview_3")}
             className="group inline-flex items-center gap-1.5 text-primary text-sm font-semibold hover:text-primary-deep transition-colors"
           >
-            <span>{isAm ? "ሁሉንም አገልግሎቶች ይመልከቱ" : "Find your place"}</span>
+            <span>{homeText("home_ministries_preview_4")}</span>
             <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </Link>
         </div>
@@ -102,7 +105,7 @@ export function MinistriesPreview() {
 
             <div className="p-6 pt-0 flex items-center justify-between">
               <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors duration-200">
-                {isAm ? "ተጨማሪ ዝርዝር" : "Learn more"}
+                {homeText("home_ministries_preview_5")}
               </span>
               <Link
                 href={item.link}
@@ -135,31 +138,29 @@ export function MinistriesPreview() {
 
           <div className="relative z-10 flex flex-col gap-3">
             <span className="inline-block self-start px-3.5 py-1 rounded-full bg-surface group-hover:bg-tint border border-primary/10 group-hover:border-primary/20 text-xs font-semibold text-primary transition-all duration-200">
-              {isAm ? "የምክርና የጸሎት ድጋፍ" : "Prayer & Pastoral Care"}
+              {homeText("home_ministries_preview_6")}
             </span>
 
             <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground group-hover:text-primary transition-colors leading-snug">
-              {isAm ? "የጸሎትና የምክር አገልግሎት" : "Prayer & Pastoral Care"}
+              {homeText("home_ministries_preview_7")}
             </h3>
 
             <p className="text-sm text-muted-foreground leading-relaxed">
-              {isAm
-                ? "በማንኛውም ጊዜ የግል ጸሎት፣ የመጽሐፍ ቅዱስ ምክርና የሕይወት ድጋፍ የሚሹ ከሆነ አገልጋዮቻችን ዝግጁ ናቸው።"
-                : "Personal prayer, biblical pastoral counseling, and spiritual support whenever you walk through difficult seasons."}
+              {homeText("home_ministries_preview_8")}
             </p>
 
             <div className="mt-1 text-xs font-semibold text-primary/85">
-              {isAm ? "ሐሙስ ማታ 12:00 እና በጠየቁት ጊዜ" : "Thursdays 6:00 PM & By Appointment"}
+              {homeText("home_ministries_preview_9")}
             </div>
           </div>
 
           <div className="pt-6 relative z-10 flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors duration-200">
-              {isAm ? "የጸሎት ጥያቄ ይላኩ" : "Request prayer"}
+              {homeText("home_ministries_preview_10")}
             </span>
             <Link
-              href="/visit#contact"
-              aria-label={isAm ? "የጸሎት ጥያቄ ይላኩ" : "Request prayer"}
+              href={homeValue("home_ministries_preview_11")}
+              aria-label={homeText("home_ministries_preview_12")}
             >
               <ArrowUpRight
                 className="size-6 text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"

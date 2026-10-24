@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ContentProvider } from '@/lib/context/content-context';
+import { getPublicContent } from '@/lib/cms/public';
 import { VisitHero } from "@/components/visit/visit-hero";
 import { TimeExplainerCallout } from "@/components/visit/time-explainer-callout";
 import { WeeklyScheduleGrid } from "@/components/visit/weekly-schedule-grid";
@@ -13,9 +15,10 @@ export const metadata: Metadata = {
     "Plan your visit to Hiwot Birhan Church in Summit, Addis Ababa. Explore weekly gathering schedules, Ethiopian local time guide, transit directions, and contact information.",
 };
 
-export default function VisitPage() {
+export default async function VisitPage() {
+  const content = await getPublicContent('visit');
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <ContentProvider value={content}><div className="flex flex-col min-h-screen bg-background">
       <VisitHero />
       <WeeklyScheduleGrid />
       <TimeExplainerCallout />
@@ -27,6 +30,6 @@ export default function VisitPage() {
           <ContactForm />
         </div>
       </section>
-    </div>
+    </div></ContentProvider>
   );
 }

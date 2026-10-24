@@ -1,12 +1,10 @@
 import { loadEnvConfig } from "@next/env";
 import { defineConfig } from "drizzle-kit";
-loadEnvConfig(process.cwd());
+import { databaseConfig } from "./lib/db/config";
+loadEnvConfig(process.cwd(), process.env.DATABASE_ENV !== "production");
 export default defineConfig({
   schema: "./lib/db/schema.ts",
   out: "./drizzle",
   dialect: "turso",
-  dbCredentials: {
-    url: process.env.TURSO_DATABASE_URL!,
-    authToken: process.env.TURSO_AUTH_TOKEN,
-  },
+  dbCredentials: databaseConfig(),
 });

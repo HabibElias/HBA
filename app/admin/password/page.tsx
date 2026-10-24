@@ -1,3 +1,4 @@
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -9,6 +10,7 @@ export default async function PasswordPage() {
   if (!staff) redirect("/admin/login");
   return (
     <main className="admin-standalone">
+      <div className="flex justify-end mb-4"><ThemeToggle /></div>
       <Link href="/admin" className="admin-back">
         <ArrowLeft size={14} />
         Workspace

@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ContentProvider } from '@/lib/context/content-context';
+import { getPublicContent } from '@/lib/cms/public';
 import { StoryHero } from "@/components/about/story-hero";
 import { ScriptureBanner } from "@/components/about/scripture-banner";
 import { FoundingTimeline } from "@/components/about/founding-timeline";
@@ -13,9 +15,10 @@ export const metadata: Metadata = {
     "Discover the story, statement of faith, guiding values, and pastoral leadership of Hiwot Birhan Church at Summit, Addis Ababa.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const content = await getPublicContent('about');
   return (
-    <div className="flex flex-col min-h-screen">
+    <ContentProvider value={content}><div className="flex flex-col min-h-screen">
       <StoryHero />
       <ScriptureBanner />
       <FoundingTimeline />
@@ -23,6 +26,6 @@ export default function AboutPage() {
       <FaithAccordion />
       <LeadershipGrid />
       <AboutVisitCta />
-    </div>
+    </div></ContentProvider>
   );
 }

@@ -3,7 +3,7 @@ import { createInterface } from "node:readline/promises";
 import { Writable } from "node:stream";
 import { hashPassword } from "better-auth/crypto";
 import { z } from "zod";
-loadEnvConfig(process.cwd());
+loadEnvConfig(process.cwd(), process.env.DATABASE_ENV !== "production");
 async function main() {
   if (!process.stdin.isTTY)
     throw new Error(

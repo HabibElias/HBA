@@ -1,4 +1,5 @@
 "use client";
+import { useLandingContent } from "@/lib/context/landing-context";
 import { useContent } from "@/lib/context/content-context";
 
 import Link from "next/link";
@@ -10,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { ScrollReveal } from "@/components/ui/scroll-reveal";
 
 export function VisitCta() {
+  const { homeText, homeValue } = useLandingContent();
   const { lang } = useLanguage();
   const {schedules}=useContent();
   const isAm = lang === "am";
@@ -21,16 +23,14 @@ export function VisitCta() {
           {/* Details Column (6 cols) */}
           <ScrollReveal variant="fade-right" duration={700} distance={32} className="lg:col-span-6">
             <span className="font-script text-3xl sm:text-4xl text-primary-soft block mb-1 font-normal">
-              {isAm ? "እንኳን ደህና መጡ" : "Welcome Home"}
+              {homeText("home_visit_cta_1")}
             </span>
             <h2 className="font-display text-2xl sm:text-3xl lg:text-4xl font-semibold text-foreground leading-tight mb-4">
-              {isAm ? "እዚህ ለእርስዎም ስፍራ አለ" : "There is room for you here"}
+              {homeText("home_visit_cta_2")}
             </h2>
 
             <p className="text-sm sm:text-base text-muted-foreground mb-8 leading-relaxed">
-              {isAm
-                ? "በአዲስ አበባ ሰሚት በር 2 አቅራቢያ የሚገኘውን መቅደሳችንን ይጎብኙ። ክፍት በሮች፣ ሞቅ ያለ አቀባበልና መንፈሳዊ ቤተሰብ ይጠብቆታል።"
-                : "Whether you are visiting Addis Ababa, moving to the Summit area, or searching for a gospel-centered church family, our doors and hearts are open to you."}
+              {homeText("home_visit_cta_3")}
             </p>
 
             {/* Quick Location & Schedule Details (Open layout without divider lines) */}
@@ -41,11 +41,10 @@ export function VisitCta() {
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-semibold text-foreground">
-                    {isAm ? "የመቅደሱ አድራሻ" : "Sanctuary Address"}
+                    {homeText("home_visit_cta_4")}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Summit Condominium, Near Gate 2, Bole Subcity, Addis Ababa
-                  </p>
+                    {homeValue("home_visit_cta_5")}</p>
                 </div>
               </div>
 
@@ -55,10 +54,10 @@ export function VisitCta() {
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-semibold text-foreground">
-                    {isAm ? "የእሑድ ዋና አምልኮ" : "Sunday Main Worship"}
+                    {homeText("home_visit_cta_6")}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    {schedules[0] ? `${schedules[0].eatTime} (${schedules[0].localTime})` : (isAm ? "ለሰዓቱ ያነጋግሩን" : "Contact us for gathering times")}
+                    {schedules[0] ? `${schedules[0].eatTime} (${schedules[0].localTime})` : (homeText("home_visit_cta_7"))}
                   </p>
                 </div>
               </div>
@@ -69,11 +68,10 @@ export function VisitCta() {
                 </div>
                 <div>
                   <h3 className="text-xs sm:text-sm font-semibold text-foreground">
-                    {isAm ? "ትራንስፖርትና ማቆሚያ" : "Transit & Parking"}
+                    {homeText("home_visit_cta_8")}
                   </h3>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Accessible via Summit-Megenagna taxi & LRT • Free on-site parking
-                  </p>
+                    {homeValue("home_visit_cta_9")}</p>
                 </div>
               </div>
             </div>
@@ -81,17 +79,17 @@ export function VisitCta() {
             {/* Actions */}
             <div className="flex flex-wrap items-center gap-4">
               <Link
-                href="/visit"
+                href={homeValue("home_visit_cta_10")}
                 className={cn(buttonVariants({ variant: "primary", size: "lg" }), "group rounded-full px-7 font-semibold gap-2")}
               >
-                <span>{isAm ? "የመጀመሪያ ጉብኝትዎን ያቅዱ" : "Plan your first visit"}</span>
+                <span>{homeText("home_visit_cta_11")}</span>
                 <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <Link
-                href="/visit#transit"
+                href={homeValue("home_visit_cta_12")}
                 className={cn(buttonVariants({ variant: "secondary", size: "lg" }), "rounded-full px-7 font-semibold")}
               >
-                <span>{isAm ? "አድራሻና አቅጣጫ" : "Directions & Map"}</span>
+                <span>{homeText("home_visit_cta_13")}</span>
               </Link>
             </div>
           </ScrollReveal>
@@ -100,25 +98,24 @@ export function VisitCta() {
           <ScrollReveal variant="fade-left" duration={750} delay={120} distance={32} className="lg:col-span-6">
             <div className="rounded-2xl overflow-hidden border border-border bg-surface relative aspect-[16/11]">
               <Image
-                src="/gallery/photo_17_2026-08-27_14-11-14.jpg"
-                alt="Inside the Summit church sanctuary"
+                src={homeValue("home_visit_cta_14")}
+                alt={homeValue("home_visit_cta_15")}
                 fill
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
               <div className="absolute bottom-4 left-4 right-4 bg-surface/95 p-3.5 rounded-xl border border-border text-xs flex items-center justify-between">
                 <div>
-                  <span className="font-semibold text-foreground block">Hiwot Birhan Summit</span>
-                  <span className="text-muted-foreground text-[11px]">Summit Condominium Gate 2, Bole</span>
+                  <span className="font-semibold text-foreground block">{homeValue("home_visit_cta_16")}</span>
+                  <span className="text-muted-foreground text-[11px]">{homeValue("home_visit_cta_17")}</span>
                 </div>
                 <a
-                  href="https://maps.google.com/?q=9.0234,38.8682"
+                  href={homeValue("home_visit_cta_18")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary font-semibold hover:underline"
                 >
-                  Open Maps
-                </a>
+                  {homeValue("home_visit_cta_19")}</a>
               </div>
             </div>
           </ScrollReveal>

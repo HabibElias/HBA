@@ -20,7 +20,7 @@ export function UpcomingCard({ event }: UpcomingCardProps) {
       <Image src={event.image} alt={isAm ? "ከሰሚት ቤተ ክርስቲያን ሕይወት" : "From church life at Summit"} fill sizes="(max-width: 768px) 100vw, 280px" className="object-cover"/>
     </div>
     <div className="p-6 sm:p-8 lg:p-9 min-w-0">
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm mb-4">
+      <div className="flex flex-wrap items-center justify-between w-full gap-x-4 gap-y-2 text-sm mb-4">
         <span className="text-primary font-semibold">{isAm ? event.dateAm : event.date}</span>
         <span className="px-3 py-1 bg-tint rounded-full text-primary text-xs font-medium">{isAm ? event.categoryLabelAm : event.categoryLabel}</span>
       </div>
@@ -32,7 +32,7 @@ export function UpcomingCard({ event }: UpcomingCardProps) {
         <span className="inline-flex items-start gap-2"><MapPin className="size-4 shrink-0 mt-0.5"/>{isAm ? event.locationAm : event.location}</span>
       </div>
       {(isAm ? event.noticeAm : event.notice) && <p className="text-sm text-muted-foreground mt-3">{isAm ? event.noticeAm : event.notice}</p>}
-      <div className="flex flex-wrap gap-3 mt-7">
+      <div className="flex flex-wrap gap-3 mt-7 items-baseline justify-end">
         <Link href={`/programs/${event.id}`} className={`${buttonVariants({variant:"primary"})} group`}>
           {isAm ? "ዝርዝሩን ይመልከቱ" : "View gathering"}<ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"/>
         </Link>

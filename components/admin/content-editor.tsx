@@ -31,7 +31,20 @@ import {
   contentStateAction,
   type ActionResult,
 } from "@/app/admin/actions";
+import dynamic from "next/dynamic";
+import { AudioUploadDialog } from "./audio-upload-dialog";
+import { createRecapAction } from "@/app/admin/actions";
+const RichTextEditor = dynamic(
+  () => import("./rich-text-editor").then((m) => m.RichTextEditor),
+  { ssr: false },
+);
 import { MediaPicker } from "./media-library";
+import {
+  pageDefaults,
+  editablePages,
+  sectionLabels,
+  type EditablePage,
+} from "@/lib/cms/pages";
 export interface EditorEntry {
   id?: string;
   kind: Collection;
@@ -61,13 +74,22 @@ function calendarDate(value: string) {
 export function ContentEditor({
   entry,
   permissions,
+  page,
 }: {
   entry: EditorEntry;
   permissions: string[];
+  page?: EditablePage;
 }) {
   const router = useRouter(),
     config = collectionConfig[entry.kind];
-  const [data, setData] = useState(entry.draft),
+  const pageConfig = page ? editablePages[page] : null;
+  const backPath = page ? "/admin/pages" : `/admin/content/${entry.kind}`;
+  const [section, setSection] = useState(pageConfig?.groups[0] ?? "");
+  const [data, setData] = useState(
+      entry.kind === "settings"
+        ? { ...pageDefaults, ...entry.draft }
+        : entry.draft,
+    ),
     [position, setPosition] = useState(entry.position),
     [tab, setTab] = useState("English"),
     [preview, setPreview] = useState(false),
@@ -76,6 +98,7 @@ export function ContentEditor({
     [result, setResult] = useState<ActionResult | null>(null),
     [pending, start] = useTransition(),
     [picker, setPicker] = useState<Field | null>(null),
+    [audioPicker, setAudioPicker] = useState<string | null>(null),
     [confirm, setConfirm] = useState<"unpublish" | "delete" | null>(null);
   const canEdit = permissions.includes(`${entry.kind}.write`),
     canPublish = permissions.includes(`${entry.kind}.publish`);
@@ -119,12 +142,65 @@ export function ContentEditor({
       }
     });
   }
-  const languageFields = config.fields.filter((f) =>
-    tab === "Amharic" ? f.key.endsWith("Am") : !f.key.endsWith("Am"),
+  const languageFields = config.fields.filter(
+    (f) =>
+      (pageConfig
+        ? f.group === section && pageConfig.groups.includes(f.group)
+        : !f.group) &&
+      (tab === "Amharic" ? f.key.endsWith("Am") : !f.key.endsWith("Am")),
   );
   const field = (f: Field) => {
     const value = String(data[f.key] ?? "");
     const id = `field-${f.key}`;
+    if (f.type === "richtext")
+      return (
+        <div key={f.key} className="admin-field wide">
+          <Label htmlFor={id}>{f.label}</Label>
+          <RichTextEditor
+            language={f.key.endsWith("Am") ? "am" : "en"}
+            key={f.key}
+            id={id}
+            value={value}
+            disabled={!canEdit || pending}
+            onChange={(value) => update(f.key, value)}
+          />
+        </div>
+      );
+    if (f.type === "audio")
+      return (
+        <div key={f.key} className="admin-field wide">
+          <span className="admin-label">{f.label}</span>
+          {value && (
+            <audio controls preload="none" src={value} className="w-full" />
+          )}
+          <div className="flex gap-3">
+            <Button
+              type="button"
+              className="admin-button"
+              disabled={
+                !canEdit || pending || !permissions.includes("media.write")
+              }
+              onClick={() => setAudioPicker(f.key)}
+            >
+              {value ? "Replace audio" : "Upload audio"}
+            </Button>
+            {value && (
+              <Button
+                type="button"
+                variant="outline"
+                disabled={!canEdit || pending}
+                onClick={() => update(f.key, "")}
+              >
+                Remove audio
+              </Button>
+            )}
+          </div>
+          <small>
+            Optional. Visitors can listen to and download the attached
+            recording.
+          </small>
+        </div>
+      );
     if (f.type === "photos") {
       const photos = (data[f.key] || []) as {
         src: string;
@@ -142,8 +218,16 @@ export function ContentEditor({
                   <button
                     type="button"
                     className={`admin-media-main-toggle ${photo.isMain ? "active" : ""}`}
-                    title={photo.isMain ? "Main photograph" : "Set as main photograph"}
-                    aria-label={photo.isMain ? "Main photograph" : "Set as main photograph"}
+                    title={
+                      photo.isMain
+                        ? "Main photograph"
+                        : "Set as main photograph"
+                    }
+                    aria-label={
+                      photo.isMain
+                        ? "Main photograph"
+                        : "Set as main photograph"
+                    }
                     disabled={!canEdit || pending}
                     onClick={() => {
                       update(
@@ -151,7 +235,7 @@ export function ContentEditor({
                         photos.map((p, n) => ({
                           ...p,
                           isMain: n === i ? !p.isMain : false,
-                        }))
+                        })),
                       );
                     }}
                   >
@@ -252,7 +336,16 @@ export function ContentEditor({
             onChange={(e) => update(f.key, e.target.value)}
           />
         ) : f.type === "select" ? (
-          <FieldSelect id={id} value={value} disabled={!canEdit || pending} onValueChange={(value) => update(f.key, value)} options={f.options!.map((o) => ({value: o, label: o.charAt(0).toUpperCase() + o.slice(1)}))} />
+          <FieldSelect
+            id={id}
+            value={value}
+            disabled={!canEdit || pending}
+            onValueChange={(value) => update(f.key, value)}
+            options={f.options!.map((o) => ({
+              value: o,
+              label: o.charAt(0).toUpperCase() + o.slice(1),
+            }))}
+          />
         ) : (
           <Input
             id={id}
@@ -288,7 +381,7 @@ export function ContentEditor({
     <>
       <Link
         className="admin-back"
-        href={`/admin/content/${entry.kind}`}
+        href={backPath}
         onClick={(e) => {
           if (dirty) {
             e.preventDefault();
@@ -297,12 +390,16 @@ export function ContentEditor({
         }}
       >
         <ArrowLeft size={16} />
-        {config.name}
+        {pageConfig ? "Pages" : config.name}
       </Link>
       <div className="admin-page-heading">
         <div>
           <h1>
-            {entry.id ? entry.title : `Create ${config.singular.toLowerCase()}`}
+            {pageConfig
+              ? `${pageConfig.title} page`
+              : entry.id
+                ? entry.title
+                : `Create ${config.singular.toLowerCase()}`}
           </h1>
           <p>
             {entry.publishedVersion === null
@@ -317,6 +414,56 @@ export function ContentEditor({
           {preview ? "Back to editing" : "Preview draft"}
         </Button>
       </div>
+      {entry.kind === "events" &&
+        entry.id &&
+        canEdit &&
+        permissions.includes("recaps.write") &&
+        Number.isFinite(
+          Date.parse(calendarToISO(String(entry.draft.endDate || ""))),
+        ) &&
+        Date.parse(calendarToISO(String(entry.draft.endDate))) <=
+          Date.now() && (
+          <div className="admin-notice">
+            <p>
+              This event has ended. Create a past gathering, then review its
+              story and photographs before publishing.
+            </p>
+            <Button
+              className="admin-button"
+              disabled={pending || dirty}
+              onClick={() =>
+                start(async () => {
+                  try {
+                    const r = await createRecapAction(entry.id!, entry.version);
+                    setResult(r);
+                    if (r.ok) router.push(`/admin/content/recaps/${r.id}`);
+                  } catch {
+                    setResult({
+                      ok: false,
+                      message:
+                        "Could not create the past gathering. Try again.",
+                    });
+                  }
+                })
+              }
+            >
+              Create past gathering
+            </Button>
+            {dirty && <p>Save your edits first.</p>}
+          </div>
+        )}
+      {entry.kind === "recaps" && (
+        <p className="admin-notice">
+          Publishing this gathering also displays its photographs as a folder in
+          the gallery. Add or remove photographs below.
+        </p>
+      )}
+      {audioPicker && (
+        <AudioUploadDialog
+          onClose={() => setAudioPicker(null)}
+          onChoose={(url) => update(audioPicker, url)}
+        />
+      )}
       {result && (
         <div
           role={result.ok ? "status" : "alert"}
@@ -337,6 +484,25 @@ export function ContentEditor({
           onValueChange={(value) => setTab(String(value))}
           className="admin-editor-panel"
         >
+          {pageConfig && (
+            <div className="admin-page-section-picker">
+              <Label className="admin-field">
+                Page section
+                <FieldSelect
+                  value={section}
+                  onValueChange={setSection}
+                  options={pageConfig.groups.map((group) => ({
+                    value: group,
+                    label: sectionLabels[group],
+                  }))}
+                />
+              </Label>
+              <p className="admin-muted">
+                Edit page text and photos here. Programs, schedules, sermons,
+                and leadership profiles have their own editors.
+              </p>
+            </div>
+          )}
           <TabsList className="admin-tabs" aria-label="Content language">
             {["English", "Amharic"].map((t) => (
               <TabsTrigger key={t} value={t}>
@@ -378,12 +544,39 @@ export function ContentEditor({
                         "photos",
                       ].includes(f.key) && data[f.key],
                   )
-                  .map((f) => (
-                    <div key={f.key}>
-                      <strong>{f.label}</strong>
-                      <p>{String(data[f.key])}</p>
-                    </div>
-                  ))}
+                  .map((f) =>
+                    f.type === "richtext" ? (
+                      <RichTextEditor
+                        language={f.key.endsWith("Am") ? "am" : "en"}
+                        key={f.key}
+                        id={`preview-${f.key}`}
+                        value={String(data[f.key])}
+                        disabled
+                        onChange={() => {}}
+                      />
+                    ) : f.type === "audio" ? (
+                      <audio
+                        key={f.key}
+                        controls
+                        src={String(data[f.key])}
+                        preload="none"
+                      />
+                    ) : f.type === "photos" ? (
+                      <div key={f.key}>
+                        <strong>{f.label}</strong>
+                        {(data[f.key] as { src: string; alt: string }[]).map(
+                          (photo, i) => (
+                            <img key={i} src={photo.src} alt={photo.alt} />
+                          ),
+                        )}
+                      </div>
+                    ) : (
+                      <div key={f.key}>
+                        <strong>{f.label}</strong>
+                        <p>{String(data[f.key])}</p>
+                      </div>
+                    ),
+                  )}
               </article>
             ) : (
               <div className="admin-editor-fields">
@@ -403,24 +596,32 @@ export function ContentEditor({
               ? "You have unsaved changes."
               : "All changes on this screen are saved."}
           </p>
-          <Label className="admin-field">
-            Display order
-            <Input
-              type="number"
-              min={0}
-              max={10000}
-              value={position}
-              disabled={!canEdit || pending}
-              onChange={(e) => {
-                setPosition(Number(e.target.value));
-                setDirty(true);
-              }}
-            />
-            <small>
-              Lower numbers appear first. Events are ordered by their start
-              date.
-            </small>
-          </Label>
+          {pageConfig && (
+            <p className="admin-muted">
+              Home, About, and Church details share a draft. Publishing applies
+              all their saved changes together.
+            </p>
+          )}
+          {!pageConfig && (
+            <Label className="admin-field">
+              Display order
+              <Input
+                type="number"
+                min={0}
+                max={10000}
+                value={position}
+                disabled={!canEdit || pending}
+                onChange={(e) => {
+                  setPosition(Number(e.target.value));
+                  setDirty(true);
+                }}
+              />
+              <small>
+                Lower numbers appear first. Events use their start date; sermons
+                use their most recent publication date.
+              </small>
+            </Label>
+          )}
           {canEdit && (
             <Button
               className="admin-button"
@@ -467,7 +668,7 @@ export function ContentEditor({
           )}
           <Link
             className="admin-text-link"
-            href={config.publicPath}
+            href={pageConfig?.path ?? config.publicPath}
             target="_blank"
           >
             View website ↗
@@ -570,7 +771,7 @@ export function ContentEditor({
               className="admin-button danger"
               onClick={() => {
                 setDirty(false);
-                router.push("/admin/content/" + entry.kind);
+                router.push(backPath);
               }}
             >
               Discard edits
@@ -578,41 +779,47 @@ export function ContentEditor({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      {picker && (() => {
-        const existingPhotos = ((data[picker.key] as any[]) || []);
-        const remainingCapacity = Math.max(1, 24 - existingPhotos.length);
-        return (
-          <MediaPicker
-            onClose={() => setPicker(null)}
-            maxSelect={picker.type === "photos" ? remainingCapacity : 1}
-            allowMain={picker.type === "photos"}
-            onChoose={(image) => {
-              update(picker.key, image.src);
-              setPicker(null);
-            }}
-            onChooseMultiple={(images, mainId) => {
-              const existing = ((data[picker.key] || []) as {
-                src: string;
-                alt: string;
-                isMain?: boolean;
-              }[]);
-              const updatedExisting = mainId
-                ? existing.map((p) => ({ ...p, isMain: false }))
-                : existing;
-              const merged = [
-                ...updatedExisting,
-                ...images.map((img) => ({
-                  src: img.src,
-                  alt: img.alt,
-                  isMain: mainId === img.id,
-                })),
-              ];
-              update(picker.key, merged);
-              setPicker(null);
-            }}
-          />
-        );
-      })()}
+      {picker &&
+        (() => {
+          const existingPhotos =
+            (data[picker.key] as {
+              src: string;
+              alt: string;
+              isMain?: boolean;
+            }[]) || [];
+          const remainingCapacity = Math.max(1, 24 - existingPhotos.length);
+          return (
+            <MediaPicker
+              onClose={() => setPicker(null)}
+              maxSelect={picker.type === "photos" ? remainingCapacity : 1}
+              allowMain={picker.type === "photos"}
+              onChoose={(image) => {
+                update(picker.key, image.src);
+                setPicker(null);
+              }}
+              onChooseMultiple={(images, mainId) => {
+                const existing = (data[picker.key] || []) as {
+                  src: string;
+                  alt: string;
+                  isMain?: boolean;
+                }[];
+                const updatedExisting = mainId
+                  ? existing.map((p) => ({ ...p, isMain: false }))
+                  : existing;
+                const merged = [
+                  ...updatedExisting,
+                  ...images.map((img) => ({
+                    src: img.src,
+                    alt: img.alt,
+                    isMain: mainId === img.id,
+                  })),
+                ];
+                update(picker.key, merged);
+                setPicker(null);
+              }}
+            />
+          );
+        })()}
     </>
   );
 }

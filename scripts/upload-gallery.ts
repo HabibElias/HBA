@@ -2,7 +2,7 @@ import { loadEnvConfig } from "@next/env";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
-loadEnvConfig(process.cwd());
+loadEnvConfig(process.cwd(), process.env.DATABASE_ENV !== "production");
 
 async function main() {
   const { db, client } = await import("../lib/db");
