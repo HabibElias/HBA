@@ -8,12 +8,11 @@ import { useLanguage } from "@/lib/context/language-context";
 import { useContent } from "@/lib/context/content-context";
 
 
-export function Footer() {
+export function Footer({ year }: { year: number }) {
   const { schedules, settings } = useContent();
   const heroServices = schedules.map(s=>({...s,badge:s.day,badgeAm:s.dayAm,timeLocal:s.localTime}));
   const { lang, t } = useLanguage();
   const isAm = lang === "am";
-  const year = new Date().getFullYear();
 
   return (
     <footer className="paint-footer bg-primary-deep text-white relative isolate">
@@ -21,7 +20,7 @@ export function Footer() {
       <div className="relative w-full py-16 md:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-14 md:mb-16">
           <p className="font-script text-4xl sm:text-5xl lg:text-6xl max-w-2xl leading-tight">{isAm ? "እዚህ ለእርስዎም ስፍራ አለ።" : "There is room for you here."}</p>
-          <Link href="/visit" className="group inline-flex items-center gap-3 self-start md:self-auto rounded-full bg-white text-primary-deep font-semibold text-sm px-6 py-3.5 shrink-0 hover:bg-tint transition-colors">{t?.nav?.planVisit ?? "Plan your visit"}<ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"/></Link>
+          <Link href="/visit" className="group inline-flex items-center gap-3 self-start md:self-auto rounded-full bg-white text-primary-deep font-semibold text-sm px-6 py-3.5 shrink-0 hover:bg-white/90 transition-colors">{t?.nav?.planVisit ?? "Plan your visit"}<ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"/></Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 md:gap-12 mb-12">
           {/* Brand & About (4 cols) */}
@@ -37,21 +36,21 @@ export function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Telegram Channel"
-                className="size-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors text-white shadow-xs"
+                className="size-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary-soft/30 transition-colors text-white shadow-xs"
               >
                 <Send className="size-4" />
               </a>
               <a
                 href={`tel:${settings.phone}`}
                 aria-label="Phone"
-                className="size-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors text-white shadow-xs"
+                className="size-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary-soft/30 transition-colors text-white shadow-xs"
               >
                 <Phone className="size-4" />
               </a>
               <a
                 href={`mailto:${settings.email}`}
                 aria-label="Email"
-                className="size-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary transition-colors text-white shadow-xs"
+                className="size-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-primary-soft/30 transition-colors text-white shadow-xs"
               >
                 <Mail className="size-4" />
               </a>
@@ -77,6 +76,16 @@ export function Footer() {
               <li>
                 <Link href="/programs" className="hover:text-white transition-colors">
                   {t?.nav?.programs ?? "Programs & Events"}
+                </Link>
+              </li>
+              <li>
+                <Link href="/sermons" className="hover:text-white transition-colors">
+                  {isAm ? "ስብከቶች" : "Sermons"}
+                </Link>
+              </li>
+              <li>
+                <Link href="/gallery" className="hover:text-white transition-colors">
+                  {isAm ? "ፎቶዎች" : "Gallery"}
                 </Link>
               </li>
               <li>

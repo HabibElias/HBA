@@ -1,12 +1,19 @@
+import { isSermonAudio } from "../audio";
 import { z } from "zod";
+import { landingFields } from "./landing";
+import { aboutFields } from "./about";
+import { pageDefaults } from "./pages";
 import { isCloudinaryImage } from "../cloudinary";
 import { collections, type Collection } from "./permissions";
 
 export interface Field {
+  group?: string;
   key: string;
   label: string;
   type?:
     | "textarea"
+    | "richtext"
+    | "audio"
     | "select"
     | "image"
     | "photos"
@@ -89,6 +96,19 @@ export const collectionConfig: Record<
       },
     ],
   },
+  albums: {
+    name: "Gallery folders",
+    singular: "Gallery folder",
+    description:
+      "Group photographs by day or occasion. Published past gatherings appear in the gallery automatically.",
+    publicPath: "/gallery",
+    fields: [
+      ...pair("title", "Folder name", { required: true }),
+      ...pair("date", "Date"),
+      ...pair("description", "Description", { type: "textarea" }),
+      { key: "photos", label: "Folder photographs", type: "photos" },
+    ],
+  },
   recaps: {
     name: "Past gatherings",
     singular: "Recap",
@@ -117,15 +137,20 @@ export const collectionConfig: Record<
   sermons: {
     name: "Sermons & teaching",
     singular: "Sermon",
-    description: "Manage the recent messages shown on the home page.",
-    publicPath: "/#sermons",
+    description:
+      "Publish messages for the Sermons page and the latest-message preview on Home.",
+    publicPath: "/sermons",
     fields: [
       ...pair("title", "Message title", { required: true }),
       ...pair("speaker", "Speaker", { required: true }),
-      ...pair("series", "Series", { required: true }),
+      ...pair("series", "Series", {
+        hint: "Optional. Leave empty for a standalone message.",
+      }),
       ...pair("scripture", "Scripture", { required: true }),
       ...pair("theme", "Summary", { type: "textarea", required: true }),
-      { key: "recordingUrl", label: "Recording link", type: "url" },
+      ...pair("body", "Post content", { type: "richtext" }),
+      { key: "audioUrl", label: "Audio recording", type: "audio" },
+      { key: "recordingUrl", label: "External recording link", type: "url" },
     ],
   },
   schedules: {
@@ -187,6 +212,8 @@ export const collectionConfig: Record<
     description: "Public contact information shared by the website.",
     publicPath: "/visit#contact",
     fields: [
+      ...landingFields,
+      ...aboutFields,
       ...pair("title", "Church name", { required: true }),
       ...pair("address", "Street address", { required: true }),
       {
@@ -215,11 +242,13 @@ export function isCollection(value: string): value is Collection {
 }
 export const safeLink = (value: string) =>
   !value ||
+  /^#[A-Za-z][A-Za-z0-9_-]*$/.test(value) ||
   /^\/(?!\/)[^\\\s]*$/.test(value) ||
   /^https:\/\/[^\s]+$/i.test(value);
 export const safeImage = (value: string) =>
   (/^\/(gallery|illustrations|api\/media)\/[A-Za-z0-9_./-]+$/.test(value) &&
-  !value.includes("..")) || isCloudinaryImage(value);
+    !value.includes("..")) ||
+  isCloudinaryImage(value);
 export function parseContent(
   kind: Collection,
   input: unknown,
@@ -241,25 +270,38 @@ export function parseContent(
           }),
         )
         .max(24)
-        .default([]);
+        .default(
+          (pageDefaults[field.key] as
+            { src: string; alt: string }[] | undefined) ?? [],
+        );
     } else if (field.type === "number") {
       shape[field.key] = z.coerce.number().int().min(1900).max(2200);
     } else {
       let rule = z
         .string()
         .trim()
-        .max(field.type === "textarea" ? 10000 : 500);
+        .max(
+          field.type === "richtext"
+            ? 40000
+            : field.type === "textarea"
+              ? 10000
+              : 500,
+        );
       if (required || field.key === "title" || field.key === "name")
         rule = rule.min(
           1,
           `${field.label} is required${publishing ? " before publishing" : ""}.`,
         );
       shape[field.key] = rule
-        .default("")
+        .default(String(pageDefaults[field.key] ?? ""))
         .refine(
           (value) =>
             !value || field.type !== "select" || field.options!.includes(value),
           "Select a valid option.",
+        )
+        .refine(
+          (value) => !value || field.type !== "audio" || isSermonAudio(value),
+          "Upload an audio file using the audio picker.",
         )
         .refine(
           (value) => !value || field.type !== "url" || safeLink(value),

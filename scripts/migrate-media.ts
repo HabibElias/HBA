@@ -1,7 +1,7 @@
 import { loadEnvConfig } from "@next/env";
 import { eq, isNull, isNotNull, and } from "drizzle-orm";
 import { uploadImage } from "../lib/cloudinary";
-loadEnvConfig(process.cwd());
+loadEnvConfig(process.cwd(), process.env.DATABASE_ENV !== "production");
 
 async function main() {
   const { db, client } = await import("../lib/db");

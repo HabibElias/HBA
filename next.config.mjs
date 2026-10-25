@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  cacheComponents: true,
 
   allowedDevOrigins: ["192.168.1.9"],
   outputFileTracingIncludes: {

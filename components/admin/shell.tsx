@@ -1,4 +1,5 @@
 "use client";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { Button } from "@/components/ui/button";
 
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
@@ -22,11 +23,14 @@ import {
   X,
   KeyRound,
   ChevronsUpDown,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 import { ChurchMark } from "@/components/brand/church-mark";
 const links = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin/pages", label: "Pages", icon: BookOpen },
   {
     href: "/admin/content/events",
     label: "Programs & events",
@@ -40,6 +44,7 @@ const links = [
   },
   { href: "/admin/content/schedules", label: "Weekly schedule", icon: Clock },
   { href: "/admin/content/leaders", label: "Leadership", icon: Users },
+  { href: "/admin/content/albums", label: "Gallery folders", icon: Image },
   { href: "/admin/media", label: "Image library", icon: Image },
   { href: "/admin/content/settings", label: "Church details", icon: Settings },
   {
@@ -68,12 +73,25 @@ export function AdminShell({
   const [open, setOpen] = useState(false),
     [leaving, setLeaving] = useState(false),
     [error, setError] = useState("");
+  const [collapsed, setCollapsed] = useState(false);
+  useEffect(() => {
+    try {
+      setCollapsed(localStorage.getItem("summit-sidebar-collapsed") === "true");
+    } catch { /* Navigation remains usable when storage is unavailable. */ }
+  }, []);
+  const toggleSidebar = () => {
+    const next = !collapsed;
+    setCollapsed(next);
+    try {
+      localStorage.setItem("summit-sidebar-collapsed", String(next));
+    } catch { /* Keep the current session preference in state. */ }
+  };
   useEffect(() => {
     document.documentElement.lang = "en";
     setOpen(false);
   }, [pathname]);
   return (
-    <div className="admin-layout">
+    <div className={`admin-layout ${collapsed ? "admin-layout-collapsed" : ""}`}>
       <a href="#admin-main" className="skip-link">
         Skip to workspace
       </a>
@@ -82,6 +100,7 @@ export function AdminShell({
           <ChurchMark size={40} />
           Summit <span>workspace</span>
         </Link>
+        <ThemeToggle className="ml-auto" />
         <Button
           className="admin-icon-button"
           aria-label={
@@ -98,13 +117,21 @@ export function AdminShell({
         className={`admin-sidebar ${open ? "is-open" : ""}`}
         id="admin-nav"
       >
-        <Link href="/admin" className="admin-brand">
-          <ChurchMark size={56} />
+        <div className="admin-sidebar-heading">
+        <Link href="/admin" className="admin-brand" aria-label="Summit workspace">
+          <ChurchMark size={36} />
           <span>
             Hiwot Birhan<small>Summit workspace</small>
           </span>
         </Link>
-        <nav aria-label="Workspace navigation">
+        <button type="button" className="admin-sidebar-toggle" onClick={toggleSidebar}
+          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          aria-expanded={!collapsed} aria-controls="admin-workspace-links">
+          {collapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+        </button>
+        </div>
+        <nav id="admin-workspace-links" aria-label="Workspace navigation">
           {links
             .filter(
               (l) => !l.permission || staff.permissions.includes(l.permission),
@@ -113,6 +140,8 @@ export function AdminShell({
               <Link
                 key={href}
                 href={href}
+                aria-label={label}
+                title={label}
                 aria-current={
                   (
                     href === "/admin"
@@ -123,15 +152,18 @@ export function AdminShell({
                     : undefined
                 }
               >
-                <Icon size={18} />
+                <Icon size={18} aria-hidden="true" />
                 <span>{label}</span>
               </Link>
             ))}
         </nav>
         <div className="admin-sidebar-bottom">
-          <Link href="/" target="_blank">
-            Open website <ArrowUpRight size={16} />
+          <div className="admin-sidebar-tools">
+          <Link href="/" target="_blank" aria-label="Open website in a new tab" title="Open website">
+            <ArrowUpRight size={18} aria-hidden="true" /><span>Website</span>
           </Link>
+          <ThemeToggle />
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger className="admin-staff" aria-label={staff.name + ", account menu"}>
               <span className="admin-avatar" aria-hidden="true">{staff.name.split(" ").map((n) => n[0]).slice(0, 2).join("")}</span>

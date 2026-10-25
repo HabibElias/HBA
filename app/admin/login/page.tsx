@@ -1,3 +1,4 @@
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
@@ -10,6 +11,7 @@ export default async function LoginPage() {
   if (staff) redirect(staff.mustChangePassword ? "/admin/password" : "/admin");
   return (
     <main className="admin-login">
+      <div className="absolute right-4 top-4 z-10"><ThemeToggle /></div>
       <div className="admin-login-story">
         <Link href="/" className="admin-brand">
           <ChurchMark reversed size={64} priority />

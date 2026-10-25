@@ -8,8 +8,14 @@ import {
   session,
   account,
 } from "@/lib/db/schema";
-import { contentTitle, isCollection, parseContent } from "./collections";
+import {
+  calendarToISO,
+  contentTitle,
+  isCollection,
+  parseContent,
+} from "./collections";
 import { allPermissions, canAssignRole, type Collection } from "./permissions";
+import { sanitizeSermon } from "./rich-text";
 import { z } from "zod";
 import { hashPassword } from "better-auth/crypto";
 
@@ -57,6 +63,9 @@ export async function saveContent(actor: Actor, input: SaveInput) {
   if (JSON.stringify(input.data).length > 100000)
     throw new Error("This entry is too large.");
   const data = parseContent(input.kind, input.data, input.intent === "publish");
+  if (input.kind === "sermons")
+    for (const key of ["body", "bodyAm"])
+      data[key] = sanitizeSermon(String(data[key] || ""));
   const id = input.id || crypto.randomUUID(),
     now = new Date();
   await db.transaction(async (tx) => {
@@ -131,6 +140,9 @@ export async function changeContentState(
       throw new Error("Church details must remain published.");
     if (intent === "publish") {
       const data = parseContent(entry.kind, entry.draft, true);
+      if (entry.kind === "sermons")
+        for (const key of ["body", "bodyAm"])
+          data[key] = sanitizeSermon(String(data[key] || ""));
       await tx
         .update(content)
         .set({
@@ -210,14 +222,12 @@ export async function saveRole(
       if (!changed.length)
         throw new Error("This role changed. Reload before saving.");
     } else
-      await tx
-        .insert(roles)
-        .values({
-          id,
-          name: data.name,
-          description: data.description,
-          permissions: [...new Set(data.permissions)],
-        });
+      await tx.insert(roles).values({
+        id,
+        name: data.name,
+        description: data.description,
+        permissions: [...new Set(data.permissions)],
+      });
     await tx
       .insert(auditLog)
       .values(
@@ -258,29 +268,25 @@ export async function createStaff(
       (role.id === "owner" && actor.roleId !== "owner")
     )
       throw new Error("You cannot assign this role.");
-    await tx
-      .insert(user)
-      .values({
-        id,
-        name: data.name,
-        email: data.email,
-        emailVerified: true,
-        roleId: role.id,
-        mustChangePassword: true,
-        createdAt: now,
-        updatedAt: now,
-      });
-    await tx
-      .insert(account)
-      .values({
-        id: crypto.randomUUID(),
-        accountId: id,
-        providerId: "credential",
-        userId: id,
-        password,
-        createdAt: now,
-        updatedAt: now,
-      });
+    await tx.insert(user).values({
+      id,
+      name: data.name,
+      email: data.email,
+      emailVerified: true,
+      roleId: role.id,
+      mustChangePassword: true,
+      createdAt: now,
+      updatedAt: now,
+    });
+    await tx.insert(account).values({
+      id: crypto.randomUUID(),
+      accountId: id,
+      providerId: "credential",
+      userId: id,
+      password,
+      createdAt: now,
+      updatedAt: now,
+    });
     await tx
       .insert(auditLog)
       .values(audit(actor, "staff.created", id, `${data.name} · ${role.name}`));
@@ -365,4 +371,67 @@ export async function updateStaff(
         ),
       );
   });
+}
+
+/** A stable ID makes repeated clicks and concurrent conversions idempotent. */
+export async function createEventRecap(
+  actor: Actor,
+  id: string,
+  version: number,
+) {
+  allowed(actor, "events.write");
+  allowed(actor, "recaps.write");
+  const recapId = `event-recap-${id}`;
+  await db.transaction(async (tx) => {
+    const [event] = await tx.select().from(content).where(eq(content.id, id));
+    if (!event || event.kind !== "events") throw new Error("Event not found.");
+    if (event.version !== version)
+      throw new Error("This event changed. Reload before continuing.");
+    const data = event.draft;
+    const end = new Date(calendarToISO(String(data.endDate || ""))).getTime();
+    if (!Number.isFinite(end) || end > Date.now())
+      throw new Error("Only completed events can become past gatherings.");
+    const [existing] = await tx
+      .select()
+      .from(content)
+      .where(eq(content.id, recapId));
+    if (existing) return;
+    const draft = parseContent(
+      "recaps",
+      {
+        ...data,
+        recap: data.description,
+        recapAm: data.descriptionAm,
+        scripture: data.theme,
+        scriptureAm: data.themeAm,
+        year: new Date(end + 3 * 3600000).getUTCFullYear(),
+        photos: data.image
+          ? [{ src: data.image, alt: data.title, isMain: true }]
+          : [],
+      },
+      false,
+    );
+    await tx
+      .insert(content)
+      .values({
+        id: recapId,
+        kind: "recaps",
+        title: contentTitle("recaps", draft),
+        draft,
+        position: event.position,
+        updatedAt: new Date(),
+        updatedBy: actor.id,
+      });
+    await tx
+      .insert(auditLog)
+      .values(
+        audit(
+          actor,
+          "event.recap-created",
+          recapId,
+          `Created from event: ${event.title}`,
+        ),
+      );
+  });
+  return recapId;
 }

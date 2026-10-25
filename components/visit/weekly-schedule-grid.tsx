@@ -1,8 +1,10 @@
 "use client";
 import { useState } from "react";
+import Image from 'next/image';
 import { useContent } from "@/lib/context/content-context";
 import { useLanguage } from "@/lib/context/language-context";
-import { Lightbox } from "@/components/ui/lightbox";
+import dynamic from "next/dynamic";
+const Lightbox = dynamic(() => import("@/components/ui/lightbox").then(module => module.Lightbox));
 import { Images } from "lucide-react";
 
 export function WeeklyScheduleGrid() {
@@ -94,8 +96,10 @@ export function WeeklyScheduleGrid() {
                         title={photo.alt || (isAm ? s.titleAm : s.title)}
                         aria-label={`View photo ${pIdx + 1}: ${photo.alt || (isAm ? s.titleAm : s.title)}`}
                       >
-                        <img
+                        <Image
                           src={photo.src}
+                          fill
+                          sizes="(max-width: 640px) 45vw, (max-width: 1024px) 30vw, 240px"
                           alt={photo.alt || (isAm ? s.titleAm : s.title)}
                           className="size-full object-cover transition-transform duration-300 group-hover:scale-105"
                           loading="lazy"
@@ -118,13 +122,13 @@ export function WeeklyScheduleGrid() {
         </div>
       </div>
 
-      <Lightbox
+      {lightbox.isOpen && <Lightbox
         isOpen={lightbox.isOpen}
         onClose={() => setLightbox((prev) => ({ ...prev, isOpen: false }))}
         src={lightbox.src}
         alt={lightbox.alt}
         caption={lightbox.caption}
-      />
+      />}
     </section>
   );
 }

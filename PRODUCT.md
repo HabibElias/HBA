@@ -21,7 +21,7 @@ Visitors and members find gatherings, teaching, the church story, directions, an
 
 ## Current scope
 
-The CMS manages events, program recaps, sermons, weekly schedules, leadership profiles, contact details, and public image uploads. Owners manage permissions. Static page composition and long-form story/faith content remain code-managed. See ADMIN.md for setup and the specific content-to-page mapping.
+The CMS manages events, program recaps, sermons, weekly schedules, leadership profiles, contact details, and public image uploads. Pages contains Home and About editors, including story, history, values, and faith content. The image library supports name/description edits and removal of unused entries. Owners manage permissions. Page composition remains code-managed. See ADMIN.md for setup and the specific content-to-page mapping.
 
 ## Open deployment configuration
 

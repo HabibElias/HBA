@@ -5,7 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ZoomIn } from "lucide-react";
 import { useLanguage } from "@/lib/context/language-context";
-import { Lightbox } from "@/components/ui/lightbox";
+import dynamic from "next/dynamic";
+const Lightbox = dynamic(() => import("@/components/ui/lightbox").then(module => module.Lightbox));
 
 const ARCHIVE_PHOTOS = [
   {
@@ -102,13 +103,13 @@ export function ArchivalPhotoGrid() {
         ))}
       </div>
 
-      <Lightbox
+      {lightbox.isOpen && <Lightbox
         isOpen={lightbox.isOpen}
         onClose={() => setLightbox((prev) => ({ ...prev, isOpen: false }))}
         src={lightbox.src}
         alt={lightbox.alt}
         caption={lightbox.caption}
-      />
+      />}
     </section>
   );
 }

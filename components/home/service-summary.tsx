@@ -1,87 +1,178 @@
 "use client";
-import { useContent } from "@/lib/context/content-context";
 
-
+import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import Autoplay from "embla-carousel-autoplay";
 import { ArrowUpRight, Church, BookOpen, Flame, Heart } from "lucide-react";
+import { useContent } from "@/lib/context/content-context";
 import { useLanguage } from "@/lib/context/language-context";
-import { ScrollReveal } from "@/components/ui/scroll-reveal";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+
+const symbols = [Church, BookOpen, Flame, Heart];
 
 export function ServiceSummary() {
   const { schedules } = useContent();
-  const symbols = [Church, BookOpen, Flame, Heart];
-  const FEATURE_CARDS = schedules.map((s,i)=>({id:s.id,icon:symbols[i % symbols.length],badge:s.day,badgeAm:s.dayAm,title:s.title,titleAm:s.titleAm,desc:s.description,descAm:s.descriptionAm,timeLocal:s.localTime,link:"/visit#service-times"}));
   const { lang } = useLanguage();
   const isAm = lang === "am";
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(true);
+  const autoplay = useMemo(
+    () =>
+      Autoplay({
+        delay: 7500,
+        active: !reducedMotion && schedules.length > 1,
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+        stopOnFocusIn: true,
+      }),
+    [reducedMotion, schedules.length],
+  );
+  const plugins = useMemo(() => [autoplay], [autoplay]);
+
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(preference.matches);
+    update();
+    preference.addEventListener("change", update);
+    return () => preference.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (!api) return;
+    const update = () => setCurrent(api.selectedScrollSnap());
+    update();
+    api.on("select", update);
+    api.on("reInit", update);
+    return () => {
+      api.off("select", update);
+      api.off("reInit", update);
+    };
+  }, [api]);
+
+  if (!schedules.length) return null;
 
   return (
     <section
-      className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 sm:-mt-24 lg:-mt-28 relative z-20"
       id="service-times"
-      aria-label={isAm ? "የአምልኮ ጊዜዎች" : "Service Times"}
+      className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 md:pb-28"
     >
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {FEATURE_CARDS.map((card, idx) => {
-          const IconComponent = card.icon;
-          return (
-            <ScrollReveal
-              key={card.id}
-              delay={idx * 80}
-              variant="fade-up"
-              distance={28}
-              className="h-full flex flex-col"
-            >
-              <Link
-                href={card.link}
-                className="group relative overflow-hidden bg-tint hover:bg-surface border border-transparent hover:border-primary/20 rounded-3xl p-7 sm:p-8 transition-all duration-200 flex flex-col justify-between flex-1 min-h-[220px]"
+      <Carousel
+        setApi={setApi}
+        opts={{ loop: true, duration: reducedMotion ? 0 : 30 }}
+        plugins={plugins}
+        aria-label={isAm ? "የሳምንቱ መርሃ ግብር" : "Weekly schedule"}
+      >
+        <CarouselContent
+          className="ml-0"
+          aria-live={reducedMotion ? "polite" : "off"}
+        >
+          {schedules.map((card, index) => {
+            const Icon = symbols[index % symbols.length];
+            const photo =
+              card.photos?.find((photo) => photo.isMain) ?? card.photos?.[0];
+            const active = index === current;
+            return (
+              <CarouselItem
+                key={card.id}
+                className="pl-0"
+                inert={!active}
+                aria-hidden={!active}
+                aria-label={`${index + 1} / ${schedules.length}`}
               >
-                {/* Watermark icon — rotated, peeking from bottom-right corner */}
-                <IconComponent
-                  className="absolute -bottom-3 -right-3 translate-y-4 translate-x-4 size-36 sm:size-40 text-primary opacity-[0.08] rotate-[-15deg] pointer-events-none select-none"
-                  aria-hidden="true"
-                  strokeWidth={1}
-                />
-
-                {/* Card body */}
-                <div className="relative z-10 flex flex-col gap-3">
-                  {/* Day / session badge */}
-                  <span className="inline-block self-start px-3 py-1 rounded-full bg-surface group-hover:bg-tint border border-primary/10 group-hover:border-primary/20 text-primary text-[11px] font-semibold tracking-wide transition-all duration-200">
-                    {isAm ? card.badgeAm : card.badge}
-                  </span>
-
-                  {/* Title */}
-                  <h3 className="font-display text-lg sm:text-xl font-bold text-foreground group-hover:text-primary transition-colors duration-200 leading-snug">
-                    {isAm ? card.titleAm : card.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {isAm ? card.descAm : card.desc}
-                  </p>
-
-                  {/* Time — shown only when provided */}
-                  {card.timeLocal && (
-                    <p className="text-xs font-semibold text-primary/80 mt-1">
-                      {card.timeLocal}
-                    </p>
+                <article
+                  id={`schedule-${card.id}`}
+                  className={`relative isolate flex min-h-[460px] sm:min-h-[500px] lg:min-h-[560px] h-full flex-col justify-between overflow-hidden rounded-3xl bg-tint p-8 sm:p-12 lg:p-16 ${photo ? "text-white" : "text-foreground"}`}
+                >
+                  {photo && (
+                    <>
+                      <Image
+                        src={photo.src}
+                        alt=""
+                        fill
+                        sizes="(min-width: 1280px) 1216px, 100vw"
+                        className="object-cover"
+                        draggable={false}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary-deep/95 via-primary-deep/80 to-primary-deep/35" />
+                    </>
                   )}
-                </div>
-
-                {/* Footer row: "Learn more" + ArrowUpRight */}
-                <div className="relative z-10 pt-6 flex items-center justify-between">
-                  <span className="text-xs font-semibold text-muted-foreground group-hover:text-primary transition-colors duration-200">
-                    {isAm ? "ተጨማሪ ዝርዝር" : "Learn more"}
-                  </span>
-                  <ArrowUpRight
-                    className="size-6 text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200"
-                    strokeWidth={1.75}
+                  <Icon
+                    className={`absolute -bottom-5 -right-5 size-48 sm:size-64 rotate-[-15deg] pointer-events-none ${photo ? "text-white/10" : "text-primary/10"}`}
+                    aria-hidden="true"
+                    strokeWidth={1}
                   />
-                </div>
-              </Link>
-            </ScrollReveal>
-          );
-        })}
-      </div>
+                  <div className="relative z-10 flex max-w-2xl flex-col gap-5">
+                    <span className="self-start rounded-full border border-primary/10 bg-surface px-4 py-2 text-sm font-semibold text-primary">
+                      {isAm ? card.dayAm : card.day}
+                    </span>
+                    <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight">
+                      {isAm ? card.titleAm : card.title}
+                    </h2>
+                    <p
+                      className={`text-base sm:text-lg leading-relaxed ${photo ? "text-white/90" : "text-muted-foreground"}`}
+                    >
+                      {isAm ? card.descriptionAm : card.description}
+                    </p>
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-base sm:text-lg font-semibold">
+                      <span>{card.eatTime}</span>
+                      {card.localTime && (
+                        <span
+                          className={photo ? "text-white/90" : "text-primary"}
+                        >
+                          {card.localTime}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <Link
+                    href="/visit#service-times"
+                    className={`group relative z-10 mt-10 inline-flex min-h-11 w-fit items-center gap-4 text-sm font-semibold ${photo ? "text-white" : "text-primary"}`}
+                  >
+                    <span>{isAm ? "ተጨማሪ ዝርዝር" : "Learn more"}</span>
+                    <ArrowUpRight
+                      className="size-5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transform-none"
+                      aria-hidden="true"
+                    />
+                  </Link>
+                </article>
+              </CarouselItem>
+            );
+          })}
+        </CarouselContent>
+        {schedules.length > 1 && (
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-1">
+            <div
+              className="flex flex-wrap justify-center"
+              role="group"
+              aria-label={isAm ? "ስብሰባ ይምረጡ" : "Choose a gathering"}
+            >
+              {schedules.map((card, index) => (
+                <button
+                  key={card.id}
+                  type="button"
+                  onClick={() => api?.scrollTo(index)}
+                  aria-label={isAm ? card.titleAm || card.title : card.title}
+                  aria-current={index === current ? "true" : undefined}
+                  aria-controls={`schedule-${card.id}`}
+                  className="group inline-flex size-11 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                >
+                  <span
+                    className={`block h-1.5 rounded-full transition-[width,background-color] duration-300 ease-out motion-reduce:transition-none ${index === current ? "w-8 bg-primary" : "w-3 bg-primary/30 group-hover:bg-primary/60"}`}
+                    aria-hidden="true"
+                  />
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </Carousel>
     </section>
   );
 }

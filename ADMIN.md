@@ -44,7 +44,7 @@ No Turso Cloud URL/token was available during implementation. Integration is imp
 | Church details | Visit contact channels, contact email drafts, public address and footer contact links |
 | Image library | Existing local photographs and uploaded event/recap images |
 
-Page composition, the landing hero, static story/faith copy, ministry descriptions, and decorative artwork remain in code. They are not presented as editable CMS collections.
+Home and About text, photographs, links, ministry descriptions, history, values, and faith statements are editable under **Pages**. Page composition and decorative artwork remain in code. Events, schedules, sermons, recaps, and leadership profiles remain in their dedicated content editors.
 
 The editor provides English and Amharic fields, a draft preview, image selection, and display ordering. Start/end fields use East Africa Time; calendar downloads contain UTC dates. Events are sorted by start time and leave the upcoming list after their end time. A completed gathering's recap is authored separately, allowing staff to select appropriate photos and narrative.
 
@@ -113,3 +113,35 @@ The supplied `turso://` endpoint is configured with the equivalent `libsql://` s
 Use the Next.js preset and `npm run build` on Vercel. Do not run the local import or seed during every build. For later schema releases, run `npm run db:migrate` from a trusted terminal with the target cloud environment. `npm run db:seed` only fills missing default records. `npm run media:migrate` resumes any legacy image transfer. `npm run db:import-local` is a one-time, transaction-protected import requiring an empty migrated cloud database and a `SOURCE_DATABASE_URL=file:...` source.
 
 Check the production homepage, admin login, image library, and one upload after deploying. New uploads use the Cloudinary CDN; the public image gallery is explicitly included in the server trace for library discovery on Vercel.
+# Page editing
+
+Open **Pages** in the admin sidebar, choose **Home** or **About**, and select a section. Home text, button links, ministry and community cards, gallery captions, and photographs are editable. About includes the hero, calling, timeline, values, statement of faith, leadership introduction, and visit invitation. Leadership profiles remain in Leadership. English and Amharic use the existing language tabs. Home hero photographs rotate every 6.5 seconds; the starred photograph appears first. Remove all hero photographs to use the purple background alone. The old `/admin/landing` URL redirects to `/admin/pages/home`.
+
+Page changes use the existing **Church details** permissions and share that entry's draft, revision checks, and publication. Saving a draft does not change the public site; publishing applies saved Home, About, and church details together. The editor explains this shared publication scope.
+
+The weekly carousel uses published **Weekly schedule** entries in display order. Its background uses the starred gathering photograph, or the first photograph; a gathering without photos keeps the original lilac card. Events and sermons continue to be managed in their existing admin sections. The selected local photos are bundled under `public/gallery/landing`.
+
+## Managing library photographs
+
+Staff with `media.write` can edit a photograph's library name and alt text or remove it from the library using its **Edit** and **Remove** buttons. Existing content retains its saved descriptions. Removal checks both drafts and published content and refuses to remove referenced photographs. The confirmation makes clear that removal is from the library and picker; the hosted Cloudinary file is retained. Metadata edits and removal are audited and reject stale edits. Viewers cannot invoke these mutations, including directly through server actions.
+
+## Sermons and Gallery
+
+The public **Sermons** page (`/sermons`) contains the latest message and earlier teaching, searchable by title, speaker, series, or scripture. **Sermons & teaching** in the workspace controls both this page and the Home preview. The most recently published message receives the large feature; publishing an updated message moves it to the front. A recording link opens that message's recording; without one, visitors can ask the church for a copy. Home shows up to four messages.
+
+The public **Gallery** page (`/gallery`, “Moments we share”) combines photos and bilingual captions from **Pages → Home → Photo gallery** with photos from published **Past gatherings** entries. Repeated image URLs appear once. Uploading a photo to the image library alone does not publish it to the gallery. The gallery supports gathering filters and enlarged photos. Programs keeps upcoming events and past gathering recaps; sermon and gallery links now lead to their dedicated pages. No database migration is required.
+
+## Public-page caching behavior
+
+Public pages are prerendered and published database content is cached. Publishing and unpublishing invalidate public content immediately; saving drafts does not. Admin authentication and draft reads remain uncached. A returning visitor's browser may reuse its route data for up to 60 seconds; an already-open page does not update itself automatically. See [PERFORMANCE.md](PERFORMANCE.md) for cache lifetimes, deployment considerations, measurements, and repeatable tests. No database migration is needed for this optimization.
+
+
+## Environment isolation and content updates
+
+Development uses `TURSO_DEVELOPMENT_DATABASE_URL` (default `file:./data/church-development.db`) and `TURSO_DEVELOPMENT_AUTH_TOKEN`. It never inherits production credentials. `bun run setup:local` creates `.env.development.local` with a localhost authentication origin while preserving `.env.local`. Run `bun run db:migrate` and `bun run db:seed`, then `bun run admin:create` to provision your development owner. Development accounts are separate from production accounts.
+
+Production uses `TURSO_PRODUCTION_DATABASE_URL` and `TURSO_PRODUCTION_AUTH_TOKEN`; existing deployed `TURSO_DATABASE_URL` / `TURSO_AUTH_TOKEN` remain supported for compatibility. Equal normalized database targets are rejected. Preview deployments should use their own database credentials. Maintenance commands target development by default. For production migration, explicitly set `DATABASE_ENV=production` and run `bun run db:migrate` with production credentials. Do not seed production to apply these changes. Migrations 0003 and 0004 add built-in gallery permissions and preserve the existing homepage gallery photographs as an editable Church life folder.
+
+Sermons support bilingual rich text, an optional series, an optional uploaded audio recording, and an optional external recording link. HTML is sanitized on save, publish, and public reads. Audio uploads go directly to Cloudinary so a recording does not hit the hosting provider's request-body limit. Configure an unsigned Cloudinary preset that accepts MP3, M4A, WAV, and OGG, with a 50 MB maximum; optionally set `NEXT_PUBLIC_CLOUDINARY_AUDIO_UPLOAD_PRESET` to use a dedicated preset. Otherwise the existing upload preset is used. Delivery uses Cloudinary's `video` resource type for audio, and `fl_attachment` for downloads. Uploaded assets have public URLs; publishing controls website visibility, not asset confidentiality.
+
+Gallery folders are managed under **Gallery folders**. Add or remove images, choose a cover, save drafts, then publish. Published past gatherings automatically appear in the gallery using their own photographs. On a saved event whose end time has passed, **Create past gathering** creates a recap draft with the event's story and photograph. Repeated conversion opens the same recap. Review and publish it; the original event remains available in admin and is already excluded from upcoming events by date.
